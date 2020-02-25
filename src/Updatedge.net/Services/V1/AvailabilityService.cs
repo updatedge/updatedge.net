@@ -19,7 +19,7 @@ namespace Updatedge.net.Services.V1
             (DateTimeOffset start, DateTimeOffset end, int daysToRepeat, IEnumerable<string> workerIds)
         {
             try
-            {
+            {               
                 return await BaseUrl
                     .AppendPathSegment("availability/getperdailyinterval")
                     .SetQueryParam("api-version", ApiVersion)

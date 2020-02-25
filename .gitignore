@@ -6,3 +6,5 @@
 /src/.vs/Updatedge.net/v16
 /src/Updatedge.net/bin/Debug
 /src/Updatedge.net/obj
+/src/Updatedge.net.Tests/bin/Debug/netcoreapp3.1
+/src/Updatedge.net.Tests/obj
