@@ -2,6 +2,7 @@
 using Flurl.Http;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Updatedge.net.Entities.V1;
 using Updatedge.net.Entities.V1.Availability;
@@ -18,8 +19,15 @@ namespace Updatedge.net.Services.V1
         public async virtual Task<OkApiResult<List<WorkerAvailabilityIntervals>>> GetAvailabilityDailyAsync
             (DateTimeOffset start, DateTimeOffset end, int daysToRepeat, IEnumerable<string> workerIds)
         {
-            try
-            {               
+            try 
+            {
+                // Validate start and end dates
+                if (start > end) throw new ApiWrapperException("Start date cannot be after end date");
+                if (end > start.AddHours(24)) throw new ApiWrapperException("End date must be within 24 hours of Start date (inclusive).");
+
+                // Validate worker Ids
+                if (workerIds.Count() == 0) throw new ApiWrapperException("No worker Ids specficied");
+
                 return await BaseUrl
                     .AppendPathSegment("availability/getperdailyinterval")
                     .SetQueryParam("api-version", ApiVersion)
