@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs
+/src/.vs/Updatedge.net/v16
+/src/Updatedge.net/bin/Debug
+/src/Updatedge.net/obj
