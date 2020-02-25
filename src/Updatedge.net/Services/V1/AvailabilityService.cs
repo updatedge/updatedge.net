@@ -26,7 +26,7 @@ namespace Updatedge.net.Services.V1
                 if (end > start.AddHours(24)) throw new ApiWrapperException("End date must be within 24 hours of Start date (inclusive).");
 
                 // Validate worker Ids
-                if (workerIds.Count() == 0) throw new ApiWrapperException("No worker Ids specficied");
+                if (workerIds.Count() == 0) throw new ApiWrapperException("You must supply at least one worker id.");
 
                 return await BaseUrl
                     .AppendPathSegment("availability/getperdailyinterval")
@@ -48,7 +48,14 @@ namespace Updatedge.net.Services.V1
         {
             try
             {
-               return await BaseUrl
+                // Validate start and end dates
+                //if (start > end) throw new ApiWrapperException("Start date cannot be after end date");
+                //if (end > start.AddHours(24)) throw new ApiWrapperException("End date must be within 24 hours of Start date (inclusive).");
+
+                // Validate worker Ids
+                if (request.WorkerIds == null || request.WorkerIds.Count() == 0) throw new ApiWrapperException("You must supply at least one worker id.");
+
+                return await BaseUrl
                     .AppendPathSegment("availability/getoverallacrossintervals")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
