@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -10,8 +10,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\V1\Availability\**" />
+    <EmbeddedResource Remove="Entities\V1\Availability\**" />
+    <None Remove="Entities\V1\Availability\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Flurl.Http" Version="2.4.2" />
     <PackageReference Include="Light.GuardClauses" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Udatedge.Common\Udatedge.Common.csproj" />
   </ItemGroup>
 
 </Project>

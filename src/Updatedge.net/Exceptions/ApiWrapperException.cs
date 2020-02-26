@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
+using Udatedge.Common.Models;
 
 namespace Updatedge.net.Exceptions
 {
@@ -10,6 +11,10 @@ namespace Updatedge.net.Exceptions
         }
 
         public ApiWrapperException(string message) : base(message)
+        {
+        }
+
+        public ApiWrapperException(RangeRestrictionProblemDetails validationDetails) : base()
         {
         }
 

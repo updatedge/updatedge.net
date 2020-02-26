@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Updatedge.net.Entities.V1;
-using Updatedge.net.Entities.V1.Availability;
 using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
+using Udatedge.Common.Models.Availability;
 
 namespace Updatedge.net.Tests
 {
@@ -192,7 +192,7 @@ namespace Updatedge.net.Tests
             // Arrange
             _httpTest.RespondWithJson(_expectedOkResult);
 
-            var result = await _availabilityService.GetTotalAvailability(new TotalAvailabilityRequest { WorkerIds = _userIdList });
+            var result = await _availabilityService.GetTotalAvailability(new WorkersIntervalsRequest { WorkerIds = _userIdList });
 
             // Assert
             Assert.AreEqual(_expectedOkResult.Data.Count, result.Data.Count);

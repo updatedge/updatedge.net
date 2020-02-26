@@ -8,3 +8,7 @@
 /src/Updatedge.net/obj
 /src/Updatedge.net.Tests/bin/Debug/netcoreapp3.1
 /src/Updatedge.net.Tests/obj
+/src/.vs/Updatedge.net/DesignTimeBuild
+/src/Udatedge.Common/bin/Debug/netstandard2.0
+/src/Udatedge.Common/obj
+*.user
