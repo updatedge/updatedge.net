@@ -1,8 +1,5 @@
 ﻿using Flurl.Http;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Updatedge.net.Exceptions;
 
@@ -13,6 +10,12 @@ namespace Updatedge.net
         public static async Task<Exception> Handle(this FlurlHttpException exception)
         {
             var bodyContent = await exception.Call.Response.Content.ReadAsStringAsync();
+
+            // unauthorized
+            if (exception.Call.HttpStatus == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return new UnauthorizedApiRequestException(bodyContent);
+            }
 
             // nothing found
             if (exception.Call.HttpStatus == System.Net.HttpStatusCode.BadRequest)
