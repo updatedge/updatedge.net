@@ -31,7 +31,7 @@ namespace Updatedge.net.Services.V1
                     new WorkerIdValidations(workerIds).ContainsWorkerIds(),
                     new NumericValidations(daysToRepeat).NumberIsBetweenInclusive(0, 31, nameof(daysToRepeat))
                     );
-
+                                
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
                 // ------------------------------------------
@@ -68,6 +68,7 @@ namespace Updatedge.net.Services.V1
                     new WorkerIdValidations(request.WorkerIds).ContainsWorkerIds()
                     );
 
+                var details = validator.ToDetails();
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
                 // ------------------------------------------

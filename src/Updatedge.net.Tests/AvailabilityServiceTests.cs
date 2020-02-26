@@ -7,6 +7,7 @@ using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
 using Udatedge.Common.Models.Availability;
+using Udatedge.Common;
 
 namespace Updatedge.net.Tests
 {
@@ -134,54 +135,62 @@ namespace Updatedge.net.Tests
         public void GetAvailabilityPerDailyInterval_XMustBeBeforeY()
         {
             // Arrange           
-            var start = DateTime.Now;
-            var end = DateTime.Now.AddSeconds(-1);
+            var start = DateTimeOffset.Now;
+            var end = DateTimeOffset.Now.AddSeconds(-1);
                        
             // Assert            
-            var result = Assert.ThrowsAsync<ApiWrapperException>(() =>
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() =>
                     _availabilityService.GetAvailabilityDailyAsync(
                         start,
                         end,
                         1,
                        _userIdList));
 
-            Assert.AreEqual(result.Message.ToString(), "Start date cannot be after end date");
+            Assert.True(ex.ExceptionDetails.Errors.ContainsKey("start"));
+            var startError = ex.ExceptionDetails.Errors["start"];
+            var endUtcFormatted = $"({end.ToString()})";
+            var startUtcFormatted = $"({start.ToString()})";
+            Assert.True(startError.Contains(string.Format(Constants.ErrorMessages.XMustBeBeforeY, startUtcFormatted, endUtcFormatted)));
         }
         
         [Test]
         public void GetAvailabilityPerDailyInterval_XMustBeWithinYHoursOfZ()
         {
             // Arrange           
-            var start = DateTime.Now;
-            var end = DateTime.Now.AddHours(24).AddSeconds(1);
+            var start = DateTimeOffset.Now;
+            var end = DateTimeOffset.Now.AddHours(24).AddSeconds(1);
 
             // Assert            
-            var result = Assert.ThrowsAsync<ApiWrapperException>(() =>
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() =>
                     _availabilityService.GetAvailabilityDailyAsync(
                         start,
                         end,
                         1,
                        _userIdList));
 
-            Assert.AreEqual(result.Message.ToString(), "End date must be within 24 hours of Start date (inclusive).");
+            Assert.True(ex.ExceptionDetails.Errors.ContainsKey("end"));
+            var endError = ex.ExceptionDetails.Errors["end"];
+            var endUtcFormatted = $"({end.ToString()})";
+            var startUtcFormatted = $"({start.ToString()})";
+            Assert.True(endError.Contains(string.Format(Constants.ErrorMessages.XMustBeWithinYHoursOfZ, endUtcFormatted, 24, startUtcFormatted)));
         }
 
         [Test]
         public void GetAvailabilityPerDailyInterval_NoWorkerIdsSpecified()
         {            
             // Arrange           
-            var start = DateTime.Now;
-            var end = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59);
+            var start = DateTimeOffset.Now;
+            var end = DateTimeOffset.Now.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             // Assert            
-            var result = Assert.ThrowsAsync<ApiWrapperException>(() =>
-                    _availabilityService.GetAvailabilityDailyAsync(
-                        start,
-                        end,
-                        1,
-                        new List<string>()));
-
-            Assert.AreEqual(result.Message.ToString(), "You must supply at least one worker id.");
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(async () =>
+            {
+                var result = await _availabilityService.GetAvailabilityDailyAsync(start, end, 1, new List<string>());                
+            });
+          
+            Assert.True(ex.ExceptionDetails.Errors.ContainsKey("workerids"));
+            var workerIdsErrors = ex.ExceptionDetails.Errors["workerids"];
+            Assert.True(workerIdsErrors.Contains(Constants.ErrorMessages.NoWorkerIdsSpecified));
         }
         #endregion
 
@@ -192,7 +201,15 @@ namespace Updatedge.net.Tests
             // Arrange
             _httpTest.RespondWithJson(_expectedOkResult);
 
-            var result = await _availabilityService.GetTotalAvailability(new WorkersIntervalsRequest { WorkerIds = _userIdList });
+            var result = await _availabilityService.GetTotalAvailability(
+                new WorkersIntervalsRequest 
+                { 
+                    WorkerIds = _userIdList, 
+                    Intervals = new List<BaseInterval>
+                    {
+                        new BaseInterval { Start = DateTimeOffset.Now, End = DateTimeOffset.Now.AddHours(7)}
+                    } 
+                });
 
             // Assert
             Assert.AreEqual(_expectedOkResult.Data.Count, result.Data.Count);

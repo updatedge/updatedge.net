@@ -4,7 +4,7 @@ using Udatedge.Common.Enumerations;
 
 namespace Udatedge.Common
 {
-    internal static class Constants
+    public static class Constants
     {
         public static class Headers
         {
