@@ -6,33 +6,8 @@ namespace Udatedge.Common.Models
     /// <summary>
     /// Problem details for custom parameter validation failures
     /// </summary>
-    public class RangeRestrictionProblemDetails
+    public class RangeRestrictionProblemDetails : ApiProblemDetails
     {
-        /// <summary>
-        /// Short summary of the problem type.
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// URI reference to a description of the problem type.
-        /// </summary>
-        public string Type { get; set; }
-
-        /// <summary>
-        /// More descriptive explanation of the problem type.
-        /// </summary>
-        public string Detail { get; set; }
-
-        /// <summary>
-        /// HTTP status code
-        /// </summary>
-        public int? Status { get; set; }
-
-        /// <summary>
-        /// Parameters and error messages
-        /// </summary>
-        public IDictionary<string, List<string>> Errors { get; set; }
-
         /// <summary>
         /// Constructor
         /// </summary>
