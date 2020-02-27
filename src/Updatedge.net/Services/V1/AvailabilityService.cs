@@ -2,10 +2,10 @@
 using Flurl.Http;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Udatedge.Common.Models.Availability;
+using Udatedge.Common.Validation;
 using Updatedge.net.Entities.V1;
-using Updatedge.net.Entities.V1.Availability;
 using Updatedge.net.Exceptions;
 
 namespace Updatedge.net.Services.V1
@@ -21,13 +21,21 @@ namespace Updatedge.net.Services.V1
         {
             try 
             {
-                // Validate start and end dates
-                if (start > end) throw new ApiWrapperException("Start date cannot be after end date");
-                if (end > start.AddHours(24)) throw new ApiWrapperException("End date must be within 24 hours of Start date (inclusive).");
+                // VALIDATION ------------------------------
 
-                // Validate worker Ids
-                if (workerIds.Count() == 0) throw new ApiWrapperException("You must supply at least one worker id.");
+                var validator = new RequestValidator(
+                    new IntervalValidations(start, end)
+                        .StartEndSpecified()
+                        .LessThanXHours(24)
+                        .EndsAfterStart(),
+                    new WorkerIdValidations(workerIds).ContainsWorkerIds(),
+                    new NumericValidations(daysToRepeat).NumberIsBetweenInclusive(0, 31, nameof(daysToRepeat))
+                    );
+                                
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
+                // ------------------------------------------
+                
                 return await BaseUrl
                     .AppendPathSegment("availability/getperdailyinterval")
                     .SetQueryParam("api-version", ApiVersion)
@@ -44,27 +52,35 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public async virtual Task<OkApiResult<List<WorkerTotalAvailability>>> GetTotalAvailability(TotalAvailabilityRequest request)
+        public async virtual Task<OkApiResult<List<WorkerOverallAvailability>>> GetTotalAvailability(WorkersIntervalsRequest request)
         {
             try
             {
-                // Validate start and end dates
-                //if (start > end) throw new ApiWrapperException("Start date cannot be after end date");
-                //if (end > start.AddHours(24)) throw new ApiWrapperException("End date must be within 24 hours of Start date (inclusive).");
+                // VALIDATION ------------------------------
 
-                // Validate worker Ids
-                if (request.WorkerIds == null || request.WorkerIds.Count() == 0) throw new ApiWrapperException("You must supply at least one worker id.");
+                var validator = new RequestValidator(
+                    new IntervalValidations(request.Intervals, nameof(request.WorkerIds))
+                        .StartEndSpecified()
+                        .ContainsIntervals()
+                        .ContainsNoOverlappingIntervals()
+                        .EndsAfterStart()
+                        .LessThanXHours(24),
+                    new WorkerIdValidations(request.WorkerIds).ContainsWorkerIds()
+                    );
+                                
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                // ------------------------------------------
 
                 return await BaseUrl
                     .AppendPathSegment("availability/getoverallacrossintervals")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(request)
-                    .ReceiveJson<OkApiResult<List<WorkerTotalAvailability>>>();
+                    .ReceiveJson<OkApiResult<List<WorkerOverallAvailability>>>();
             }
             catch (FlurlHttpException flEx)
-            {
-                throw flEx;
+            {                
                 throw await flEx.Handle();
             }
         }
