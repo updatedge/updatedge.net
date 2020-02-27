@@ -18,7 +18,7 @@ namespace Updatedge.net
             options.PropertyNameCaseInsensitive = true;
             var apiProblemDetails = JsonSerializer.Deserialize<ApiProblemDetails>(bodyContent, options);
 
-            // nothing found
+            // Bad Request
             if (exception.Call.HttpStatus == System.Net.HttpStatusCode.BadRequest)
             {                
                 return new InvalidApiRequestException(apiProblemDetails.Detail);
@@ -27,17 +27,14 @@ namespace Updatedge.net
             // forbidden
             if (exception.Call.HttpStatus == System.Net.HttpStatusCode.Forbidden)
             {                
-                return new UnauthorizedApiRequestException(apiProblemDetails.Detail);
+                return new ForbiddenApiRequestException(apiProblemDetails.Detail);
             }
-
 
             // unauthorized
             if (exception.Call.HttpStatus == System.Net.HttpStatusCode.Unauthorized)
             {
                 return new UnauthorizedApiRequestException(bodyContent);
             }
-
-            
 
             return new ApiException(bodyContent);
         }

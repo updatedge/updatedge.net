@@ -67,8 +67,7 @@ namespace Updatedge.net.Services.V1
                         .LessThanXHours(24),
                     new WorkerIdValidations(request.WorkerIds).ContainsWorkerIds()
                     );
-
-                var details = validator.ToDetails();
+                                
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
                 // ------------------------------------------
@@ -81,8 +80,7 @@ namespace Updatedge.net.Services.V1
                     .ReceiveJson<OkApiResult<List<WorkerOverallAvailability>>>();
             }
             catch (FlurlHttpException flEx)
-            {
-                throw flEx;
+            {                
                 throw await flEx.Handle();
             }
         }

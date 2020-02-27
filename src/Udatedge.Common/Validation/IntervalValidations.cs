@@ -157,7 +157,7 @@ namespace Udatedge.Common.Validation
                 {
                     if (interval.Start <= prevInterval.End)
                     {
-                        Add("intervals", string.Format(Constants.ErrorMessages.XMustBeBeforeY, nameof(interval.Start), nameof(interval.End)));
+                        Add("overlap", string.Format(Constants.ErrorMessages.IntervalsOverlap, nameof(interval.Start), nameof(interval.End)));
                     }
                 }
 
