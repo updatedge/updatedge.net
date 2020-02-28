@@ -25,7 +25,7 @@ namespace Updatedge.net.Tests
             _httpTest = new HttpTest();
 
             // instantiate the Availability service
-            _timelineService = new TimelineService("https://localhost/", "1234567890");
+            _timelineService = new TimelineService(TestValues.BaseUrl, TestValues.ApiKey);
             
         }
 
@@ -72,7 +72,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(apiResponse, 401);
 
             // Assert
-            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _timelineService.GetEventsAsync("User1", DateTime.Now.AddDays(-2), DateTime.Now.AddDays(1)));            
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _timelineService.GetEventsAsync(TestValues.UserId1, DateTime.Now.AddDays(-2), DateTime.Now.AddDays(1)));            
         }
 
         [Test]
@@ -89,7 +89,7 @@ namespace Updatedge.net.Tests
             var end = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _timelineService.GetEventsAsync("User1", start, end));            
+            Assert.ThrowsAsync<InvalidApiRequestException>(() => _timelineService.GetEventsAsync(TestValues.UserId1, start, end));            
         }
 
         [Test]
@@ -106,7 +106,7 @@ namespace Updatedge.net.Tests
             var end = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             // Assert
-            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _timelineService.GetEventsAsync("User1", start, end));
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _timelineService.GetEventsAsync(TestValues.UserId1, start, end));
         }
 
         [Test]
@@ -123,7 +123,7 @@ namespace Updatedge.net.Tests
             var end = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             // Assert
-            Assert.ThrowsAsync<ApiException>(() => _timelineService.GetEventsAsync("User1", start, end));
+            Assert.ThrowsAsync<ApiException>(() => _timelineService.GetEventsAsync(TestValues.UserId1, start, end));
         }
 
         [Test]
@@ -134,7 +134,7 @@ namespace Updatedge.net.Tests
             var end = DateTimeOffset.Now.AddSeconds(-1);
                        
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _timelineService.GetEventsAsync("User1", start, end));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _timelineService.GetEventsAsync(TestValues.UserId1, start, end));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("start"));
             var startError = ex.ExceptionDetails.Errors["start"];
@@ -151,7 +151,7 @@ namespace Updatedge.net.Tests
             var end = DateTimeOffset.Now.AddDays(32).AddSeconds(1);
 
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _timelineService.GetEventsAsync("User1", start, end));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _timelineService.GetEventsAsync(TestValues.UserId1, start, end));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("end"));
             var endError = ex.ExceptionDetails.Errors["end"];
@@ -175,7 +175,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(apiResponse, 204);
 
             // act
-            var result = await _timelineService.GetEventsAsync("User1", start, end);
+            var result = await _timelineService.GetEventsAsync(TestValues.UserId1, start, end);
 
             // Assert            
             Assert.True(result.Count == 0);
@@ -209,7 +209,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(okResult);
 
 
-            var result = await _timelineService.GetEventAsync("Event1");
+            var result = await _timelineService.GetEventAsync(TestValues.EventId1);
 
             // Assert
             Assert.AreEqual(okResult.Count, result.Count);
@@ -226,7 +226,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(apiResponse, 401);
 
             // Assert
-            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _timelineService.GetEventAsync("Event1"));
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _timelineService.GetEventAsync(TestValues.EventId1));
         }
 
         [Test]
@@ -244,7 +244,7 @@ namespace Updatedge.net.Tests
             var end = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _timelineService.GetEventAsync("Event1"));
+            Assert.ThrowsAsync<InvalidApiRequestException>(() => _timelineService.GetEventAsync(TestValues.EventId1));
         }
 
         [Test]
@@ -261,7 +261,7 @@ namespace Updatedge.net.Tests
             var end = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             // Assert
-            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _timelineService.GetEventAsync("Event1"));
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _timelineService.GetEventAsync(TestValues.EventId1));
         }
 
         [Test]
@@ -278,7 +278,7 @@ namespace Updatedge.net.Tests
             var end = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59);
 
             // Assert
-            Assert.ThrowsAsync<ApiException>(() => _timelineService.GetEventAsync("Event1"));
+            Assert.ThrowsAsync<ApiException>(() => _timelineService.GetEventAsync(TestValues.EventId1));
         }
                
         [Test]
@@ -292,7 +292,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(apiResponse, 204);
                         
             // act
-            var result = await _timelineService.GetEventAsync("Event0");
+            var result = await _timelineService.GetEventAsync(TestValues.EventId0);
 
             // Assert            
             Assert.True(result.Count == 0);            
@@ -309,10 +309,10 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(apiResponse, 204);
 
             // act
-            var result = await _timelineService.GetEventAsync("Event0");
+            var result = await _timelineService.GetEventAsync(TestValues.EventId0);
 
             // Assert            
-            Assert.ThrowsAsync<EmptyStringException>(() => _timelineService.GetEventAsync("")); 
+            Assert.ThrowsAsync<EmptyStringException>(() => _timelineService.GetEventAsync(string.Empty)); 
         }
 
         #endregion

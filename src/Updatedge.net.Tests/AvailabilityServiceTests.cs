@@ -25,9 +25,9 @@ namespace Updatedge.net.Tests
             _httpTest = new HttpTest();
 
             // instantiate the Availability service
-            _availabilityService = new AvailabilityService("https://localhost/", "1234567890");
+            _availabilityService = new AvailabilityService(TestValues.BaseUrl, TestValues.ApiKey);
 
-            _userIdList = new List<string> { "UserId1", "UserId2" };          
+            _userIdList = new List<string> { TestValues.UserId1, TestValues.UserId2 };          
         }
 
 

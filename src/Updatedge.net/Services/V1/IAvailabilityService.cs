@@ -15,6 +15,7 @@ namespace Updatedge.net.Services.V1
         /// <param name="end">End date and time (UTC).</param>
         /// <param name="daysToRepeat">Number of days to repeat the interval across (minimum: 0, maximum: 31, default: 0).</param>
         /// <returns>A list of availability</returns>
+        /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<List<WorkerAvailabilityIntervals>> GetAvailabilityDailyAsync
             (DateTimeOffset start, DateTimeOffset end, int daysToRepeat, IEnumerable<string> workerIds);
 
@@ -23,6 +24,7 @@ namespace Updatedge.net.Services.V1
         /// </summary>
         /// <param name="request">The workers and intervals to query across</param>
         /// <returns>A percentage value for each worker specified.</returns>
+        /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<List<WorkerOverallAvailability>> GetTotalAvailability(WorkersIntervalsRequest request);
     }
 }

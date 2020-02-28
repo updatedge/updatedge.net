@@ -13,7 +13,8 @@ namespace Updatedge.net.Services.V1
         /// <param name="workerId">Id of worker</param>
         /// <param name="start">start of period</param>
         /// <param name="end">end of period</param>
-        /// <returns>A a list of timeline events.</returns>
+        /// <returns>A a list of timeline events.</returns>        
+        /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<List<TimelineEvent>> GetEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end);
 
         /// <summary>
@@ -21,6 +22,7 @@ namespace Updatedge.net.Services.V1
         /// </summary>
         /// <param name="id">Id of the event</param>
         /// <returns>A specific timeline event.</returns>
+        /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<List<TimelineEvent>> GetEventAsync(string id);
 
     }
