@@ -33,7 +33,7 @@ namespace Updatedge.net
             // unauthorized
             if (exception.Call.HttpStatus == System.Net.HttpStatusCode.Unauthorized)
             {
-                return new UnauthorizedApiRequestException(bodyContent);
+                return new UnauthorizedApiRequestException(apiProblemDetails.Detail);
             }
 
             return new ApiException(bodyContent);

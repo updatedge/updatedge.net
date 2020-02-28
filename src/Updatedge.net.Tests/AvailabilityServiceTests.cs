@@ -2,21 +2,20 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Updatedge.net.Entities.V1;
 using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
 using Udatedge.Common.Models.Availability;
 using Udatedge.Common;
 using Udatedge.Common.Models;
+using Updatedge.net.Entities.V1;
 
 namespace Updatedge.net.Tests
 {
     public class AvailabilityServiceTests
     {
         private HttpTest _httpTest;
-        private AvailabilityService _availabilityService;
-        private OkApiResult<List<WorkerAvailabilityIntervals>> _expectedOkResult;
+        private AvailabilityService _availabilityService;        
         private List<string> _userIdList;
         
         [SetUp]
@@ -28,19 +27,7 @@ namespace Updatedge.net.Tests
             // instantiate the Availability service
             _availabilityService = new AvailabilityService("https://localhost/", "1234567890");
 
-            _userIdList = new List<string> { "UserId1", "UserId2" };
-
-            // create our expected result
-            var workerAvailabilityList = new List<WorkerAvailabilityIntervals>
-            {
-                new WorkerAvailabilityIntervals(),                
-                new WorkerAvailabilityIntervals()                
-            };
-
-            _expectedOkResult = new OkApiResult<List<WorkerAvailabilityIntervals>>
-            {
-                Data = workerAvailabilityList
-            };
+            _userIdList = new List<string> { "UserId1", "UserId2" };          
         }
 
 
@@ -49,7 +36,16 @@ namespace Updatedge.net.Tests
         public async Task GetAvailabilityPerDailyInterval_OkResult()
         {
             // Arrange
-            _httpTest.RespondWithJson(_expectedOkResult);
+            var okResult = new OkApiResult<List<WorkerAvailabilityIntervals>>
+            {
+                Data = new List<WorkerAvailabilityIntervals>
+                {
+                    new WorkerAvailabilityIntervals(),
+                    new WorkerAvailabilityIntervals()
+                }
+            };
+
+            _httpTest.RespondWithJson(okResult);
             
             var result = await _availabilityService.GetAvailabilityDailyAsync(
                     DateTime.Now, 
@@ -58,7 +54,7 @@ namespace Updatedge.net.Tests
                     _userIdList);
 
             // Assert
-            Assert.AreEqual(_expectedOkResult.Data.Count, result.Data.Count);            
+            Assert.AreEqual(okResult.Data.Count, result.Count);            
         }
 
         [Test]
@@ -217,7 +213,17 @@ namespace Updatedge.net.Tests
         public async Task GetTotalAvailability_OkResult()
         {
             // Arrange
-            _httpTest.RespondWithJson(_expectedOkResult);
+            var okResult = new OkApiResult<List<WorkerOverallAvailability>>
+            {
+                Data = new List<WorkerOverallAvailability>
+                {
+                    new WorkerOverallAvailability(),
+                    new WorkerOverallAvailability()
+                }
+            };
+
+
+            _httpTest.RespondWithJson(okResult);
 
             var result = await _availabilityService.GetTotalAvailability(
                 new WorkersIntervalsRequest 
@@ -230,7 +236,7 @@ namespace Updatedge.net.Tests
                 });
 
             // Assert
-            Assert.AreEqual(_expectedOkResult.Data.Count, result.Data.Count);
+            Assert.AreEqual(okResult.Data.Count, result.Count);
         }
 
         [Test]

@@ -1,8 +1,4 @@
-﻿using Flurl.Http;
-using Light.GuardClauses;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Light.GuardClauses;
 
 namespace Updatedge.net.Services.V1
 {
