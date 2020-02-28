@@ -19,6 +19,8 @@ namespace Updatedge.net.Tests
         public const string Worker1Email = "worker01@email.com";
         public const string Hirer1Email = "hirer01@email.com";
 
+        public const string NotAnEmail = "#thisisnotanemail";
+
 
 
     }

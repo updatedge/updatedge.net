@@ -110,7 +110,7 @@ namespace Updatedge.net.Tests
         public void InviteWorker_EmailInvalid()
         {
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteWorkerAsync(TestValues.UserId1, "#thisisnotanemail"));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteWorkerAsync(TestValues.UserId1, TestValues.NotAnEmail));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("toworkeremail"));
             var startError = ex.ExceptionDetails.Errors["toworkeremail"];
