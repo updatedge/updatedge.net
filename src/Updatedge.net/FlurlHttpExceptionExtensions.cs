@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Updatedge.net.Exceptions;
 using System.Text.Json;
 using Udatedge.Common.Models;
+using Microsoft.AspNetCore.Http;
 
 namespace Updatedge.net
 {
@@ -28,6 +29,12 @@ namespace Updatedge.net
             if (exception.Call.HttpStatus == System.Net.HttpStatusCode.Forbidden)
             {                
                 return new ForbiddenApiRequestException(apiProblemDetails.Detail);
+            }
+
+            // too many requests
+            if (exception.Call.HttpStatus.ToString() == StatusCodes.Status429TooManyRequests.ToString())
+            {
+                return new ThrottledApiRequestException(apiProblemDetails.Detail);
             }
 
             // unauthorized

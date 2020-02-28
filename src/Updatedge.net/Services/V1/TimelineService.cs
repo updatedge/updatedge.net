@@ -17,7 +17,7 @@ namespace Updatedge.net.Services.V1
         public TimelineService(string baseUrl, string apiKey) : base(baseUrl, apiKey)
         {
         }
-
+                
         public async virtual Task<List<TimelineEvent>> GetEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end)
         {
             try
