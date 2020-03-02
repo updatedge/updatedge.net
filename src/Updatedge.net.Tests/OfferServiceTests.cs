@@ -4,7 +4,6 @@ using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
 using Udatedge.Common;
-using Udatedge.Common.Models;
 using AutoFixture;
 using Udatedge.Common.Models.Offer;
 using System.Collections.Generic;
@@ -18,8 +17,7 @@ namespace Updatedge.net.Tests
     public class OfferServiceTests
     {
         private HttpTest _httpTest;
-        private OfferService _offerService;
-        private IFixture _fixture;
+        private OfferService _offerService;        
         private CreateOffer _offer;
                 
         [SetUp]
@@ -27,15 +25,13 @@ namespace Updatedge.net.Tests
         {
             // Put Flurl into test mode
             _httpTest = new HttpTest();
-                        
-            _fixture = new Fixture();
-
+            
             // register and create offer service
-            _fixture.Register(() => new OfferService(TestValues.BaseUrl, TestValues.ApiKey));
-            _offerService = _fixture.Create<OfferService>();
+            FixtureConfig.Fixture.Register(() => new OfferService(FixtureConfig.BaseUrl, FixtureConfig.ApiKey));
+            _offerService = FixtureConfig.Fixture.Create<OfferService>();
 
             // build and create Offer object
-            _offer = _fixture.Build<CreateOffer>()                    
+            _offer = FixtureConfig.Fixture.Build<CreateOffer>()                    
                         .With(o => o.Events, new List<BaseInterval> {
                                 new BaseInterval { 
                                     Start = DateTimeOffset.Now.AddDays(1), 
@@ -53,7 +49,7 @@ namespace Updatedge.net.Tests
             // Arrange
             var okResult = new OkApiResult<string>
             {
-                Data = TestValues.OfferId1
+                Data = FixtureConfig.OfferId1
             };
 
             _httpTest.RespondWithJson(okResult);
@@ -61,18 +57,14 @@ namespace Updatedge.net.Tests
             var result = await _offerService.CreateOfferAsync(_offer);
 
             // Assert
-            Assert.True(result == TestValues.OfferId1);            
+            Assert.True(result == FixtureConfig.OfferId1);            
         }
 
         [Test]
         public void CreateOffer_401Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 401
-            };
-            _httpTest.RespondWithJson(apiResponse, 401);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
             Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.CreateOfferAsync(_offer));            
@@ -81,12 +73,8 @@ namespace Updatedge.net.Tests
         [Test]
         public void CreateOffer_400Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 400
-            };
-            _httpTest.RespondWithJson(apiResponse, 400);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
             
             // Assert
             Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.CreateOfferAsync(_offer));            
@@ -95,12 +83,8 @@ namespace Updatedge.net.Tests
         [Test]
         public void CreateOffer_403Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 403
-            };
-            _httpTest.RespondWithJson(apiResponse, 403);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
                                     
             // Assert
             Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.CreateOfferAsync(_offer));
@@ -109,12 +93,8 @@ namespace Updatedge.net.Tests
         [Test]
         public void CreateOffer_500Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 500
-            };
-            _httpTest.RespondWithJson(apiResponse, 500);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
                                     
             // Assert
             Assert.ThrowsAsync<ApiException>(() => _offerService.CreateOfferAsync(_offer));
@@ -126,7 +106,7 @@ namespace Updatedge.net.Tests
             var events = new List<BaseInterval>();
             
             // Arrange
-            var offer = _fixture.Build<CreateOffer>()
+            var offer = FixtureConfig.Fixture.Build<CreateOffer>()
                     .Without(o => o.Title)
                     .With(o => o.Events, new List<BaseInterval> { 
                             new BaseInterval { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
@@ -145,7 +125,7 @@ namespace Updatedge.net.Tests
         public void CreateOffer_NoWorkerIdsSpecified()
         {
             // Arrange
-            var offer = _fixture.Build<CreateOffer>()
+            var offer = FixtureConfig.Fixture.Build<CreateOffer>()
                     .Without(o => o.WorkerIds)
                     .With(o => o.Events, new List<BaseInterval> {
                             new BaseInterval { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
@@ -170,7 +150,7 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddSeconds(-1);
                         
-            var offer = _fixture.Build<CreateOffer>()                    
+            var offer = FixtureConfig.Fixture.Build<CreateOffer>()                    
                     .With(o => o.Events, new List<BaseInterval> {
                             new BaseInterval { Start = start, End = end}
                         })
@@ -193,7 +173,7 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now.AddSeconds(-1);
             var end = DateTimeOffset.Now.AddHours(7);
 
-            var offer = _fixture.Build<CreateOffer>()
+            var offer = FixtureConfig.Fixture.Build<CreateOffer>()
                     .With(o => o.Events, new List<BaseInterval> {
                             new BaseInterval { Start = start, End = end}
                         })
@@ -217,10 +197,10 @@ namespace Updatedge.net.Tests
         public async Task GetOffer_OkResult()
         {
             // Arrange
-            var offer = _fixture.Create<Offer>();            
+            var offer = FixtureConfig.Fixture.Create<Offer>();            
             _httpTest.RespondWithJson(offer, 200);
 
-            var result = await _offerService.GetOfferAsync(TestValues.OfferId1);
+            var result = await _offerService.GetOfferAsync(FixtureConfig.OfferId1);
 
             // Assert
             Assert.True(result.CreatedAt == offer.CreatedAt);
@@ -234,57 +214,41 @@ namespace Updatedge.net.Tests
         [Test]
         public void GetOffer_401Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 401
-            };
-            _httpTest.RespondWithJson(apiResponse, 401);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
-            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.GetOfferAsync(TestValues.OfferId1));
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.GetOfferAsync(FixtureConfig.OfferId1));
         }
 
         [Test]
         public void GetOffer_400Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 400
-            };
-            _httpTest.RespondWithJson(apiResponse, 400);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
 
             // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.GetOfferAsync(TestValues.OfferId1));
+            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.GetOfferAsync(FixtureConfig.OfferId1));
         }
 
         [Test]
         public void GetOffer_403Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 403
-            };
-            _httpTest.RespondWithJson(apiResponse, 403);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
 
             // Assert
-            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.GetOfferAsync(TestValues.OfferId1));
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.GetOfferAsync(FixtureConfig.OfferId1));
         }
 
         [Test]
         public void GetOffer_500Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 500
-            };
-            _httpTest.RespondWithJson(apiResponse, 500);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
 
             // Assert
-            Assert.ThrowsAsync<ApiException>(() => _offerService.GetOfferAsync(TestValues.OfferId1));
+            Assert.ThrowsAsync<ApiException>(() => _offerService.GetOfferAsync(FixtureConfig.OfferId1));
         }
 
         [Test]
@@ -310,63 +274,47 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWith(string.Empty, 204);            
 
             // Assert
-            Assert.True(await _offerService.WithdrawOfferAsync(TestValues.OfferId1));            
+            Assert.True(await _offerService.WithdrawOfferAsync(FixtureConfig.OfferId1));            
         }
 
         [Test]
         public void WithdrawOffer_401Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 401
-            };
-            _httpTest.RespondWithJson(apiResponse, 401);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
-            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.WithdrawOfferAsync(TestValues.OfferId1));
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.WithdrawOfferAsync(FixtureConfig.OfferId1));
         }
 
         [Test]
         public void WithdrawOffer_400Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 400
-            };
-            _httpTest.RespondWithJson(apiResponse, 400);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
 
             // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.WithdrawOfferAsync(TestValues.OfferId1));
+            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.WithdrawOfferAsync(FixtureConfig.OfferId1));
         }
 
         [Test]
         public void WithdrawOffer_403Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 403
-            };
-            _httpTest.RespondWithJson(apiResponse, 403);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
 
             // Assert
-            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.WithdrawOfferAsync(TestValues.OfferId1));
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.WithdrawOfferAsync(FixtureConfig.OfferId1));
         }
 
         [Test]
         public void WithdrawOffer_500Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 500
-            };
-            _httpTest.RespondWithJson(apiResponse, 500);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
 
             // Assert
-            Assert.ThrowsAsync<ApiException>(() => _offerService.WithdrawOfferAsync(TestValues.OfferId1));
+            Assert.ThrowsAsync<ApiException>(() => _offerService.WithdrawOfferAsync(FixtureConfig.OfferId1));
         }
 
         [Test]
@@ -390,70 +338,54 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWith(string.Empty, 204);
 
             // Assert
-            Assert.True(await _offerService.CompleteOfferAsync(TestValues.OfferId1, _fixture.Create<IEnumerable<string>>()));
+            Assert.True(await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
         }
 
         [Test]
         public void CompleteOffer_401Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 401
-            };
-            _httpTest.RespondWithJson(apiResponse, 401);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
-            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.CompleteOfferAsync(TestValues.OfferId1, _fixture.Create<IEnumerable<string>>()));
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
         }
 
         [Test]
         public void CompleteOffer_400Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 400
-            };
-            _httpTest.RespondWithJson(apiResponse, 400);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
 
             // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.CompleteOfferAsync(TestValues.OfferId1, _fixture.Create<IEnumerable<string>>()));
+            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
         }
 
         [Test]
         public void CompleteOffer_403Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 403
-            };
-            _httpTest.RespondWithJson(apiResponse, 403);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
 
             // Assert
-            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.CompleteOfferAsync(TestValues.OfferId1, _fixture.Create<IEnumerable<string>>()));
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
         }
 
         [Test]
         public void CompleteOffer_500Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 500
-            };
-            _httpTest.RespondWithJson(apiResponse, 500);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
 
             // Assert
-            Assert.ThrowsAsync<ApiException>(() => _offerService.CompleteOfferAsync(TestValues.OfferId1, _fixture.Create<IEnumerable<string>>()));
+            Assert.ThrowsAsync<ApiException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
         }
 
         [Test]
         public void CompleteOffer_ValueNotSpecified()
         {
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _offerService.CompleteOfferAsync(string.Empty, _fixture.Create<IEnumerable<string>>()));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _offerService.CompleteOfferAsync(string.Empty, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("id"));
             var startError = ex.ExceptionDetails.Errors["id"];
@@ -466,7 +398,7 @@ namespace Updatedge.net.Tests
             // Assert            
             var ex = Assert.ThrowsAsync<ApiWrapperException>(async () =>
             {
-                var result = await _offerService.CompleteOfferAsync(TestValues.OfferId1, new List<string>());
+                var result = await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, new List<string>());
             });
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("workerids"));

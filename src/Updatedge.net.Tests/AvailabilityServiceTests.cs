@@ -7,7 +7,6 @@ using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
 using Udatedge.Common.Models.Availability;
 using Udatedge.Common;
-using Udatedge.Common.Models;
 using Updatedge.net.Entities.V1;
 using AutoFixture;
 
@@ -15,32 +14,27 @@ namespace Updatedge.net.Tests
 {
     public class AvailabilityServiceTests
     {
-        private HttpTest _httpTest;
-        private IFixture _fixture;
+        private HttpTest _httpTest;        
         private AvailabilityService _availabilityService;
         private WorkersIntervalsRequest _workersIntervalsRequest;
-        //private List<string> _userIdList;
-        
+                
         [SetUp]
         public void Setup()
         {
             // Put Flurl into test mode
-            _httpTest = new HttpTest();
+            _httpTest = new HttpTest();            
 
-
-            _fixture = new Fixture();
-
-            // register and create offer service
-            _fixture.Register(() => new AvailabilityService(TestValues.BaseUrl, TestValues.ApiKey));
-            _availabilityService = _fixture.Create<AvailabilityService>();
+            // register and create Availability service
+            FixtureConfig.Fixture.Register(() => new AvailabilityService(FixtureConfig.BaseUrl, FixtureConfig.ApiKey));
+            _availabilityService = FixtureConfig.Fixture.Create<AvailabilityService>();
             
-            _workersIntervalsRequest = _fixture.Build<WorkersIntervalsRequest>()
-                                             .With(o => o.Intervals, new List<BaseInterval> {
-                                                        new BaseInterval {
-                                                            Start = DateTimeOffset.Now.AddSeconds(1),
-                                                            End = DateTimeOffset.Now.AddHours(7)
-                                                        }
-                                                    })
+            _workersIntervalsRequest = FixtureConfig.Fixture.Build<WorkersIntervalsRequest>()
+                                            .With(o => o.Intervals, new List<BaseInterval> {
+                                                new BaseInterval {
+                                                    Start = DateTimeOffset.Now.AddSeconds(1),
+                                                    End = DateTimeOffset.Now.AddHours(7)
+                                                }
+                                            })
                                             .Create();            
         }
 
@@ -50,7 +44,7 @@ namespace Updatedge.net.Tests
         public async Task GetAvailabilityPerDailyInterval_OkResult()
         {
             // Arrange
-            var okResult = _fixture.Create<OkApiResult<List<WorkerAvailabilityIntervals>>>();
+            var okResult = FixtureConfig.Fixture.Create<OkApiResult<List<WorkerAvailabilityIntervals>>>();
 
             _httpTest.RespondWithJson(okResult);
             
@@ -58,7 +52,7 @@ namespace Updatedge.net.Tests
                     DateTime.Now, 
                     DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59), 
                     1, 
-                    _fixture.Create<IEnumerable<string>>());
+                    FixtureConfig.Fixture.Create<IEnumerable<string>>());
 
             // Assert
             Assert.AreEqual(okResult.Data.Count, result.Count);            
@@ -67,12 +61,8 @@ namespace Updatedge.net.Tests
         [Test]
         public void GetAvailabilityPerDailyInterval_401Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 401
-            };
-            _httpTest.RespondWithJson(apiResponse, 401);
+            // Arrange          
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
             Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => 
@@ -80,18 +70,14 @@ namespace Updatedge.net.Tests
                         DateTime.Now, 
                         DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59), 
                         1,
-                       _fixture.Create<IEnumerable<string>>()));            
+                       FixtureConfig.Fixture.Create<IEnumerable<string>>()));            
         }
 
         [Test]
         public void GetAvailabilityPerDailyInterval_400Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 400
-            };
-            _httpTest.RespondWithJson(apiResponse, 400);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
 
             // Arrange           
             var start = DateTime.Now;
@@ -103,18 +89,14 @@ namespace Updatedge.net.Tests
                         start,
                         end,
                         1,
-                        _fixture.Create<IEnumerable<string>>()));            
+                        FixtureConfig.Fixture.Create<IEnumerable<string>>()));            
         }
 
         [Test]
         public void GetAvailabilityPerDailyInterval_403Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 403
-            };
-            _httpTest.RespondWithJson(apiResponse, 403);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
 
             // Arrange           
             var start = DateTime.Now;
@@ -126,18 +108,14 @@ namespace Updatedge.net.Tests
                         start,
                         end,
                         1,
-                        _fixture.Create<IEnumerable<string>>()));
+                        FixtureConfig.Fixture.Create<IEnumerable<string>>()));
         }
 
         [Test]
         public void GetAvailabilityPerDailyInterval_500Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 500
-            };
-            _httpTest.RespondWithJson(apiResponse, 500);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
 
             // Arrange           
             var start = DateTime.Now;
@@ -149,7 +127,7 @@ namespace Updatedge.net.Tests
                         start,
                         end,
                         1,
-                        _fixture.Create<IEnumerable<string>>()));
+                        FixtureConfig.Fixture.Create<IEnumerable<string>>()));
         }
 
         [Test]
@@ -165,7 +143,7 @@ namespace Updatedge.net.Tests
                         start,
                         end,
                         1,
-                       _fixture.Create<IEnumerable<string>>()));
+                       FixtureConfig.Fixture.Create<IEnumerable<string>>()));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("start"));
             var startError = ex.ExceptionDetails.Errors["start"];
@@ -187,7 +165,7 @@ namespace Updatedge.net.Tests
                         start,
                         end,
                         1,
-                       _fixture.Create<IEnumerable<string>>()));
+                       FixtureConfig.Fixture.Create<IEnumerable<string>>()));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("end"));
             var endError = ex.ExceptionDetails.Errors["end"];
@@ -220,7 +198,7 @@ namespace Updatedge.net.Tests
         public async Task GetTotalAvailability_OkResult()
         {
             // Arrange
-            var okResult = _fixture.Create<OkApiResult<List<WorkerAvailabilityIntervals>>>();
+            var okResult = FixtureConfig.Fixture.Create<OkApiResult<List<WorkerAvailabilityIntervals>>>();
 
             _httpTest.RespondWithJson(okResult);
 
@@ -233,12 +211,8 @@ namespace Updatedge.net.Tests
         [Test]
         public void GetTotalAvailability_401Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 401
-            };
-            _httpTest.RespondWithJson(apiResponse, 401);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
             Assert.ThrowsAsync<UnauthorizedApiRequestException>(() =>
@@ -248,12 +222,8 @@ namespace Updatedge.net.Tests
         [Test]
         public void GetTotalAvailability_400Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 400
-            };
-            _httpTest.RespondWithJson(apiResponse, 400);
+            // Arrange          
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
 
             // Assert
             Assert.ThrowsAsync<InvalidApiRequestException>(() =>
@@ -263,12 +233,8 @@ namespace Updatedge.net.Tests
         [Test]
         public void GetTotalAvailability_403Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 403
-            };
-            _httpTest.RespondWithJson(apiResponse, 403);
+            // Arrange         
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
 
             // Assert
             Assert.ThrowsAsync<ForbiddenApiRequestException>(() =>
@@ -278,12 +244,8 @@ namespace Updatedge.net.Tests
         [Test]
         public void GetTotalAvailability_500Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 500
-            };
-            _httpTest.RespondWithJson(apiResponse, 500);
+            // Arrange          
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
 
             // Assert
             Assert.ThrowsAsync<ApiException>(() =>
@@ -297,7 +259,7 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddSeconds(-1);
 
-            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+            var workersIntervalRequest = FixtureConfig.Fixture.Build<WorkersIntervalsRequest>()
                     .With(o => o.Intervals, new List<BaseInterval> {
                             new BaseInterval { Start = start, End = end}
                         })
@@ -321,7 +283,7 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddHours(24).AddSeconds(1);
 
-            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+            var workersIntervalRequest = FixtureConfig.Fixture.Build<WorkersIntervalsRequest>()
                     .With(o => o.Intervals, new List<BaseInterval> {
                             new BaseInterval { Start = start, End = end}
                         })
@@ -345,7 +307,7 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddHours(23);
 
-            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+            var workersIntervalRequest = FixtureConfig.Fixture.Build<WorkersIntervalsRequest>()
                     .Without(o => o.WorkerIds)
                     .With(o => o.Intervals, new List<BaseInterval> {
                             new BaseInterval { Start = start, End = end}
@@ -368,7 +330,7 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddHours(23);
 
-            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+            var workersIntervalRequest = FixtureConfig.Fixture.Build<WorkersIntervalsRequest>()
                    .Without(o => o.WorkerIds)
                    .With(o => o.Intervals, new List<BaseInterval>())
                    .Create();
@@ -389,7 +351,7 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddHours(23);
 
-            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+            var workersIntervalRequest = FixtureConfig.Fixture.Build<WorkersIntervalsRequest>()
                    .Without(o => o.WorkerIds)
                    .With(o => o.Intervals, new List<BaseInterval> {
                             new BaseInterval { Start = start, End = end},
