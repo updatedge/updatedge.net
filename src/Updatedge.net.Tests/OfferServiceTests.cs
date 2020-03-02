@@ -220,17 +220,7 @@ namespace Updatedge.net.Tests
             // Assert
             Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.GetOfferAsync(FixtureConfig.OfferId1));
         }
-
-        [Test]
-        public void GetOffer_400Result()
-        {
-            // Arrange            
-            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
-
-            // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.GetOfferAsync(FixtureConfig.OfferId1));
-        }
-
+        
         [Test]
         public void GetOffer_403Result()
         {
@@ -286,17 +276,7 @@ namespace Updatedge.net.Tests
             // Assert
             Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.WithdrawOfferAsync(FixtureConfig.OfferId1));
         }
-
-        [Test]
-        public void WithdrawOffer_400Result()
-        {
-            // Arrange            
-            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
-
-            // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.WithdrawOfferAsync(FixtureConfig.OfferId1));
-        }
-
+        
         [Test]
         public void WithdrawOffer_403Result()
         {

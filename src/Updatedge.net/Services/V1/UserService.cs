@@ -87,7 +87,7 @@ namespace Updatedge.net.Services.V1
 
                 if (response.StatusCode != HttpStatusCode.OK)
                 {
-                    return new User();
+                    return null;
                 }
 
                 var responseContent = await response.Content.ReadAsStringAsync();
