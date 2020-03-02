@@ -9,14 +9,17 @@ using Udatedge.Common.Models.Availability;
 using Udatedge.Common;
 using Udatedge.Common.Models;
 using Updatedge.net.Entities.V1;
+using AutoFixture;
 
 namespace Updatedge.net.Tests
 {
     public class AvailabilityServiceTests
     {
         private HttpTest _httpTest;
-        private AvailabilityService _availabilityService;        
-        private List<string> _userIdList;
+        private IFixture _fixture;
+        private AvailabilityService _availabilityService;
+        private WorkersIntervalsRequest _workersIntervalsRequest;
+        //private List<string> _userIdList;
         
         [SetUp]
         public void Setup()
@@ -24,10 +27,21 @@ namespace Updatedge.net.Tests
             // Put Flurl into test mode
             _httpTest = new HttpTest();
 
-            // instantiate the Availability service
-            _availabilityService = new AvailabilityService(TestValues.BaseUrl, TestValues.ApiKey);
 
-            _userIdList = new List<string> { TestValues.UserId1, TestValues.UserId2 };          
+            _fixture = new Fixture();
+
+            // register and create offer service
+            _fixture.Register(() => new AvailabilityService(TestValues.BaseUrl, TestValues.ApiKey));
+            _availabilityService = _fixture.Create<AvailabilityService>();
+            
+            _workersIntervalsRequest = _fixture.Build<WorkersIntervalsRequest>()
+                                             .With(o => o.Intervals, new List<BaseInterval> {
+                                                        new BaseInterval {
+                                                            Start = DateTimeOffset.Now.AddSeconds(1),
+                                                            End = DateTimeOffset.Now.AddHours(7)
+                                                        }
+                                                    })
+                                            .Create();            
         }
 
 
@@ -36,14 +50,7 @@ namespace Updatedge.net.Tests
         public async Task GetAvailabilityPerDailyInterval_OkResult()
         {
             // Arrange
-            var okResult = new OkApiResult<List<WorkerAvailabilityIntervals>>
-            {
-                Data = new List<WorkerAvailabilityIntervals>
-                {
-                    new WorkerAvailabilityIntervals(),
-                    new WorkerAvailabilityIntervals()
-                }
-            };
+            var okResult = _fixture.Create<OkApiResult<List<WorkerAvailabilityIntervals>>>();
 
             _httpTest.RespondWithJson(okResult);
             
@@ -51,7 +58,7 @@ namespace Updatedge.net.Tests
                     DateTime.Now, 
                     DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59), 
                     1, 
-                    _userIdList);
+                    _fixture.Create<IEnumerable<string>>());
 
             // Assert
             Assert.AreEqual(okResult.Data.Count, result.Count);            
@@ -72,8 +79,8 @@ namespace Updatedge.net.Tests
                     _availabilityService.GetAvailabilityDailyAsync(
                         DateTime.Now, 
                         DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59), 
-                        1, 
-                       _userIdList));            
+                        1,
+                       _fixture.Create<IEnumerable<string>>()));            
         }
 
         [Test]
@@ -95,8 +102,8 @@ namespace Updatedge.net.Tests
                     _availabilityService.GetAvailabilityDailyAsync(
                         start,
                         end,
-                        1, 
-                        _userIdList));            
+                        1,
+                        _fixture.Create<IEnumerable<string>>()));            
         }
 
         [Test]
@@ -119,7 +126,7 @@ namespace Updatedge.net.Tests
                         start,
                         end,
                         1,
-                        _userIdList));
+                        _fixture.Create<IEnumerable<string>>()));
         }
 
         [Test]
@@ -142,7 +149,7 @@ namespace Updatedge.net.Tests
                         start,
                         end,
                         1,
-                        _userIdList));
+                        _fixture.Create<IEnumerable<string>>()));
         }
 
         [Test]
@@ -158,7 +165,7 @@ namespace Updatedge.net.Tests
                         start,
                         end,
                         1,
-                       _userIdList));
+                       _fixture.Create<IEnumerable<string>>()));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("start"));
             var startError = ex.ExceptionDetails.Errors["start"];
@@ -180,7 +187,7 @@ namespace Updatedge.net.Tests
                         start,
                         end,
                         1,
-                       _userIdList));
+                       _fixture.Create<IEnumerable<string>>()));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("end"));
             var endError = ex.ExceptionDetails.Errors["end"];
@@ -213,27 +220,11 @@ namespace Updatedge.net.Tests
         public async Task GetTotalAvailability_OkResult()
         {
             // Arrange
-            var okResult = new OkApiResult<List<WorkerOverallAvailability>>
-            {
-                Data = new List<WorkerOverallAvailability>
-                {
-                    new WorkerOverallAvailability(),
-                    new WorkerOverallAvailability()
-                }
-            };
-
+            var okResult = _fixture.Create<OkApiResult<List<WorkerAvailabilityIntervals>>>();
 
             _httpTest.RespondWithJson(okResult);
 
-            var result = await _availabilityService.GetTotalAvailability(
-                new WorkersIntervalsRequest 
-                { 
-                    WorkerIds = _userIdList, 
-                    Intervals = new List<BaseInterval>
-                    {
-                        new BaseInterval { Start = DateTimeOffset.Now, End = DateTimeOffset.Now.AddHours(7)}
-                    } 
-                });
+            var result = await _availabilityService.GetTotalAvailability(_workersIntervalsRequest);
 
             // Assert
             Assert.AreEqual(okResult.Data.Count, result.Count);
@@ -251,15 +242,7 @@ namespace Updatedge.net.Tests
 
             // Assert
             Assert.ThrowsAsync<UnauthorizedApiRequestException>(() =>
-                    _availabilityService.GetTotalAvailability(
-                    new WorkersIntervalsRequest
-                    {
-                        WorkerIds = _userIdList,
-                        Intervals = new List<BaseInterval>
-                        {
-                            new BaseInterval { Start = DateTimeOffset.Now, End = DateTimeOffset.Now.AddHours(7)}
-                        }
-                    }));
+                    _availabilityService.GetTotalAvailability(_workersIntervalsRequest));
         }
 
         [Test]
@@ -274,15 +257,7 @@ namespace Updatedge.net.Tests
 
             // Assert
             Assert.ThrowsAsync<InvalidApiRequestException>(() =>
-                    _availabilityService.GetTotalAvailability(
-                    new WorkersIntervalsRequest
-                    {
-                        WorkerIds = _userIdList,
-                        Intervals = new List<BaseInterval>
-                        {
-                            new BaseInterval { Start = DateTimeOffset.Now, End = DateTimeOffset.Now.AddHours(7)}
-                        }
-                    }));
+                    _availabilityService.GetTotalAvailability(_workersIntervalsRequest));
         }
 
         [Test]
@@ -297,15 +272,7 @@ namespace Updatedge.net.Tests
 
             // Assert
             Assert.ThrowsAsync<ForbiddenApiRequestException>(() =>
-                    _availabilityService.GetTotalAvailability(
-                    new WorkersIntervalsRequest
-                    {
-                        WorkerIds = _userIdList,
-                        Intervals = new List<BaseInterval>
-                        {
-                            new BaseInterval { Start = DateTimeOffset.Now, End = DateTimeOffset.Now.AddHours(7)}
-                        }
-                    }));
+                    _availabilityService.GetTotalAvailability(_workersIntervalsRequest));
         }
 
         [Test]
@@ -320,15 +287,7 @@ namespace Updatedge.net.Tests
 
             // Assert
             Assert.ThrowsAsync<ApiException>(() =>
-                    _availabilityService.GetTotalAvailability(
-                    new WorkersIntervalsRequest
-                    {
-                        WorkerIds = _userIdList,
-                        Intervals = new List<BaseInterval>
-                        {
-                            new BaseInterval { Start = DateTimeOffset.Now, End = DateTimeOffset.Now.AddHours(7)}
-                        }
-                    }));
+                    _availabilityService.GetTotalAvailability(_workersIntervalsRequest));
         }
 
         [Test]
@@ -338,17 +297,15 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddSeconds(-1);
 
+            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+                    .With(o => o.Intervals, new List<BaseInterval> {
+                            new BaseInterval { Start = start, End = end}
+                        })
+                    .Create();
+
             // Assert            
             var ex = Assert.ThrowsAsync<ApiWrapperException>(() =>
-                    _availabilityService.GetTotalAvailability(
-                    new WorkersIntervalsRequest
-                    {
-                        WorkerIds = _userIdList,
-                        Intervals = new List<BaseInterval>
-                        {
-                            new BaseInterval { Start = start, End = end}
-                        }
-                    }));
+                    _availabilityService.GetTotalAvailability(workersIntervalRequest));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("start"));
             var startError = ex.ExceptionDetails.Errors["start"];
@@ -364,17 +321,15 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddHours(24).AddSeconds(1);
 
+            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+                    .With(o => o.Intervals, new List<BaseInterval> {
+                            new BaseInterval { Start = start, End = end}
+                        })
+                    .Create();
+
             // Assert            
             var ex = Assert.ThrowsAsync<ApiWrapperException>(() =>
-                    _availabilityService.GetTotalAvailability(
-                    new WorkersIntervalsRequest
-                    {
-                        WorkerIds = _userIdList,
-                        Intervals = new List<BaseInterval>
-                        {
-                            new BaseInterval { Start = start, End = end}
-                        }
-                    }));
+                    _availabilityService.GetTotalAvailability(workersIntervalRequest));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("end"));
             var endError = ex.ExceptionDetails.Errors["end"];
@@ -390,17 +345,16 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddHours(23);
 
+            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+                    .Without(o => o.WorkerIds)
+                    .With(o => o.Intervals, new List<BaseInterval> {
+                            new BaseInterval { Start = start, End = end}
+                        })
+                    .Create();
+
             // Assert            
             var ex = Assert.ThrowsAsync<ApiWrapperException>(() =>
-                    _availabilityService.GetTotalAvailability(
-                    new WorkersIntervalsRequest
-                    {
-                        WorkerIds = new List<string>(),
-                        Intervals = new List<BaseInterval>
-                        {
-                            new BaseInterval { Start = start, End = end}
-                        }
-                    }));
+                    _availabilityService.GetTotalAvailability(workersIntervalRequest));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("workerids"));
             var workerIdsErrors = ex.ExceptionDetails.Errors["workerids"];
@@ -414,14 +368,14 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddHours(23);
 
+            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+                   .Without(o => o.WorkerIds)
+                   .With(o => o.Intervals, new List<BaseInterval>())
+                   .Create();
+
             // Assert            
             var ex = Assert.ThrowsAsync<ApiWrapperException>(() =>
-                    _availabilityService.GetTotalAvailability(
-                    new WorkersIntervalsRequest
-                    {
-                        WorkerIds = _userIdList,
-                        Intervals = new List<BaseInterval>()                        
-                    }));
+                    _availabilityService.GetTotalAvailability(workersIntervalRequest));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("intervals"));
             var intervalError = ex.ExceptionDetails.Errors["intervals"];
@@ -435,18 +389,17 @@ namespace Updatedge.net.Tests
             var start = DateTimeOffset.Now;
             var end = DateTimeOffset.Now.AddHours(23);
 
-            // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() =>
-                    _availabilityService.GetTotalAvailability(
-                    new WorkersIntervalsRequest
-                    {
-                        WorkerIds = _userIdList,
-                        Intervals = new List<BaseInterval>
-                        {
+            var workersIntervalRequest = _fixture.Build<WorkersIntervalsRequest>()
+                   .Without(o => o.WorkerIds)
+                   .With(o => o.Intervals, new List<BaseInterval> {
                             new BaseInterval { Start = start, End = end},
                             new BaseInterval { Start = start.AddHours(22), End = end.AddHours(23)}
-                        }
-                    }));
+                       })
+                   .Create();
+
+            // Assert            
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() =>
+                    _availabilityService.GetTotalAvailability(workersIntervalRequest));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("overlap"));
             var overlapError = ex.ExceptionDetails.Errors["overlap"];

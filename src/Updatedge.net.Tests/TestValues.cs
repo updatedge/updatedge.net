@@ -16,6 +16,8 @@ namespace Updatedge.net.Tests
 
         public const string InviteId1 = "InviteId01";
 
+        public const string OfferId1 = "OfferId01"; 
+
         public const string Worker1Email = "worker01@email.com";
         public const string Hirer1Email = "hirer01@email.com";
 
