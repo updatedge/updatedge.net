@@ -32,7 +32,7 @@ namespace Updatedge.net
             }
 
             // too many requests
-            if (exception.Call.HttpStatus.ToString() == StatusCodes.Status429TooManyRequests.ToString())
+            if (exception.Call.HttpStatus.ToString().ToLower() == "toomanyrequests")
             {
                 return new ThrottledApiRequestException(apiProblemDetails.Detail);
             }

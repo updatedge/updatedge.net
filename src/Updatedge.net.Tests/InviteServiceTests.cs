@@ -4,25 +4,25 @@ using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
 using Udatedge.Common;
-using Udatedge.Common.Models;
+using AutoFixture;
 
 namespace Updatedge.net.Tests
 {
     public class InviteServiceTests
     {
-        private HttpTest _httpTest;
-        private InviteService _inviteService;        
-        
+        private HttpTest _httpTest;        
+        private InviteService _inviteService;                
         
         [SetUp]
         public void Setup()
         {
             // Put Flurl into test mode
-            _httpTest = new HttpTest();
+            _httpTest = new HttpTest();                       
 
-            // instantiate the Availability service
-            _inviteService = new InviteService(TestValues.BaseUrl, TestValues.ApiKey);
-            
+            // register and create Invite service
+            FixtureConfig.Fixture.Register(() => new InviteService(FixtureConfig.BaseUrl, FixtureConfig.ApiKey));
+            _inviteService = FixtureConfig.Fixture.Create<InviteService>();
+
         }
 
 
@@ -31,75 +31,59 @@ namespace Updatedge.net.Tests
         public async Task InviteWorker_OkResult()
         {            
             // Arrange            
-            _httpTest.RespondWith(TestValues.InviteId1);
+            _httpTest.RespondWith(FixtureConfig.InviteId1);
             
-            var result = await _inviteService.InviteWorkerAsync(TestValues.UserId1, TestValues.Worker1Email);
+            var result = await _inviteService.InviteWorkerAsync(FixtureConfig.UserId1, FixtureConfig.Worker1Email);
 
             // Assert
-            Assert.True(result == TestValues.InviteId1);            
+            Assert.True(result == FixtureConfig.InviteId1);            
         }
 
         [Test]
         public void InviteWorker_401Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 401
-            };
-            _httpTest.RespondWithJson(apiResponse, 401);
+            // Arrange           
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
-            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _inviteService.InviteWorkerAsync(TestValues.UserId1, TestValues.Worker1Email));            
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _inviteService.InviteWorkerAsync(FixtureConfig.UserId1, FixtureConfig.Worker1Email));            
         }
 
         [Test]
         public void InviteWorker_400Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 400
-            };
-            _httpTest.RespondWithJson(apiResponse, 400);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
             
             // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _inviteService.InviteWorkerAsync(TestValues.UserId1, TestValues.Worker1Email));            
+            Assert.ThrowsAsync<InvalidApiRequestException>(() => _inviteService.InviteWorkerAsync(FixtureConfig.UserId1, FixtureConfig.Worker1Email));            
         }
 
         [Test]
         public void InviteWorker_403Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 403
-            };
-            _httpTest.RespondWithJson(apiResponse, 403);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
                                     
             // Assert
-            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _inviteService.InviteWorkerAsync(TestValues.UserId1, TestValues.Worker1Email));
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _inviteService.InviteWorkerAsync(FixtureConfig.UserId1, FixtureConfig.Worker1Email));
         }
 
         [Test]
         public void InviteWorker_500Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 500
-            };
-            _httpTest.RespondWithJson(apiResponse, 500);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
                                     
             // Assert
-            Assert.ThrowsAsync<ApiException>(() => _inviteService.InviteWorkerAsync(TestValues.UserId1, TestValues.Worker1Email));
+            Assert.ThrowsAsync<ApiException>(() => _inviteService.InviteWorkerAsync(FixtureConfig.UserId1, FixtureConfig.Worker1Email));
         }
 
         [Test]
         public void InviteWorker_ValueNotSpecified()
         {              
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteWorkerAsync(string.Empty, TestValues.Worker1Email));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteWorkerAsync(string.Empty, FixtureConfig.Worker1Email));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("fromuserid"));
             var startError = ex.ExceptionDetails.Errors["fromuserid"];            
@@ -110,7 +94,7 @@ namespace Updatedge.net.Tests
         public void InviteWorker_EmailInvalid()
         {
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteWorkerAsync(TestValues.UserId1, TestValues.NotAnEmail));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteWorkerAsync(FixtureConfig.UserId1, FixtureConfig.NotAnEmail));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("toworkeremail"));
             var startError = ex.ExceptionDetails.Errors["toworkeremail"];
@@ -125,75 +109,59 @@ namespace Updatedge.net.Tests
         public async Task InviteHirer_OkResult()
         {
             // Arrange            
-            _httpTest.RespondWith(TestValues.InviteId1);
+            _httpTest.RespondWith(FixtureConfig.InviteId1);
 
-            var result = await _inviteService.InviteHirerAsync(TestValues.UserId1, TestValues.Hirer1Email);
+            var result = await _inviteService.InviteHirerAsync(FixtureConfig.UserId1, FixtureConfig.Hirer1Email);
 
             // Assert
-            Assert.True(result == TestValues.InviteId1);
+            Assert.True(result == FixtureConfig.InviteId1);
         }
 
         [Test]
         public void InviteHirer_401Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 401
-            };
-            _httpTest.RespondWithJson(apiResponse, 401);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
-            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _inviteService.InviteHirerAsync(TestValues.UserId1, TestValues.Hirer1Email));
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _inviteService.InviteHirerAsync(FixtureConfig.UserId1, FixtureConfig.Hirer1Email));
         }
 
         [Test]
         public void InviteHirer_400Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 400
-            };
-            _httpTest.RespondWithJson(apiResponse, 400);
+            // Arrange           
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
 
             // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _inviteService.InviteHirerAsync(TestValues.UserId1, TestValues.Hirer1Email));
+            Assert.ThrowsAsync<InvalidApiRequestException>(() => _inviteService.InviteHirerAsync(FixtureConfig.UserId1, FixtureConfig.Hirer1Email));
         }
 
         [Test]
         public void InviteHirer_403Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 403
-            };
-            _httpTest.RespondWithJson(apiResponse, 403);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
 
             // Assert
-            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _inviteService.InviteHirerAsync(TestValues.UserId1, TestValues.Hirer1Email));
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _inviteService.InviteHirerAsync(FixtureConfig.UserId1, FixtureConfig.Hirer1Email));
         }
 
         [Test]
         public void InviteHirer_500Result()
         {
-            // Arrange
-            var apiResponse = new ApiProblemDetails
-            {
-                Status = 500
-            };
-            _httpTest.RespondWithJson(apiResponse, 500);
+            // Arrange            
+            _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
 
             // Assert
-            Assert.ThrowsAsync<ApiException>(() => _inviteService.InviteHirerAsync(TestValues.UserId1, TestValues.Hirer1Email));
+            Assert.ThrowsAsync<ApiException>(() => _inviteService.InviteHirerAsync(FixtureConfig.UserId1, FixtureConfig.Hirer1Email));
         }
 
         [Test]
         public void InviteHirer_ValueNotSpecified()
         {
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteHirerAsync(string.Empty, TestValues.Hirer1Email));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteHirerAsync(string.Empty, FixtureConfig.Hirer1Email));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("fromuserid"));
             var startError = ex.ExceptionDetails.Errors["fromuserid"];
@@ -204,7 +172,7 @@ namespace Updatedge.net.Tests
         public void InviteHirer_EmailInvalid()
         {
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteHirerAsync(TestValues.UserId1, "#thisisnotanemail"));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _inviteService.InviteHirerAsync(FixtureConfig.UserId1, FixtureConfig.NotAnEmail));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("tohireremail"));
             var startError = ex.ExceptionDetails.Errors["tohireremail"];

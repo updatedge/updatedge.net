@@ -42,12 +42,12 @@ namespace Updatedge.net.Services.V1
                     .GetAsync();
 
                 if (response.StatusCode != HttpStatusCode.OK)
-                {
+                {   
                     return new List<TimelineEvent>();
                 }
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<TimelineEvent>>(responseContent);
+                return JsonSerializer.Deserialize<List<TimelineEvent>>(responseContent, JsonOptions);
             }
             catch (FlurlHttpException flEx)
             {
@@ -73,7 +73,7 @@ namespace Updatedge.net.Services.V1
                 }
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<TimelineEvent>>(responseContent);
+                return JsonSerializer.Deserialize<List<TimelineEvent>>(responseContent, JsonOptions);
                                 
             }
             catch (FlurlHttpException flEx)
