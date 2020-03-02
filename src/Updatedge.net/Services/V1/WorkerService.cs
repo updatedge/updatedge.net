@@ -27,15 +27,12 @@ namespace Updatedge.net.Services.V1
 
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
-                var response = await BaseUrl
+                return await BaseUrl
                     .AppendPathSegment($"workers/{id}")
                     .SetQueryParam("api-version", ApiVersion)
                     .SetQueryParam("id", id)
                     .WithHeader(ApiKeyName, ApiKey)
-                    .GetAsync();
-
-                var responseContent = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<Worker>(responseContent);
+                    .GetJsonAsync<Worker>();               
             }
             catch (FlurlHttpException flEx)
             {
@@ -64,7 +61,13 @@ namespace Updatedge.net.Services.V1
                     .GetAsync();
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<Worker>(responseContent);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                {
+                    return new BaseWorker();
+                }
+
+                return JsonSerializer.Deserialize<Worker>(responseContent, JsonOptions);
             }
             catch (FlurlHttpException flEx)
             {

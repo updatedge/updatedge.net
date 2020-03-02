@@ -61,15 +61,11 @@ namespace Updatedge.net.Services.V1
 
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
-                var response = await BaseUrl
+                return await BaseUrl
                     .AppendPathSegment($"offer/{id}")
                     .SetQueryParam("api-version", ApiVersion)                    
                     .WithHeader(ApiKeyName, ApiKey)
-                    .GetAsync();
-
-                var responseContent = await response.Content.ReadAsStringAsync();
-
-                return JsonSerializer.Deserialize<Offer>(responseContent);
+                    .GetJsonAsync<Offer>();                
             }
             catch (FlurlHttpException flEx)
             {
