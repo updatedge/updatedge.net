@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Updatedge.net.Exceptions;
 using System.Text.Json;
 using Udatedge.Common.Models;
-using Microsoft.AspNetCore.Http;
 
 namespace Updatedge.net
 {

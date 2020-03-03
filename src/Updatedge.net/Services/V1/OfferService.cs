@@ -1,7 +1,6 @@
 ﻿using Flurl;
 using Flurl.Http;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Udatedge.Common.Models.Offer;
 using Udatedge.Common.Validation;

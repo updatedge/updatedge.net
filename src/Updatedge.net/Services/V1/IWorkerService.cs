@@ -27,6 +27,7 @@ namespace Updatedge.net.Services.V1
         /// <param name="fromUserId">ID of the user sending the nudge</param>
         /// <param name="toWorkerId">ID of the worker receiving the nudge</param>
         /// <returns></returns>
+        /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<bool> NudgeWorkerAsync(string fromUserId, string toWorkerId);
 
     }
