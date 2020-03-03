@@ -6,15 +6,16 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Udatedge.Common.Models.TimelineEvents;
-using Udatedge.Common.Validation;
+using Updatedge.Common.Models.TimelineEvents;
+using Updatedge.Common.Validation;
+using Updatedge.net.Configuration;
 using Updatedge.net.Exceptions;
 
 namespace Updatedge.net.Services.V1
 {
     public class TimelineService : BaseService, ITimelineService
     {
-        public TimelineService(string baseUrl, string apiKey) : base(baseUrl, apiKey)
+        public TimelineService(IUpdatedgeConfiguration config) : base(config)
         {
         }
                 

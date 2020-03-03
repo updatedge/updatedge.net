@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Udatedge.Common.Models.Users;
+using Updatedge.Common.Models.Users;
 
 namespace Updatedge.net.Services.V1
 {

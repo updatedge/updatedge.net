@@ -3,11 +3,11 @@ using System.Threading.Tasks;
 using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
-using Udatedge.Common;
+using Updatedge.Common;
 using AutoFixture;
-using Udatedge.Common.Models.Offer;
+using Updatedge.Common.Models.Offer;
 using System.Collections.Generic;
-using Udatedge.Common.Models.Availability;
+using Updatedge.Common.Models.Availability;
 using System;
 using Updatedge.net.Entities.V1;
 using System.Linq;
@@ -25,9 +25,9 @@ namespace Updatedge.net.Tests
         {
             // Put Flurl into test mode
             _httpTest = new HttpTest();
-            
-            // register and create offer service
-            FixtureConfig.Fixture.Register(() => new OfferService(FixtureConfig.BaseUrl, FixtureConfig.ApiKey));
+
+            // register and create offer service            
+            FixtureConfig.Fixture.Register(() => new OfferService(FixtureConfig.Config));
             _offerService = FixtureConfig.Fixture.Create<OfferService>();
 
             // build and create Offer object

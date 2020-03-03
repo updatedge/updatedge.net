@@ -12,3 +12,5 @@
 /src/Udatedge.Common/bin/Debug/netstandard2.0
 /src/Udatedge.Common/obj
 *.user
+/src/Updatedge.Common/obj
+/src/Updatedge.Common/bin/Debug/netstandard2.0

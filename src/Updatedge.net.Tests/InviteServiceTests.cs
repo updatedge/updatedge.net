@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
-using Udatedge.Common;
+using Updatedge.Common;
 using AutoFixture;
 
 namespace Updatedge.net.Tests
@@ -20,7 +20,7 @@ namespace Updatedge.net.Tests
             _httpTest = new HttpTest();                       
 
             // register and create Invite service
-            FixtureConfig.Fixture.Register(() => new InviteService(FixtureConfig.BaseUrl, FixtureConfig.ApiKey));
+            FixtureConfig.Fixture.Register(() => new InviteService(FixtureConfig.Config));
             _inviteService = FixtureConfig.Fixture.Create<InviteService>();
 
         }

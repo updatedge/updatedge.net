@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Udatedge.Common.Models.TimelineEvents;
+using Updatedge.Common.Models.TimelineEvents;
 
 namespace Updatedge.net.Services.V1
 {

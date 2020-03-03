@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
-using Udatedge.Common;
-using Udatedge.Common.Models.TimelineEvents;
+using Updatedge.Common;
+using Updatedge.Common.Models.TimelineEvents;
 using Light.GuardClauses.Exceptions;
 using AutoFixture;
 
@@ -25,7 +25,7 @@ namespace Updatedge.net.Tests
             _httpTest = new HttpTest();
 
             // register and create Timeline service
-            FixtureConfig.Fixture.Register(() => new TimelineService(FixtureConfig.BaseUrl, FixtureConfig.ApiKey));
+            FixtureConfig.Fixture.Register(() => new TimelineService(FixtureConfig.Config));
             _timelineService = FixtureConfig.Fixture.Create<TimelineService>();
         }
 

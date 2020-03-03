@@ -23,7 +23,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Udatedge.Common\Udatedge.Common.csproj" />
+    <ProjectReference Include="..\Updatedge.Common\Updatedge.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Udatedge.Common">
+      <HintPath>..\Updatedge.Common\bin\Debug\netstandard2.0\Udatedge.Common.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
