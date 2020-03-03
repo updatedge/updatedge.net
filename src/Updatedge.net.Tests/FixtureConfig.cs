@@ -1,6 +1,7 @@
 ﻿using AutoFixture;
 using NUnit.Framework;
-using Udatedge.Common.Models;
+using Updatedge.Common.Models;
+using Updatedge.net.Configuration;
 
 namespace Updatedge.net.Tests
 {
@@ -28,6 +29,8 @@ namespace Updatedge.net.Tests
 
         public const string NotAnEmail = "#thisisnotanemail";
 
+        public static UpdatedgeConfiguration Config;
+
         public static ApiProblemDetails ApiProblemDetails204;
         public static ApiProblemDetails ApiProblemDetails400;
         public static ApiProblemDetails ApiProblemDetails401;
@@ -39,6 +42,11 @@ namespace Updatedge.net.Tests
         public void Init()
         {
             Fixture = new Fixture();
+
+            Config = Fixture.Build<UpdatedgeConfiguration>()
+               .With(c => c.ApiKey, ApiKey)
+               .With(c => c.BaseUrl, BaseUrl)
+               .Create();
 
             // create 204 response
             ApiProblemDetails204 = Fixture.Build<ApiProblemDetails>()

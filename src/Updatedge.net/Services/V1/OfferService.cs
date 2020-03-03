@@ -2,8 +2,9 @@
 using Flurl.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Udatedge.Common.Models.Offer;
-using Udatedge.Common.Validation;
+using Updatedge.Common.Models.Offer;
+using Updatedge.Common.Validation;
+using Updatedge.net.Configuration;
 using Updatedge.net.Entities.V1;
 using Updatedge.net.Exceptions;
 
@@ -11,7 +12,7 @@ namespace Updatedge.net.Services.V1
 {
     public class OfferService : BaseService, IOfferService
     {
-        public OfferService(string baseUrl, string apiKey) : base(baseUrl, apiKey)
+        public OfferService(IUpdatedgeConfiguration config) : base(config)
         {
         }
                 

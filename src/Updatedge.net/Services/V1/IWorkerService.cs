@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Udatedge.Common.Models.Workers;
+using Updatedge.Common.Models.Workers;
 
 namespace Updatedge.net.Services.V1
 {

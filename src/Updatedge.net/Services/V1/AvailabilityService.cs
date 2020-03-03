@@ -3,8 +3,9 @@ using Flurl.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Udatedge.Common.Models.Availability;
-using Udatedge.Common.Validation;
+using Updatedge.Common.Models.Availability;
+using Updatedge.Common.Validation;
+using Updatedge.net.Configuration;
 using Updatedge.net.Entities.V1;
 using Updatedge.net.Exceptions;
 
@@ -12,7 +13,7 @@ namespace Updatedge.net.Services.V1
 {
     public class AvailabilityService : BaseService, IAvailabilityService
     {
-        public AvailabilityService(string baseUrl, string apiKey) : base(baseUrl, apiKey)
+        public AvailabilityService(IUpdatedgeConfiguration config) : base(config)
         {
         }
 

@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
-using Udatedge.Common.Models.Availability;
-using Udatedge.Common;
+using Updatedge.Common.Models.Availability;
+using Updatedge.Common;
 using Updatedge.net.Entities.V1;
 using AutoFixture;
 
@@ -25,7 +25,7 @@ namespace Updatedge.net.Tests
             _httpTest = new HttpTest();            
 
             // register and create Availability service
-            FixtureConfig.Fixture.Register(() => new AvailabilityService(FixtureConfig.BaseUrl, FixtureConfig.ApiKey));
+            FixtureConfig.Fixture.Register(() => new AvailabilityService(FixtureConfig.Config));
             _availabilityService = FixtureConfig.Fixture.Create<AvailabilityService>();
             
             _workersIntervalsRequest = FixtureConfig.Fixture.Build<WorkersIntervalsRequest>()

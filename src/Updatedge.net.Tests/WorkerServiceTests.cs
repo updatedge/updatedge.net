@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 using Updatedge.net.Services.V1;
 using Flurl.Http.Testing;
 using Updatedge.net.Exceptions;
-using Udatedge.Common;
-using Udatedge.Common.Models.Workers;
+using Updatedge.Common;
+using Updatedge.Common.Models.Workers;
 using AutoFixture;
 
 namespace Updatedge.net.Tests
@@ -21,7 +21,7 @@ namespace Updatedge.net.Tests
             _httpTest = new HttpTest();
             
             // register and create Timeline service
-            FixtureConfig.Fixture.Register(() => new WorkerService(FixtureConfig.BaseUrl, FixtureConfig.ApiKey));
+            FixtureConfig.Fixture.Register(() => new WorkerService(FixtureConfig.Config));
             _workerService = FixtureConfig.Fixture.Create<WorkerService>();     
         }
 

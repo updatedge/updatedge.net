@@ -3,7 +3,7 @@ using System;
 using System.Threading.Tasks;
 using Updatedge.net.Exceptions;
 using System.Text.Json;
-using Udatedge.Common.Models;
+using Updatedge.Common.Models;
 
 namespace Updatedge.net
 {

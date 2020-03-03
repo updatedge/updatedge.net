@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Udatedge.Common.Models.Availability;
+using Updatedge.Common.Models.Availability;
 
 namespace Updatedge.net.Services.V1
 {

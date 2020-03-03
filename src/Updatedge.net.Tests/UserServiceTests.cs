@@ -6,9 +6,9 @@ using Updatedge.net.Exceptions;
 using AutoFixture;
 using System.Collections.Generic;
 using System.Linq;
-using Udatedge.Common.Models.Users;
+using Updatedge.Common.Models.Users;
 using System.Text.Json;
-using Udatedge.Common;
+using Updatedge.Common;
 
 namespace Updatedge.net.Tests
 {
@@ -22,9 +22,9 @@ namespace Updatedge.net.Tests
         {
             // Put Flurl into test mode
             _httpTest = new HttpTest();
-            
+
             // register and create offer service
-            FixtureConfig.Fixture.Register<IUserService>(() => new UserService(FixtureConfig.BaseUrl, FixtureConfig.ApiKey));
+            FixtureConfig.Fixture.Register<IUserService>(() => new UserService(FixtureConfig.Config));
             _userService = FixtureConfig.Fixture.Create<IUserService>();
 
             FixtureConfig.Fixture.Customize<User>(u => u.With(u => u.Email, FixtureConfig.User1Email));

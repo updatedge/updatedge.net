@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Runtime.Serialization;
-using Udatedge.Common.Models;
+using Updatedge.Common.Models;
 
 namespace Updatedge.net.Exceptions
 {

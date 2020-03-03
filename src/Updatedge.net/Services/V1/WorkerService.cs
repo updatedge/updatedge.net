@@ -2,15 +2,16 @@
 using Flurl.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Udatedge.Common.Models.Workers;
-using Udatedge.Common.Validation;
+using Updatedge.Common.Models.Workers;
+using Updatedge.Common.Validation;
+using Updatedge.net.Configuration;
 using Updatedge.net.Exceptions;
 
 namespace Updatedge.net.Services.V1
 {
     public class WorkerService : BaseService, IWorkerService
     {
-        public WorkerService(string baseUrl, string apiKey) : base(baseUrl, apiKey)
+        public WorkerService(IUpdatedgeConfiguration config) : base(config)
         {
         }
                 

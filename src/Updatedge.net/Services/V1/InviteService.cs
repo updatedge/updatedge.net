@@ -1,14 +1,15 @@
 ﻿using Flurl;
 using Flurl.Http;
 using System.Threading.Tasks;
-using Udatedge.Common.Validation;
+using Updatedge.Common.Validation;
+using Updatedge.net.Configuration;
 using Updatedge.net.Exceptions;
 
 namespace Updatedge.net.Services.V1
 {
     public class InviteService : BaseService, IInviteService
     {
-        public InviteService(string baseUrl, string apiKey) : base(baseUrl, apiKey)
+        public InviteService(IUpdatedgeConfiguration config) : base(config)
         {
         }
                 
