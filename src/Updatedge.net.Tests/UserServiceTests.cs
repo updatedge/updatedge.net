@@ -210,7 +210,7 @@ namespace Updatedge.net.Tests
         {
             // Arrange                             
             var okResult = FixtureConfig.Fixture.Create<string>();
-            _httpTest.RespondWith(okResult, 200);
+            _httpTest.RespondWithJson(okResult, 200);
 
             var result = await _userService.CreateUserAsync(FixtureConfig.Fixture.Create<CreateUser>());
 
