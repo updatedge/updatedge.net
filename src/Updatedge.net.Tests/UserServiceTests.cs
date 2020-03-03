@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Udatedge.Common.Models.Users;
 using System.Text.Json;
+using Udatedge.Common;
 
 namespace Updatedge.net.Tests
 {
@@ -246,6 +247,43 @@ namespace Updatedge.net.Tests
             // Assert
             Assert.ThrowsAsync<ApiException>(() => _userService.CreateUserAsync(FixtureConfig.Fixture.Create<CreateUser>()));
         }
+
+        [Test]
+        public void CreateUser_EmailInvalid()
+        {
+            // Arrange
+            var user = FixtureConfig.Fixture.Build<CreateUser>()                    
+                    .With(o => o.Email, FixtureConfig.NotAnEmail)
+                    .Create();
+
+            // Assert            
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(async () =>
+            {
+                var result = await _userService.CreateUserAsync(user);
+            });
+
+            Assert.True(ex.ExceptionDetails.Errors.ContainsKey("email"));
+            var workerIdsErrors = ex.ExceptionDetails.Errors["email"];
+            Assert.True(workerIdsErrors.Contains(Constants.ErrorMessages.EmailInvalid));
+        }
+
+        [Test]
+        public void CreateUser_ValueNotSpecified()
+        {
+            // Arrange
+            var user = FixtureConfig.Fixture.Create<CreateUser>();
+            user.FirstName = null;
+            // Assert            
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(async () =>
+            {
+                var result = await _userService.CreateUserAsync(user);
+            });
+
+            Assert.True(ex.ExceptionDetails.Errors.ContainsKey("firstname"));
+            var workerIdsErrors = ex.ExceptionDetails.Errors["firstname"];
+            Assert.True(workerIdsErrors.Contains(Constants.ErrorMessages.ValueNotSpecified));
+        }
+
         #endregion
 
         #region UpdateUser tests
@@ -273,6 +311,16 @@ namespace Updatedge.net.Tests
         }
 
         [Test]
+        public void UpdateUser_403Result()
+        {
+            // Arrange            
+            _httpTest.RespondWith(JsonSerializer.Serialize(FixtureConfig.ApiProblemDetails403), 403);
+
+            // Assert
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _userService.UpdateUserAsync(FixtureConfig.Fixture.Create<User>()));
+        }
+
+        [Test]
         public void UpdateUser_400Result()
         {
             // Arrange            
@@ -284,6 +332,87 @@ namespace Updatedge.net.Tests
 
         [Test]
         public void UpdateUser_500Result()
+        {
+            // Arrange            
+            _httpTest.RespondWith(JsonSerializer.Serialize(FixtureConfig.ApiProblemDetails500), 500);
+
+            // Assert
+            Assert.ThrowsAsync<ApiException>(() => _userService.UpdateUserAsync(FixtureConfig.Fixture.Create<User>()));
+        }
+
+        [Test]
+        public void UpdateUser_EmailInvalid()
+        {
+            // Arrange
+            var user = FixtureConfig.Fixture.Build<User>()
+                    .With(o => o.Email, FixtureConfig.NotAnEmail)
+                    .Create();
+
+            // Assert            
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(async () =>
+            {
+                var result = await _userService.UpdateUserAsync(user);
+            });
+
+            Assert.True(ex.ExceptionDetails.Errors.ContainsKey("email"));
+            var workerIdsErrors = ex.ExceptionDetails.Errors["email"];
+            Assert.True(workerIdsErrors.Contains(Constants.ErrorMessages.EmailInvalid));
+        }
+
+        [Test]
+        public void UpdateUser_ValueNotSpecified()
+        {
+            // Arrange
+            var user = FixtureConfig.Fixture.Create<User>();
+            user.FirstName = null;
+            // Assert            
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(async () =>
+            {
+                var result = await _userService.UpdateUserAsync(user);
+            });
+
+            Assert.True(ex.ExceptionDetails.Errors.ContainsKey("firstname"));
+            var workerIdsErrors = ex.ExceptionDetails.Errors["firstname"];
+            Assert.True(workerIdsErrors.Contains(Constants.ErrorMessages.ValueNotSpecified));
+        }
+        #endregion
+
+        #region DeleteUser tests
+        [Test]
+        public async Task DeleteUser_OkResult()
+        {
+            // Arrange                             
+            var okResult = FixtureConfig.Fixture.Create<string>();
+            _httpTest.RespondWith(okResult, 204);
+
+            var result = await _userService.UpdateUserAsync(FixtureConfig.Fixture.Create<User>());
+
+            // Assert
+            Assert.True(result);
+        }
+
+        [Test]
+        public void DeleteUser_401Result()
+        {
+            // Arrange            
+            _httpTest.RespondWith(JsonSerializer.Serialize(FixtureConfig.ApiProblemDetails401), 401);
+
+            // Assert
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _userService.UpdateUserAsync(FixtureConfig.Fixture.Create<User>()));
+        }
+
+        [Test]
+        public void DeleteUser_403Result()
+        {
+            // Arrange            
+            _httpTest.RespondWith(JsonSerializer.Serialize(FixtureConfig.ApiProblemDetails403), 403);
+
+            // Assert
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _userService.UpdateUserAsync(FixtureConfig.Fixture.Create<User>()));
+        }
+
+        [Test]
+        public void DeleteUser_500Result()
         {
             // Arrange            
             _httpTest.RespondWith(JsonSerializer.Serialize(FixtureConfig.ApiProblemDetails500), 500);

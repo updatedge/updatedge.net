@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Udatedge.Common.Models.Users;
 using Udatedge.Common.Validation;
 using Updatedge.net.Exceptions;
-using Updatedge.PlatformAPI.Controllers.V1.Validation;
 
 namespace Updatedge.net.Services.V1
 {
@@ -106,8 +105,11 @@ namespace Updatedge.net.Services.V1
                 // VALIDATION ------------------------------
 
                 var validator = new RequestValidator(
-                new CreateUserValidation(user).EmailNotNullOrEmptyAndCorrectFormat().FirstNameNotNullOrEmpty().LastNameNotNullOrEmpty()
-                );
+                    new StringValidation(user.Email, nameof(user.Email)).IsNotNullOrEmpty().IsEmail(),
+                    new StringValidation(user.FirstName, nameof(user.FirstName)).IsNotNullOrEmpty(),
+                    new StringValidation(user.LastName, nameof(user.LastName)).IsNotNullOrEmpty()
+                    );
+                
 
                 // ------------------------------------------
 
