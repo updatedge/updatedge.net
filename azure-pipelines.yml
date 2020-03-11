@@ -12,6 +12,7 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
+  packageVersion: '1.0.0'
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
@@ -22,6 +23,27 @@ steps:
   inputs:
     command: restore
     projects: '**/*.csproj'
+    
+- task: Assembly-Info-NetCore@2
+  inputs:
+    Path: '$(Build.SourcesDirectory)'
+    FileNames: '**/*.csproj'
+    InsertAttributes: false
+    FileEncoding: 'auto'
+    WriteBOM: false
+    GeneratePackageOnBuild: true
+    PackageId: 'Updatedge.net'
+    Authors: 'updatedge Ltd'
+    Company: 'updatedge Ltd'
+    Product: 'updatedge API'
+    Description: '.net wrapper for updatedge API'
+    Copyright: 'updatedge Ltd 2020'
+    VersionNumber: '$(Build.BuildNumber)'
+    FileVersionNumber: '$(Build.BuildNumber)'
+    PackageVersion: '$(packageVersion)'
+    LogLevel: 'verbose'
+    FailOnWarning: false
+    DisableTelemetry: false
 
 - task: DotNetCoreCLI@2
   displayName: Build
@@ -36,7 +58,14 @@ steps:
     projects: '**/*Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
+- task: CopyFiles@2
+  displayName: 'Copy Files'
+  inputs:
+    SourceFolder: '$(Build.ArtifactStagingDirectory)'
+    Contents: '**\*.nupkg'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)\Package'
+
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact'
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)\Package'
