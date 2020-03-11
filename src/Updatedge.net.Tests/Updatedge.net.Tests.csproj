@@ -19,4 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Updatedge.net\Updatedge.net.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Updatedge.Common\Updatedge.Common.csproj" />      
+  </ItemGroup>
 </Project>
