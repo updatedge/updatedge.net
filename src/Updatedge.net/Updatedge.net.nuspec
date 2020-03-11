@@ -9,7 +9,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <license type="expression">MIT</license>    
     <description>$description$</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>Final changes to implement a wrapper for the Updatedge.net API.</releaseNotes>
     <copyright>Copyright 2020</copyright>
     <tags>Tag1 Tag2</tags>
   </metadata>
