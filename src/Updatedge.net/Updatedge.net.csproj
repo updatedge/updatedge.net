@@ -23,9 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Updatedge.Common">
-      <HintPath>..\Updatedge.Common\bin\Debug\netstandard2.0\Updatedge.Common.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\Updatedge.Common\Updatedge.Common.csproj" />
   </ItemGroup>
 
 </Project>

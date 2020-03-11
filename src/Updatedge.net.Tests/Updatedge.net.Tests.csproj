@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
@@ -19,11 +19,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Updatedge.net\Updatedge.net.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Updatedge.Common">
-      <HintPath>..\Updatedge.Common\bin\Debug\netstandard2.0\Updatedge.Common.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
