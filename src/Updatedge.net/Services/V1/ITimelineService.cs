@@ -31,6 +31,6 @@ namespace Updatedge.net.Services.V1
         /// <param name="userId">Id of user submitting request</param>
         /// <param name="pendingEvents">Events to be added</param>
         /// <returns>The new pending event set id</returns>
-        Task<string> CreatePendingWorkingEvents(string userId, IEnumerable<PendingTimelineEvent> pendingEvents);
+        Task<string> CreatePendingWorkingEventsAsync(string userId, List<PendingTimelineEvent> pendingEvents);
     }
 }

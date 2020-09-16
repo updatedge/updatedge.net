@@ -3,6 +3,7 @@ using Flurl.Http;
 using Light.GuardClauses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -97,7 +98,8 @@ namespace Updatedge.net.Services.V1
         /// <param name="userId">Id of user submitting request</param>
         /// <param name="pendingEvents">Events to be added</param>
         /// <returns>The new pending event set id</returns>
-        public virtual async Task<string> CreatePendingWorkingEvents(string userId, IEnumerable<PendingTimelineEvent> pendingEvents)           
+        public virtual async Task<string> CreatePendingWorkingEventsAsync(string userId,
+            List<PendingTimelineEvent> pendingEvents)           
         {
             try 
             {
