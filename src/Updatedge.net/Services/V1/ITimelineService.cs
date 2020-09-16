@@ -25,5 +25,12 @@ namespace Updatedge.net.Services.V1
         /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<List<TimelineEvent>> GetEventAsync(string id);
 
+        /// <summary>
+        /// Requests permission to add a set of working events to a worker's timeline.
+        /// </summary>
+        /// <param name="userId">Id of user submitting request</param>
+        /// <param name="pendingEvents">Events to be added</param>
+        /// <returns>The new pending event set id</returns>
+        Task<string> CreatePendingWorkingEvents(string userId, IEnumerable<PendingTimelineEvent> pendingEvents);
     }
 }

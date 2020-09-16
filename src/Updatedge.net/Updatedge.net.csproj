@@ -6,8 +6,9 @@
     <Company>updatedge Ltd</Company>
     <Product>updatedge API</Product>
     <Description>C# wrapper for the updatedge API</Description>
-    <Copyright>updatedge Ltd 2019</Copyright>
+    <Copyright>updatedge Ltd 2020</Copyright>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    <Version>1.0.6</Version>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,14 +24,14 @@
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Updatedge.Common\Updatedge.Common.csproj" >
+    <ProjectReference Include="..\Updatedge.Common\Updatedge.Common.csproj">
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <IncludeAssets>Updatedge.Common.dll</IncludeAssets>
     </ProjectReference>
   </ItemGroup>
   <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))"/>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
     </ItemGroup>
   </Target>
 </Project>
