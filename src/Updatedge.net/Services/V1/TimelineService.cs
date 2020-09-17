@@ -3,6 +3,7 @@ using Flurl.Http;
 using Light.GuardClauses;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -26,7 +27,7 @@ namespace Updatedge.net.Services.V1
         public TimelineService(IUpdatedgeConfiguration config) : base(config)
         {
         }
-                
+
         public virtual async Task<List<TimelineEvent>> GetEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end)
         {
             try
@@ -46,12 +47,12 @@ namespace Updatedge.net.Services.V1
                     .AppendPathSegment($"timeline/{workerId}")
                     .SetQueryParam("api-version", ApiVersion)
                     .SetQueryParam("start", start.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))
-                    .SetQueryParam("end", end.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))                    
+                    .SetQueryParam("end", end.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))
                     .WithHeader(ApiKeyName, ApiKey)
                     .GetAsync();
 
                 if (response.StatusCode != HttpStatusCode.OK)
-                {   
+                {
                     return new List<TimelineEvent>();
                 }
 
@@ -64,9 +65,9 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public virtual async Task<List<TimelineEvent>> GetEventAsync(string id)           
+        public virtual async Task<List<TimelineEvent>> GetEventAsync(string id)
         {
-            try 
+            try
             {
                 // check that we have an Event Id.
                 id.MustNotBeNullOrEmpty("Please provide an Event Id.");
@@ -83,7 +84,7 @@ namespace Updatedge.net.Services.V1
 
                 var responseContent = await response.Content.ReadAsStringAsync();
                 return JsonSerializer.Deserialize<List<TimelineEvent>>(responseContent, JsonOptions);
-                                
+
             }
             catch (FlurlHttpException flEx)
             {
@@ -97,9 +98,10 @@ namespace Updatedge.net.Services.V1
         /// <param name="userId">Id of user submitting request</param>
         /// <param name="pendingEvents">Events to be added</param>
         /// <returns>The new pending event set id</returns>
-        public virtual async Task<string> CreatePendingWorkingEvents(string userId, IEnumerable<PendingTimelineEvent> pendingEvents)           
+        public virtual async Task<string> CreatePendingWorkingEventsAsync(string userId,
+            List<PendingTimelineEvent> pendingEvents)
         {
-            try 
+            try
             {
                 // check that we have an user id.
                 userId.MustNotBeNullOrEmpty("Please provide a sending user id.");
@@ -117,6 +119,59 @@ namespace Updatedge.net.Services.V1
                 var responseContent = await response.Content.ReadAsStringAsync();
                 return responseContent;
 
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        // <summary>
+        /// Retrieves the furthest point in time at which each user specified becomes available (when their inferred availability ends).   
+        /// </summary>
+        /// <param name="userIds">List of userids to return max availability for</param>
+        /// <returns>Max availability for each user id</returns>
+        public async Task<List<WorkerMaxAvailability>> GetMaxAvailabilityDatesAsync(List<string> userIds)
+        {
+            try
+            {
+                userIds.MustNotBeNullOrEmpty("Please provide one or more user ids.");
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"timeline/maxAvailabilityDates")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(userIds);
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<WorkerMaxAvailability>>(responseContent, JsonOptions);
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+
+        }
+
+        /// <summary>
+        /// Retrieves when the last shared date and time for a given set of users.
+        /// </summary>
+        /// <param name="userIds">List of user ids</param>
+        /// <returns>Last shared date/times for each user (or no entry if never shared)</returns>
+        public async Task<List<LastSharedDetail>> GetLastSharedOn(List<string> userIds)
+        {
+            try
+            {
+                userIds.MustNotBeNullOrEmpty("Please provide one or more user ids.");
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"timeline/lastSharedOn")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(userIds);
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<LastSharedDetail>>(responseContent, JsonOptions);
             }
             catch (FlurlHttpException flEx)
             {
