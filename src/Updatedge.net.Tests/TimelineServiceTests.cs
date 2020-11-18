@@ -116,7 +116,7 @@ namespace Updatedge.net.Tests
         {
             // Arrange           
             var start = DateTimeOffset.Now;
-            var end = DateTimeOffset.Now.AddDays(32).AddSeconds(1);
+            var end = DateTimeOffset.Now.AddDays(90).AddSeconds(1);
 
             // Assert            
             var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _timelineService.GetEventsAsync(FixtureConfig.UserId1, start, end));
@@ -125,7 +125,7 @@ namespace Updatedge.net.Tests
             var endError = ex.ExceptionDetails.Errors["end"];
             var endUtcFormatted = $"({end.ToString()})";
             var startUtcFormatted = $"({start.ToString()})";
-            Assert.True(endError.Contains(string.Format(Constants.ErrorMessages.XMustBeWithinYDaysOfZ, endUtcFormatted, 32, startUtcFormatted)));
+            Assert.True(endError.Contains(string.Format(Constants.ErrorMessages.XMustBeWithinYDaysOfZ, endUtcFormatted, 90, startUtcFormatted)));
         }
 
         [Test]
