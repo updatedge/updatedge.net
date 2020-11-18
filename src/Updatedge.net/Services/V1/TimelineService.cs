@@ -37,7 +37,7 @@ namespace Updatedge.net.Services.V1
                 var validator = new RequestValidator(
                     new IntervalValidations(start, end)
                         .StartEndSpecified()
-                        .LessThanXDays(32)
+                        .LessThanXDays(90)
                         .EndsAfterStart()
                     );
 
