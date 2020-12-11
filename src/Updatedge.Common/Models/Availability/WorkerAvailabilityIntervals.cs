@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Updatedge.Common.Models.Availability
 {
@@ -12,6 +13,11 @@ namespace Updatedge.Common.Models.Availability
         /// </summary>
         public string WorkerId { get; set; }
 
+        /// <summary>
+        /// Whether this worker last updated their events or shared
+        /// </summary>
+        public DateTimeOffset? LastTimelineUpdate { get; set; }
+       
         /// <summary>
         /// Intervals of time in which the worker is unavailable.
         /// </summary>

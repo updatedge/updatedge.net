@@ -25,7 +25,7 @@ namespace Updatedge.Common.Models.Availability
         /// <summary>
         /// When the worker last shared their availability
         /// </summary>
-        public DateTimeOffset LastShared { get; set; }
+        public DateTimeOffset? LastShared { get; set; }
     }
 
     /// <summary>
