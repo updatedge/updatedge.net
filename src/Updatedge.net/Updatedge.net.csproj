@@ -8,7 +8,7 @@
     <Description>C# wrapper for the updatedge API</Description>
     <Copyright>updatedge Ltd 2020</Copyright>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    <Version>1.0.8</Version>
+    <Version>1.0.10</Version>
   </PropertyGroup>
 
   <ItemGroup>
