@@ -37,9 +37,9 @@ namespace Updatedge.net.Services.V1
                     .SetQueryParam("api-version", ApiVersion)                                       
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(offer)
-                    .ReceiveJson<OkApiResult<string>>();
+                    .ReceiveString();
 
-                return response.Data;
+                return response;
                 
             }
             catch (FlurlHttpException flEx)
