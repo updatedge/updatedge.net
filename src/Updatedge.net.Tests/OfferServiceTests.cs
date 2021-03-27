@@ -52,7 +52,7 @@ namespace Updatedge.net.Tests
                 Data = FixtureConfig.OfferId1
             };
 
-            _httpTest.RespondWithJson(okResult);
+            _httpTest.RespondWith(FixtureConfig.OfferId1);
             
             var result = await _offerService.CreateOfferAsync(_offer);
 
