@@ -31,12 +31,12 @@ namespace Updatedge.Common.Models.Offer
         /// <summary>
         /// [optional] Longitude coordinate for the place of the offer
         /// </summary>
-        public double Longitude { get; set; }
+        public double? Longitude { get; set; }
 
         /// <summary>
         /// [optional] Latitude  coordinate for the place of the offer
         /// </summary>
-        public double Latitude { get; set; }
+        public double? Latitude { get; set; }
 
         /// <summary>
         /// The Ids of the workers to send the offer to
