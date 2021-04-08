@@ -29,6 +29,16 @@ namespace Updatedge.Common.Models.Offer
         public string LocationPlaceId { get; set; }
 
         /// <summary>
+        /// [optional] Longitude coordinate for the place of the offer
+        /// </summary>
+        public double Longitude { get; set; }
+
+        /// <summary>
+        /// [optional] Latitude  coordinate for the place of the offer
+        /// </summary>
+        public double Latitude { get; set; }
+
+        /// <summary>
         /// The Ids of the workers to send the offer to
         /// </summary>
         public IEnumerable<string> WorkerIds { get; set; }
