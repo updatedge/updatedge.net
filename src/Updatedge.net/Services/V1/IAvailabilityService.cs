@@ -26,5 +26,13 @@ namespace Updatedge.net.Services.V1
         /// <returns>A percentage value for each worker specified.</returns>
         /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<List<WorkerOverallAvailability>> GetTotalAvailability(WorkersIntervalsRequest request);
+
+        /// <summary>
+        /// Get the url to show public webpage of worker passed the the request
+        /// </summary>
+        /// <param name="request">The workers and school urn from the school metadata service</param>
+        /// <returns>string with public accessable URL</returns>
+        /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
+        Task<string> GetTeachersAvailabilityPublicUrl(WorkersAvailabilityUrlRequest request);
     }
 }
