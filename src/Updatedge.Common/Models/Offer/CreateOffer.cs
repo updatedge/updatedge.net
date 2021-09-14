@@ -47,5 +47,10 @@ namespace Updatedge.Common.Models.Offer
         /// The dates and times of the events to offer
         /// </summary>
         public IEnumerable<BaseInterval> Events { get; set; }
+        
+        /// <summary>
+        /// Whether this offer should be directly inserted into the worker's timeline
+        /// </summary>
+        public bool DirectInsertion { get; set; }
     }
 }
