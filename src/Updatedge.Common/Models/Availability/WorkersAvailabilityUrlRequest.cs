@@ -1,11 +1,14 @@
-﻿namespace Updatedge.Common.Models.Availability
+﻿using System.Collections.Generic;
+using Updatedge.Common.Models.Workers;
+
+namespace Updatedge.Common.Models.Availability
 {
     public class WorkersAvailabilityUrlRequest
     {
-        public string metadatasource { get; set; }
+        public string MetadataSource { get; set; }
 
-        public string urn { get; set; }
+        public string Urn { get; set; }
 
-        public string[] workerIds { get; set; }
+        public ICollection<WorkerRated> Workers { get; set; }
     }
 }
