@@ -89,5 +89,24 @@ namespace Updatedge.net.Services.V1
                 throw await flEx.Handle();
             }
         }
+
+        public async virtual Task<string> GetTeachersAvailabilityPublicUrl(WorkersAvailabilityUrlRequest request)
+        {
+            try
+            {
+                var result = await BaseUrl
+                    .AppendPathSegment("/token/availability/preview")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(request)
+                    .ReceiveString();
+
+                return result;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
     }
 }
