@@ -95,13 +95,13 @@ namespace Updatedge.net.Services.V1
             try
             {
                 var result = await BaseUrl
-                    .AppendPathSegment("availability/preview")
+                    .AppendPathSegment("/token/availability/preview")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(request)
-                    .ReceiveJson<OkApiResult<string>>();
+                    .ReceiveString();
 
-                return result.Data;
+                return result;
             }
             catch (FlurlHttpException flEx)
             {

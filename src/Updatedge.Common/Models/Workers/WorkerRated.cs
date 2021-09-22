@@ -7,6 +7,8 @@ namespace Updatedge.Common.Models.Workers
     {
         public int Rating { get; set; }
 
+        public string WorkerId { get; set; }
+
         public ICollection<PendingTimelineEvent> Events { get; set; }
     }
 }
