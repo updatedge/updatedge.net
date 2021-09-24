@@ -26,5 +26,10 @@ namespace Updatedge.Common.Models.TimelineEvents
         /// User Id of intended recipient
         /// </summary>
         public string RecipientUserId { get; set; }
+
+        /// <summary>
+        /// Hours worked
+        /// </summary>
+        public decimal Hours { get { return (decimal)(End - Start).TotalHours; } }
     }
 }
