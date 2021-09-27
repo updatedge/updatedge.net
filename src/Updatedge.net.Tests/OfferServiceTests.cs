@@ -318,7 +318,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWith(string.Empty, 204);
 
             // Assert
-            Assert.True(await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
+            Assert.True(await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), true));
         }
 
         [Test]
@@ -328,7 +328,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
-            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), true));
         }
 
         [Test]
@@ -338,7 +338,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
 
             // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
+            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), true));
         }
 
         [Test]
@@ -348,7 +348,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
 
             // Assert
-            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), true));
         }
 
         [Test]
@@ -358,14 +358,14 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
 
             // Assert
-            Assert.ThrowsAsync<ApiException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
+            Assert.ThrowsAsync<ApiException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), true));
         }
 
         [Test]
         public void CompleteOffer_ValueNotSpecified()
         {
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _offerService.CompleteOfferAsync(string.Empty, FixtureConfig.Fixture.Create<IEnumerable<string>>()));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _offerService.CompleteOfferAsync(string.Empty, FixtureConfig.Fixture.Create<IEnumerable<string>>(), true));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("id"));
             var startError = ex.ExceptionDetails.Errors["id"];
@@ -378,7 +378,7 @@ namespace Updatedge.net.Tests
             // Assert            
             var ex = Assert.ThrowsAsync<ApiWrapperException>(async () =>
             {
-                var result = await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, new List<string>());
+                var result = await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, new List<string>(), true);
             });
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("workerids"));
