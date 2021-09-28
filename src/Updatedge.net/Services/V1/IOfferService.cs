@@ -37,6 +37,6 @@ namespace Updatedge.net.Services.V1
         /// <param name="workerIds">The ids of the worker you want to notify as being successful.</param>
         /// <returns>204 no content</returns>
         /// <exception cref="FlurlHttpException">Thrown if the http response is not in the 2xx range.</exception>
-        Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, bool directInsert = true);
+        Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds);
     }
 }
