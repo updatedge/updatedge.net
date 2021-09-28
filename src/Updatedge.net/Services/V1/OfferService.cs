@@ -100,7 +100,7 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public async virtual Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, bool directInsert)
+        public async virtual Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds)
         {
             try
             {
@@ -117,7 +117,6 @@ namespace Updatedge.net.Services.V1
                 var response = await BaseUrl
                     .AppendPathSegment($"offer/{id}/complete")
                     .SetQueryParam("api-version", ApiVersion)
-                    .SetQueryParam("directInsert", directInsert)
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(workerIds)
                     .ReceiveString();

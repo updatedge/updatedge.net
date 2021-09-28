@@ -52,5 +52,10 @@ namespace Updatedge.Common.Models.Offer
         /// Whether this offer should be directly inserted into the worker's timeline
         /// </summary>
         public bool DirectInsertion { get; set; }
+
+        /// <summary>
+        /// Whether the offer should auto-complete on creation
+        /// </summary>
+        public bool AutoComplete { get; set; }
     }
 }
