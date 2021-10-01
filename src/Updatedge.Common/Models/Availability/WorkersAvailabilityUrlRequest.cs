@@ -6,6 +6,7 @@ namespace Updatedge.Common.Models.Availability
 {
     public class WorkersAvailabilityUrlRequest
     {
+        public string AgencyContactEmail { get; set; }
         public string MetadataSource { get; set; }
 
         public string Urn { get; set; }
