@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Updatedge.Common.Models.TimelineEvents
 {
@@ -28,8 +26,13 @@ namespace Updatedge.Common.Models.TimelineEvents
         public string RecipientUserId { get; set; }
 
         /// <summary>
+        /// Group Id
+        /// </summary>
+        public string GroupId { get; set; }
+        
+        /// <summary>
         /// Hours worked
         /// </summary>
-        public decimal Hours { get { return (decimal)(End - Start).TotalHours; } }
+        public decimal Hours => (decimal)(End - Start).TotalHours;
     }
 }
