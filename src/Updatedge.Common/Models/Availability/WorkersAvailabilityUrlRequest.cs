@@ -40,5 +40,10 @@ namespace Updatedge.Common.Models.Availability
         /// Event group summaries
         /// </summary>
         public ICollection<WorkerEventGroupResponse> Groups { get; set; }
+
+        /// <summary>
+        /// Defines terminology for hour ranges
+        /// </summary>
+        public ICollection<TimesheetTerminology> Terminology { get; set; }
     }
 }
