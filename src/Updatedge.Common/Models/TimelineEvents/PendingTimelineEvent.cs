@@ -34,5 +34,10 @@ namespace Updatedge.Common.Models.TimelineEvents
         /// Hours worked
         /// </summary>
         public decimal Hours => (decimal)(End - Start).TotalHours;
+
+        /// <summary>
+        /// OrganisationId from 3rd Party
+        /// </summary>
+        public int? OrganisationId { get; set; }
     }
 }
