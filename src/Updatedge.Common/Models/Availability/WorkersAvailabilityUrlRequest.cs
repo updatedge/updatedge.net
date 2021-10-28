@@ -12,6 +12,21 @@ namespace Updatedge.Common.Models.Availability
         public string AgencyContactEmail { get; set; }
 
         /// <summary>
+        /// Agency contact full name
+        /// </summary>
+        public string AgencyContactFullName { get; set; }
+
+        /// <summary>
+        /// The email address the timesheet will be sent to, to allow recipts to be sent.
+        /// </summary>
+        public string RecipientEmail { get; set; }
+
+        /// <summary>
+        /// Recipient full name
+        /// </summary>
+        public string RecipientFullName { get; set; }
+
+        /// <summary>
         /// Source of metadata
         /// </summary>
         public string MetadataSource { get; set; }

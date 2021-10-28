@@ -16,5 +16,10 @@
         /// Name of terminology
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Whether to merge all events for a given day together when rendering
+        /// </summary>
+        public bool Merge { get; set; }
     }
 }
