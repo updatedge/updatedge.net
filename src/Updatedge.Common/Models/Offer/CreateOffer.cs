@@ -14,6 +14,16 @@ namespace Updatedge.Common.Models.Offer
         public string CreatedByUserId { get; set; }
 
         /// <summary>
+        /// Optional organisation to which <see cref="CreatedByUserId"/> belongs to.
+        /// </summary>
+        public string CreatedByOrgId { get; set; }
+
+        /// <summary>
+        /// Value used to identify the hirer from any external system calling this api
+        /// </summary>
+        public string ExternalHirerId { get; set; }
+
+        /// <summary>
         /// Title of the offer
         /// </summary>
         public string Title { get; set; }
