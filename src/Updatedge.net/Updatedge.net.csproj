@@ -6,9 +6,17 @@
     <Company>updatedge Ltd</Company>
     <Product>updatedge API</Product>
     <Description>C# wrapper for the updatedge API</Description>
-    <Copyright>updatedge Ltd 2020</Copyright>
+    <Copyright>updatedge Ltd 2022</Copyright>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <Version>1.0.21</Version>
+    <PackageIcon>ue.png</PackageIcon>
+    <PackageProjectUrl>https://api.updatedge.com</PackageProjectUrl>
+    <Authors>steve.whitaker.ue</Authors>
+    <RepositoryUrl>https://github.com/updatedge/updatedge.net</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>api, wrapper, updatedge, availability, schedule</PackageTags>
+    <PackageReleaseNotes>No information</PackageReleaseNotes>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -28,6 +36,16 @@
       <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
       <IncludeAssets>Updatedge.Common.dll</IncludeAssets>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Update="ue.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
   <Target DependsOnTargets="ResolveReferences" Name="CopyProjectReferencesToPackage">
     <ItemGroup>
