@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Flurl;
 using Flurl.Http;
 using Updatedge.Common.Models.Availability;
 using Updatedge.net.Configuration;
-using Updatedge.net.Services.V1;
 
-namespace Updatedge.net.Services
+namespace Updatedge.net.Services.V1
 {
     public class ScheduleService : BaseService, IScheduleService
     {
