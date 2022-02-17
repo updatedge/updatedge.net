@@ -7,6 +7,11 @@ namespace Updatedge.Common.Models.Availability
     public class WorkersAvailabilityUrlRequest
     {
         /// <summary>
+        /// Agency's unique id for hirer
+        /// </summary>
+        public string ExternalHirerId { get; set; }
+
+        /// <summary>
         /// Email to send timesheet response to
         /// </summary>
         public string AgencyContactEmail { get; set; }
