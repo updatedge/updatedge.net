@@ -45,6 +45,16 @@ namespace Updatedge.Common.Models.Availability
             /// Rating
             /// </summary>
             public int Rating { get; set; }
+
+            /// <summary>
+            /// First name
+            /// </summary>
+            public string FirstName { get; set; }
+
+            /// <summary>
+            /// Last name
+            /// </summary>
+            public string LastName { get; set; }
         }
     }
 }
