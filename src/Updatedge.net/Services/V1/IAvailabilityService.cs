@@ -34,5 +34,13 @@ namespace Updatedge.net.Services.V1
         /// <returns>string with public accessable URL</returns>
         /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<string> GetTeachersAvailabilityPublicUrl(WorkersAvailabilityUrlRequest request);
+
+        /// <summary>
+        /// Get a list of workers available for a interval range
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception> 
+        Task<AvailabilityForRangeResponse> GetAvailabilityForRange(AvailabilityForRangeRequest request);
     }
 }

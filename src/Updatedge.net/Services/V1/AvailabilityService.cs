@@ -108,5 +108,34 @@ namespace Updatedge.net.Services.V1
                 throw await flEx.Handle();
             }
         }
+
+        public async virtual Task<AvailabilityForRangeResponse> GetAvailabilityForRange(AvailabilityForRangeRequest request)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                   new IntervalValidations(request.StartDate, request.EndDate).StartEndSpecified().LessThanXHours(24),
+                   new WorkerIdValidations(request.WorkerIds).ContainsWorkerIds());
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                // ------------------------------------------
+
+                var result = await BaseUrl
+                    .AppendPathSegment("/availability/getAvailabilityForRange")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(request)
+                    .ReceiveJson<OkApiResult<AvailabilityForRangeResponse>>();
+
+                return result.Data;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
     }
 }
