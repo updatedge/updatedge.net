@@ -6,7 +6,7 @@ using Updatedge.Common.Models.Availability;
 
 namespace Updatedge.net.Services.V1
 {
-    internal interface IScheduleService
+    public interface IScheduleService
     {
         Task<string> GetTeachersAvailabilityPublicUrl(HirerScheduleUrlRequest request);
     }
