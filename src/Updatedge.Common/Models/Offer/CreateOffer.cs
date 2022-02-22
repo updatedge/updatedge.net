@@ -19,9 +19,24 @@ namespace Updatedge.Common.Models.Offer
         public string CreatedByOrgId { get; set; }
 
         /// <summary>
-        /// Value used to identify the hirer from any external system calling this api
+        /// Value used to identify the hirer from calling system
         /// </summary>
         public string ExternalHirerId { get; set; }
+
+        /// <summary>
+        /// Name used to identify hirer from calling system
+        /// </summary>
+        public string ExternalHirerName { get; set; }
+
+        /// <summary>
+        /// Id used to identify subject from calling system
+        /// </summary>
+        public string ExternalSubjectId { get; set; }
+
+        /// <summary>
+        /// Subject name used to identify subject from calling system
+        /// </summary>
+        public string ExternalSubjectName { get; set; }
 
         /// <summary>
         /// Title of the offer
