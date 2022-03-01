@@ -20,5 +20,7 @@ namespace Updatedge.Common.Models.Availability
     public class AvailabilityForRangeWorker
     {
         public string WorkerId { get; set; }
+        public DateTimeOffset? LastTimelineUpdate { get; set; }
+        public int TotalMinutesAvailable { get; set; }
     }
 }
