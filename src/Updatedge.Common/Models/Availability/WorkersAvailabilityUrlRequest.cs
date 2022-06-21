@@ -27,9 +27,14 @@ namespace Updatedge.Common.Models.Availability
         public string RecipientEmail { get; set; }
 
         /// <summary>
-        /// Recipient full name
+        /// Recipient's first name
         /// </summary>
-        public string RecipientFullName { get; set; }
+        public string RecipientFirstName { get; set; }
+
+        /// <summary>
+        /// Recipient's last name
+        /// </summary>
+        public string RecipientLastName { get; set; }
 
         /// <summary>
         /// Source of metadata
