@@ -3,40 +3,55 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
-trigger:
-  branches:
-    include:
-    - '*'
-
-pool:
-  vmImage: 'windows-latest'
+parameters:
+- name: buildpool
+  displayName: Agent Pool
+  type: string
+  default: Azure Pipelines (windows-latest)
+  values:
+  - Azure Pipelines (windows-latest)
+  - Self-Hosted Windows Clients
 
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: '**/*.csproj'
+trigger:
+  branches:
+    include:
+    - 'development'
+    - 'master'
 
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    projects: '**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+jobs:
+- job: 'Build'
+  pool:
+    ${{ if eq(parameters.buildpool, 'Azure Pipelines (windows-latest)') }}:
+      vmImage: 'windows-latest'
+    ${{ if eq(parameters.buildpool, 'Self-Hosted Windows Clients') }}:
+      name: Self-Hosted Windows Clients
 
-- task: CopyFiles@2
-  displayName: 'Copy Files'
-  inputs:
-    SourceFolder: '$(Build.ArtifactStagingDirectory)'
-    Contents: '**\*.nupkg'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)\Package'
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\Package'
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      projects: '**/*.csproj'
+      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files'
+    inputs:
+      SourceFolder: '$(Build.ArtifactStagingDirectory)'
+      Contents: '**\*.nupkg'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\Package'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Package'
