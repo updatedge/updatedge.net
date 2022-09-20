@@ -44,6 +44,11 @@ namespace Updatedge.Common.Models.Offer
         public string Title { get; set; }
 
         /// <summary>
+        /// The domain name of the organisation in order to enable logo lookup
+        /// </summary>
+        public string OrganisationUrl { get; set; }
+
+        /// <summary>
         /// [optional] Details of the offer
         /// </summary>
         public string Details { get; set; }
