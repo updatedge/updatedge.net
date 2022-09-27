@@ -15,7 +15,7 @@ namespace Updatedge.net.Services.V1
         public OfferService(IUpdatedgeConfiguration config) : base(config)
         {
         }
-                
+
         public async virtual Task<string> CreateOfferAsync(CreateOffer offer)
         {
             try
@@ -34,20 +34,20 @@ namespace Updatedge.net.Services.V1
 
                 var response = await BaseUrl
                     .AppendPathSegment("offer")
-                    .SetQueryParam("api-version", ApiVersion)                                       
+                    .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(offer)
                     .ReceiveString();
 
                 return response;
-                
+
             }
             catch (FlurlHttpException flEx)
             {
                 throw await flEx.Handle();
             }
         }
-                
+
         public async virtual Task<Offer> GetOfferAsync(string id)
         {
             try
@@ -63,9 +63,9 @@ namespace Updatedge.net.Services.V1
 
                 return await BaseUrl
                     .AppendPathSegment($"offer/{id}")
-                    .SetQueryParam("api-version", ApiVersion)                    
+                    .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
-                    .GetJsonAsync<Offer>();                
+                    .GetJsonAsync<Offer>();
             }
             catch (FlurlHttpException flEx)
             {
@@ -91,8 +91,38 @@ namespace Updatedge.net.Services.V1
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .GetAsync();
-                
+
                 return response.IsSuccessStatusCode;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public async virtual Task<bool> AlterOfferAsync(string id, AlterOffer alterations)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                     new WorkerIdValidations(alterations.WorkerIds).ContainsWorkerIds(),
+                     new StringValidation(id, nameof(id)).IsNotNullOrEmpty());
+
+                // ------------------------------------------
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{id}")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PutJsonAsync(alterations)
+                    .ReceiveString();
+
+                return true;
+
             }
             catch (FlurlHttpException flEx)
             {
@@ -108,7 +138,7 @@ namespace Updatedge.net.Services.V1
 
                 var validator = new RequestValidator(
                     new WorkerIdValidations(workerIds).ContainsWorkerIds(),
-                    new StringValidation(id, nameof(id)).IsNotNullOrEmpty());                
+                    new StringValidation(id, nameof(id)).IsNotNullOrEmpty());
 
                 // ------------------------------------------
 
@@ -121,7 +151,7 @@ namespace Updatedge.net.Services.V1
                     .PostJsonAsync(workerIds)
                     .ReceiveString();
 
-                return true; 
+                return true;
 
             }
             catch (FlurlHttpException flEx)
