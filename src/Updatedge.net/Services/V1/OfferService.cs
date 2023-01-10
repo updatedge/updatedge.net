@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Updatedge.Common.Models.Offer;
 using Updatedge.Common.Validation;
 using Updatedge.net.Configuration;
-using Updatedge.net.Entities.V1;
 using Updatedge.net.Exceptions;
 
 namespace Updatedge.net.Services.V1
@@ -73,7 +72,7 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public async virtual Task<bool> WithdrawOfferAsync(string id)
+        public virtual async Task<bool> WithdrawOfferAsync(string id)
         {
             try
             {
@@ -100,7 +99,35 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public async virtual Task<bool> AlterOfferAsync(string id, AlterOffer alterations)
+
+        public virtual async Task<bool> WithdrawOfferFromWorkerAsync(string id, string workerId)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                    new StringValidation(id, nameof(id)).IsNotNullOrEmpty());
+
+                // ------------------------------------------
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{id}/withdraw/{workerId}")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .GetAsync();
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public virtual async Task<bool> AlterOfferAsync(string id, AlterOffer alterations)
         {
             try
             {

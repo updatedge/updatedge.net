@@ -47,5 +47,7 @@ namespace Updatedge.net.Services.V1
         /// <returns>204 no content</returns>
         /// <exception cref="FlurlHttpException">Thrown if the http response is not in the 2xx range.</exception>
         Task<bool> AlterOfferAsync(string id, AlterOffer alterations);
+
+        Task<bool> WithdrawOfferFromWorkerAsync(string id, string workerId);
     }
 }
