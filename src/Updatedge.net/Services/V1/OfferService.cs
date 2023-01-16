@@ -86,10 +86,39 @@ namespace Updatedge.net.Services.V1
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
                 var response = await BaseUrl
-                    .AppendPathSegment($"offer/{id}")
+                    .AppendPathSegment($"offer/{id}/withdraw")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .GetAsync();
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public virtual async Task<bool> WithdrawOfferAsync(OfferWithdraw request)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                     new StringValidation(request.Id, nameof(request.Id)).IsNotNullOrEmpty(),
+                     new StringValidation(request.Reason, nameof(request.Reason)).IsNotNullOrEmpty()
+                );
+
+                // ------------------------------------------
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{request.Id}/withdraw")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(request);
 
                 return response.IsSuccessStatusCode;
             }
