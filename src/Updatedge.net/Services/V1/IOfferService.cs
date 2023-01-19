@@ -51,5 +51,6 @@ namespace Updatedge.net.Services.V1
         Task<bool> WithdrawOfferFromWorkerAsync(string id, string workerId);
 
         Task<bool> WithdrawOfferAsync(OfferWithdraw request);
+        Task<bool> DeleteEventFromOfferAsync(EventDelete request);
     }
 }
