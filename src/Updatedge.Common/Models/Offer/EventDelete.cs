@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Updatedge.Common.Models.Offer
 {
-    public class EventsDelete
+    public class EventDelete
     {
         public string OfferId { get; set; }
         public string UserId { get; set; }

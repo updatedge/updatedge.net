@@ -159,7 +159,7 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public virtual async Task<bool> DeleteMultipleEventsFromOfferAsync(List<EventsDelete> request)
+        public virtual async Task<bool> DeleteEventsFromOfferAsync(List<EventDelete> request)
         {
             try
             {
