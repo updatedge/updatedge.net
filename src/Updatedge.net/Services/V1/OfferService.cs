@@ -164,7 +164,7 @@ namespace Updatedge.net.Services.V1
             try
             {
                 var response = await BaseUrl
-                    .AppendPathSegment($"offer/{request.First().OfferId}/event")
+                    .AppendPathSegment($"offer/{request.First().OfferId}/events")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .SendJsonAsync(HttpMethod.Delete, request);
