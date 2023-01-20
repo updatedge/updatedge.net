@@ -1,6 +1,7 @@
 ﻿using Flurl;
 using Flurl.Http;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Updatedge.Common.Models.Offer;
@@ -146,6 +147,24 @@ namespace Updatedge.net.Services.V1
 
                 var response = await BaseUrl
                     .AppendPathSegment($"offer/{request.OfferId}/event")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .SendJsonAsync(HttpMethod.Delete, request);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public virtual async Task<bool> DeleteMultipleEventsFromOfferAsync(List<EventsDelete> request)
+        {
+            try
+            {
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{request.First().OfferId}/event")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .SendJsonAsync(HttpMethod.Delete, request);
