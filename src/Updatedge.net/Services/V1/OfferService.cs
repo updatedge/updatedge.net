@@ -1,6 +1,8 @@
 ﻿using Flurl;
 using Flurl.Http;
 using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Updatedge.Common.Models.Offer;
 using Updatedge.Common.Validation;
@@ -86,10 +88,86 @@ namespace Updatedge.net.Services.V1
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
                 var response = await BaseUrl
-                    .AppendPathSegment($"offer/{id}")
+                    .AppendPathSegment($"offer/{id}/withdraw")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .GetAsync();
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public virtual async Task<bool> WithdrawOfferAsync(OfferWithdraw request)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                     new StringValidation(request.Id, nameof(request.Id)).IsNotNullOrEmpty(),
+                     new StringValidation(request.Reason, nameof(request.Reason)).IsNotNullOrEmpty()
+                );
+
+                // ------------------------------------------
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{request.Id}/withdraw")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(request);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public virtual async Task<bool> DeleteEventFromOfferAsync(EventDelete request)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                    new StringValidation(request.OfferId, nameof(request.OfferId)).IsNotNullOrEmpty(),
+                    new StringValidation(request.UserId, nameof(request.UserId)).IsNotNullOrEmpty()
+                );
+
+                // ------------------------------------------
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{request.OfferId}/event")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .SendJsonAsync(HttpMethod.Delete, request);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public virtual async Task<bool> DeleteEventsFromOfferAsync(List<EventDelete> request)
+        {
+            try
+            {
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{request.First().OfferId}/events")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .SendJsonAsync(HttpMethod.Delete, request);
 
                 return response.IsSuccessStatusCode;
             }
