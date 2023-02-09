@@ -1,8 +1,6 @@
-﻿using Flurl.Http;
-using Light.GuardClauses;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Light.GuardClauses;
+using System.Text.Json;
+using Updatedge.net.Configuration;
 
 namespace Updatedge.net.Services.V1
 {
@@ -15,11 +13,17 @@ namespace Updatedge.net.Services.V1
         protected readonly string ApiVersion = "1.0";
 
         protected readonly string ApiKeyName = "X-UE-Api-Subscription-Key";
+        protected readonly JsonSerializerOptions JsonOptions;
 
-        public BaseService(string baseUrl, string apiKey)
+        public BaseService(IUpdatedgeConfiguration config)
         {
-            BaseUrl = baseUrl.MustNotBeNullOrEmpty(nameof(baseUrl));
-            ApiKey = apiKey.MustNotBeNullOrEmpty(nameof(apiKey));
+            BaseUrl = config.BaseUrl.MustNotBeNullOrEmpty(nameof(config.BaseUrl));
+            ApiKey = config.ApiKey.MustNotBeNullOrEmpty(nameof(config.ApiKey));
+
+            JsonOptions = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true,
+            };
         }
     }
 }

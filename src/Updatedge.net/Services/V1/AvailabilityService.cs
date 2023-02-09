@@ -3,24 +3,41 @@ using Flurl.Http;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Updatedge.Common.Models.Availability;
+using Updatedge.Common.Validation;
+using Updatedge.net.Configuration;
 using Updatedge.net.Entities.V1;
-using Updatedge.net.Entities.V1.Availability;
 using Updatedge.net.Exceptions;
 
 namespace Updatedge.net.Services.V1
 {
-    public class AvailabilityService : BaseService
+    public class AvailabilityService : BaseService, IAvailabilityService
     {
-        public AvailabilityService(string baseUrl, string apiKey) : base(baseUrl, apiKey)
+        public AvailabilityService(IUpdatedgeConfiguration config) : base(config)
         {
         }
 
-        public async virtual Task<OkApiResult<List<WorkerAvailabilityIntervals>>> GetAvailabilityDailyAsync
+        public async virtual Task<List<WorkerAvailabilityIntervals>> GetAvailabilityDailyAsync
             (DateTimeOffset start, DateTimeOffset end, int daysToRepeat, IEnumerable<string> workerIds)
         {
-            try
+            try 
             {
-                return await BaseUrl
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                    new IntervalValidations(start, end)
+                        .StartEndSpecified()
+                        .LessThanXHours(24)
+                        .EndsAfterStart(),
+                    new WorkerIdValidations(workerIds).ContainsWorkerIds(),
+                    new NumericValidations(daysToRepeat).NumberIsBetweenInclusive(0, 31, nameof(daysToRepeat))
+                    );
+                                
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                // ------------------------------------------
+                
+                var result =  await BaseUrl
                     .AppendPathSegment("availability/getperdailyinterval")
                     .SetQueryParam("api-version", ApiVersion)
                     .SetQueryParam("start", start.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))
@@ -29,6 +46,8 @@ namespace Updatedge.net.Services.V1
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(workerIds)
                     .ReceiveJson<OkApiResult<List<WorkerAvailabilityIntervals>>>();
+
+                return result.Data;
             }
             catch (FlurlHttpException flEx)
             {
@@ -36,20 +55,85 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public async virtual Task<OkApiResult<List<WorkerTotalAvailability>>> GetTotalAvailability(TotalAvailabilityRequest request)
+        public async virtual Task<List<WorkerOverallAvailability>> GetTotalAvailability(WorkersIntervalsRequest request)
         {
             try
             {
-               return await BaseUrl
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                    new IntervalValidations(request.Intervals, nameof(request.WorkerIds))
+                        .StartEndSpecified()
+                        .ContainsIntervals()
+                        .ContainsNoOverlappingIntervals()
+                        .EndsAfterStart()
+                        .LessThanXHours(24),
+                    new WorkerIdValidations(request.WorkerIds).ContainsWorkerIds()
+                    );
+                                
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                // ------------------------------------------
+
+                var result =  await BaseUrl
                     .AppendPathSegment("availability/getoverallacrossintervals")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(request)
-                    .ReceiveJson<OkApiResult<List<WorkerTotalAvailability>>>();
+                    .ReceiveJson<OkApiResult<List<WorkerOverallAvailability>>>();
+
+                return result.Data;
+            }
+            catch (FlurlHttpException flEx)
+            {                
+                throw await flEx.Handle();
+            }
+        }
+
+        public async virtual Task<string> GetTeachersAvailabilityPublicUrl(WorkersAvailabilityUrlRequest request)
+        {
+            try
+            {
+                var result = await BaseUrl
+                    .AppendPathSegment("/token/availability/preview")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(request)
+                    .ReceiveString();
+
+                return result;
             }
             catch (FlurlHttpException flEx)
             {
-                throw flEx;
+                throw await flEx.Handle();
+            }
+        }
+
+        public async virtual Task<AvailabilityForRangeResponse> GetAvailabilityForRange(AvailabilityForRangeRequest request)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                   new IntervalValidations(request.StartDate, request.EndDate).StartEndSpecified().LessThanXHours(24),
+                   new WorkerIdValidations(request.WorkerIds).ContainsWorkerIds());
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                // ------------------------------------------
+
+                var result = await BaseUrl
+                    .AppendPathSegment("/availability/getAvailabilityForRange")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(request)
+                    .ReceiveJson<OkApiResult<AvailabilityForRangeResponse>>();
+
+                return result.Data;
+            }
+            catch (FlurlHttpException flEx)
+            {
                 throw await flEx.Handle();
             }
         }

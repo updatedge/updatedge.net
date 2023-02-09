@@ -1,10 +1,9 @@
 ﻿using Flurl.Http;
 using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using Updatedge.net.Exceptions;
+using System.Text.Json;
+using Updatedge.Common.Models;
 
 namespace Updatedge.net
 {
@@ -14,10 +13,33 @@ namespace Updatedge.net
         {
             var bodyContent = await exception.Call.Response.Content.ReadAsStringAsync();
 
-            // nothing found
+            var options = new JsonSerializerOptions();
+
+            options.PropertyNameCaseInsensitive = true;
+            var apiProblemDetails = JsonSerializer.Deserialize<ApiProblemDetails>(bodyContent, options);
+
+            // Bad Request
             if (exception.Call.HttpStatus == System.Net.HttpStatusCode.BadRequest)
+            {                
+                return new InvalidApiRequestException(apiProblemDetails.Detail);
+            }
+
+            // forbidden
+            if (exception.Call.HttpStatus == System.Net.HttpStatusCode.Forbidden)
+            {                
+                return new ForbiddenApiRequestException(apiProblemDetails.Detail);
+            }
+
+            // too many requests
+            if (exception.Call.HttpStatus.ToString().ToLower() == "toomanyrequests")
             {
-                return new InvalidApiRequestException(bodyContent);
+                return new ThrottledApiRequestException(apiProblemDetails.Detail);
+            }
+
+            // unauthorized
+            if (exception.Call.HttpStatus == System.Net.HttpStatusCode.Unauthorized)
+            {
+                return new UnauthorizedApiRequestException(apiProblemDetails.Detail);
             }
 
             return new ApiException(bodyContent);
