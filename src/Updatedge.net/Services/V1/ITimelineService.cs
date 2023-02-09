@@ -47,6 +47,13 @@ namespace Updatedge.net.Services.V1
         /// <returns>Last shared date/times for each user (or no entry if never shared)</returns>
         Task<List<LastSharedDetail>> GetLastSharedOn(List<string> userIds);
 
-
+        /// <summary>
+        /// Gets a worker's events with overlaps merged and flattened
+        /// </summary>
+        /// <param name="workerId">Id of worker</param>
+        /// <param name="start">start of period</param>
+        /// <param name="end">end of period</param>
+        /// <returns>A a list of timeline events.</returns>        
+        Task<List<FlattenedTimelineEvent>> GetFlattenedEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end);
     }
 }
