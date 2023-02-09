@@ -3,68 +3,55 @@
 # Add steps that publish symbols, save build artifacts, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/apps/windows/dot-net
 
-trigger:
-  branches:
-    include:
-    - '*'
+parameters:
+- name: buildpool
+  displayName: Agent Pool
+  type: string
+  default: Azure Pipelines (windows-latest)
+  values:
+  - Azure Pipelines (windows-latest)
+  - Self-Hosted Windows Clients
 
-pool:
-  vmImage: 'windows-latest'
-
-variables:  
+variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
-steps:
-- task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: '**/*.csproj'
-    
-- task: Assembly-Info-NetCore@2
-  inputs:
-    Path: '$(Build.SourcesDirectory)'
-    FileNames: '**/*.csproj'
-    InsertAttributes: false
-    FileEncoding: 'auto'
-    WriteBOM: false
-    GeneratePackageOnBuild: true
-    PackageId: 'Updatedge.net'
-    Authors: 'updatedge Ltd'
-    Company: 'updatedge Ltd'
-    Product: 'updatedge API'
-    Description: '.net wrapper for updatedge API'
-    Copyright: 'updatedge Ltd 2020'
-    VersionNumber: '$(Build.BuildNumber)'
-    FileVersionNumber: '$(Build.BuildNumber)'
-    PackageVersion: '$(packageVersion)'
-    LogLevel: 'verbose'
-    FailOnWarning: false
-    DisableTelemetry: false
+trigger:
+  branches:
+    include:
+    - 'development'
+    - 'master'
 
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    projects: '**/*.csproj'
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+jobs:
+- job: 'Build'
+  pool:
+    ${{ if eq(parameters.buildpool, 'Azure Pipelines (windows-latest)') }}:
+      vmImage: 'windows-latest'
+    ${{ if eq(parameters.buildpool, 'Self-Hosted Windows Clients') }}:
+      name: Self-Hosted Windows Clients
 
-- task: DotNetCoreCLI@2
-  displayName: Test with Code coverage
-  inputs:
-    command: test
-    projects: '**/*Tests/*.csproj'
-    arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
+  steps:
+  - task: DotNetCoreCLI@2
+    displayName: Restore
+    inputs:
+      command: restore
+      projects: '**/*.csproj'
 
-- task: CopyFiles@2
-  displayName: 'Copy Files'
-  inputs:
-    SourceFolder: '$(Build.ArtifactStagingDirectory)'
-    Contents: '**\*.nupkg'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)\Package'
+  - task: DotNetCoreCLI@2
+    displayName: Build
+    inputs:
+      projects: '**/*.csproj'
+      arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact'
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)\Package'
+  - task: CopyFiles@2
+    displayName: 'Copy Files'
+    inputs:
+      SourceFolder: '$(Build.ArtifactStagingDirectory)'
+      Contents: '**\*.nupkg'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)\Package'
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact'
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)\Package'
