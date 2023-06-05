@@ -101,7 +101,9 @@ namespace Updatedge.Common.Models.Offer
 
             public string WebsiteUrl { get; set; }
 
-            public object EmailDomain { get; set; }
+            public string EmailDomain { get; set; }
+
+            public string Base64Logo { get; set; }
 
             public string LocationPlaceName { get; set; }
 
