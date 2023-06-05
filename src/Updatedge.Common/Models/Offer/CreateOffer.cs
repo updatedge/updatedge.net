@@ -87,5 +87,41 @@ namespace Updatedge.Common.Models.Offer
         /// Whether the offer should auto-complete on creation
         /// </summary>
         public bool AutoComplete { get; set; }
+
+        /// <summary>
+        /// Details of the organisation the offer is being made on behalf of
+        /// </summary>
+        public CreateOfferExternalOrganisationDetails ExternalOrganisationDetails { get; set; }
+
+        public class CreateOfferExternalOrganisationDetails
+        {
+            public string ExternalOrganisationId { get; set; }
+
+            public string Name { get; set; }
+
+            public string WebsiteUrl { get; set; }
+
+            public object EmailDomain { get; set; }
+
+            public string LocationPlaceName { get; set; }
+
+            public string Address1 { get; set; }
+
+            public string Address2 { get; set; }
+
+            public string Address3 { get; set; }
+
+            public string Town { get; set; }
+
+            public string County { get; set; }
+
+            public string PostCode { get; set; }
+
+            public string CountryCode { get; set; }
+
+            public float Latitude { get; set; }
+
+            public float Longitude { get; set; }
+        }
     }
 }
