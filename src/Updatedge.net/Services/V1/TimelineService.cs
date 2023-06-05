@@ -3,10 +3,8 @@ using Flurl.Http;
 using Light.GuardClauses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Updatedge.Common.Models.TimelineEvents;
 using Updatedge.Common.Validation;
 using Updatedge.net.Configuration;
@@ -26,6 +24,41 @@ namespace Updatedge.net.Services.V1
         /// <param name="config">Updatedge configuration setttings</param>
         public TimelineService(IUpdatedgeConfiguration config) : base(config)
         {
+        }
+
+        public virtual async Task<List<FlattenedTimelineEvent>> GetFlattenedEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                    new IntervalValidations(start, end)
+                        .StartEndSpecified()
+                        .LessThanXDays(90)
+                        .EndsAfterStart()
+                );
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"timeline/flattened/{workerId}")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .SetQueryParam("start", start.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))
+                    .SetQueryParam("end", end.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .GetAsync();
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                    return new List<FlattenedTimelineEvent>();
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<FlattenedTimelineEvent>>(responseContent, JsonOptions);
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
         }
 
         public virtual async Task<List<TimelineEvent>> GetEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end)
