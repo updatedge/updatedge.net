@@ -69,6 +69,11 @@ namespace Updatedge.Common.Models.Offer
         public double? Latitude { get; set; }
 
         /// <summary>
+        /// Financial details related to the offer
+        /// </summary>
+        public CreateOfferFinancialDetails FinancialDetails { get; set; }
+
+        /// <summary>
         /// The Ids of the workers to send the offer to
         /// </summary>
         public IEnumerable<string> WorkerIds { get; set; }
@@ -88,10 +93,19 @@ namespace Updatedge.Common.Models.Offer
         /// </summary>
         public bool AutoComplete { get; set; }
 
+        public class CreateOfferFinancialDetails
+        {
+            /// <summary>
+            /// The gross pay should the offer be confirmed
+            /// </summary>
+            public decimal TotalGrossPay { get; set; }
+        }
+
         /// <summary>
         /// Details of the organisation the offer is being made on behalf of
         /// </summary>
         public CreateOfferExternalOrganisationDetails ExternalOrganisationDetails { get; set; }
+
 
         public class CreateOfferExternalOrganisationDetails
         {
