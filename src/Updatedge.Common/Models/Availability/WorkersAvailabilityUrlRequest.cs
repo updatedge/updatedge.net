@@ -12,6 +12,11 @@ namespace Updatedge.Common.Models.Availability
         public string ExternalHirerId { get; set; }
 
         /// <summary>
+        /// Agency's name for hirer
+        /// </summary>
+        public string ExternalOrganisationName { get; set; }
+
+        /// <summary>
         /// Email to send timesheet response to
         /// </summary>
         public string AgencyContactEmail { get; set; }
