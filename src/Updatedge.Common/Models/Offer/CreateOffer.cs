@@ -53,6 +53,30 @@ namespace Updatedge.Common.Models.Offer
         public double? Latitude { get; set; }
 
         /// <summary>
+        /// Value used to identify the hirer from calling system
+        /// </summary>
+        [Obsolete("Moved to OnBehalfOf")]
+        public string ExternalHirerId { get; set; }
+
+        /// <summary>
+        /// Name used to identify hirer from calling system
+        /// </summary>
+        [Obsolete("Moved to OnBehalfOf")]
+        public string ExternalHirerName { get; set; }
+
+        /// <summary>
+        /// Id used to identify subject from calling system
+        /// </summary>
+        [Obsolete("Moved to OnBehalfOf")]
+        public string ExternalSubjectId { get; set; }
+
+        /// <summary>
+        /// Subject name used to identify subject from calling system
+        /// </summary>
+        [Obsolete("Moved to OnBehalfOf")]
+        public string ExternalSubjectName { get; set; }
+
+        /// <summary>
         /// The Ids of the workers to send the offer to
         /// </summary>
         public IEnumerable<string> WorkerIds { get; set; }
