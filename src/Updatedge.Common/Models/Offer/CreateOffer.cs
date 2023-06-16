@@ -126,9 +126,9 @@ namespace Updatedge.Common.Models.Offer
 
             public string CountryCode { get; set; }
 
-            public float? Latitude { get; set; }
+            public double? Latitude { get; set; }
 
-            public float? Longitude { get; set; }
+            public double? Longitude { get; set; }
         }
 
         public class CreateOfferFinancialDetails
