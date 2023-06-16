@@ -27,6 +27,7 @@ namespace Updatedge.Common.Models.Offer
         /// <summary>
         /// The domain name of the organisation in order to enable logo lookup
         /// </summary>
+        [Obsolete("Moved to OnBehalfOf")]
         public string OrganisationUrl { get; set; }
 
         /// <summary>
@@ -142,8 +143,6 @@ namespace Updatedge.Common.Models.Offer
             /// Subject name used to identify subject from calling system
             /// </summary>
             public string ExternalSubjectName { get; set; }
-
-            public string Name { get; set; }
 
             public string WebsiteUrl { get; set; }
 
