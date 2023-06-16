@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Updatedge.Common.Models.Availability;
 
 namespace Updatedge.Common.Models.Offer
@@ -17,26 +18,6 @@ namespace Updatedge.Common.Models.Offer
         /// Optional organisation to which <see cref="CreatedByUserId"/> belongs to.
         /// </summary>
         public string CreatedByOrgId { get; set; }
-
-        /// <summary>
-        /// Value used to identify the hirer from calling system
-        /// </summary>
-        public string ExternalHirerId { get; set; }
-
-        /// <summary>
-        /// Name used to identify hirer from calling system
-        /// </summary>
-        public string ExternalHirerName { get; set; }
-
-        /// <summary>
-        /// Id used to identify subject from calling system
-        /// </summary>
-        public string ExternalSubjectId { get; set; }
-
-        /// <summary>
-        /// Subject name used to identify subject from calling system
-        /// </summary>
-        public string ExternalSubjectName { get; set; }
 
         /// <summary>
         /// Title of the offer
@@ -61,17 +42,15 @@ namespace Updatedge.Common.Models.Offer
         /// <summary>
         /// [optional] Longitude coordinate for the place of the offer
         /// </summary>
+
+        [Obsolete("Moved to Address")]
         public double? Longitude { get; set; }
 
         /// <summary>
         /// [optional] Latitude  coordinate for the place of the offer
         /// </summary>
+        [Obsolete("Moved to Address")]
         public double? Latitude { get; set; }
-
-        /// <summary>
-        /// Financial details related to the offer
-        /// </summary>
-        public CreateOfferFinancialDetails FinancialDetails { get; set; }
 
         /// <summary>
         /// The Ids of the workers to send the offer to
@@ -82,7 +61,12 @@ namespace Updatedge.Common.Models.Offer
         /// The dates and times of the events to offer
         /// </summary>
         public IEnumerable<BaseInterval> Events { get; set; }
-        
+
+        /// <summary>
+        /// Adds a custom reference identifier to the offer (in the context of the creating org)
+        /// </summary>
+        public string Reference { get; set; }
+
         /// <summary>
         /// Whether this offer should be directly inserted into the worker's timeline
         /// </summary>
@@ -93,23 +77,47 @@ namespace Updatedge.Common.Models.Offer
         /// </summary>
         public bool AutoComplete { get; set; }
 
-        public class CreateOfferFinancialDetails
-        {
-            /// <summary>
-            /// The gross pay should the offer be confirmed
-            /// </summary>
-            public decimal TotalGrossPay { get; set; }
-        }
+        /// <summary>
+        /// The date when the offer will be auto-declined
+        /// </summary>
+        public DateTimeOffset? Deadline { get; set; }
+
+        /// <summary>
+        /// Where the booking takes place
+        /// </summary>
+        public CreateOfferLocation Address { get; set; }
 
         /// <summary>
         /// Details of the organisation the offer is being made on behalf of
         /// </summary>
-        public CreateOfferExternalOrganisationDetails ExternalOrganisationDetails { get; set; }
+        public CreateOfferOnBehalfOfDetails OnBehalfOf { get; set; }
 
+        /// <summary>
+        /// Financial details related to the offer
+        /// </summary>
+        public CreateOfferFinancialDetails FinancialDetails { get; set; }
 
-        public class CreateOfferExternalOrganisationDetails
+        public class CreateOfferOnBehalfOfDetails
         {
+            /// <summary>
+            /// Value the external system uses as an id for the hirer
+            /// </summary>
             public string ExternalOrganisationId { get; set; }
+
+            /// <summary>
+            /// Value the external system uses as a name for the hirer
+            /// </summary>
+            public string ExternalOrganisationName { get; set; }
+
+            /// <summary>
+            /// Id used to identify subject from calling system
+            /// </summary>
+            public string ExternalSubjectId { get; set; }
+
+            /// <summary>
+            /// Subject name used to identify subject from calling system
+            /// </summary>
+            public string ExternalSubjectName { get; set; }
 
             public string Name { get; set; }
 
@@ -117,8 +125,11 @@ namespace Updatedge.Common.Models.Offer
 
             public string EmailDomain { get; set; }
 
-            public string Base64Logo { get; set; }
+            public CreateOfferLocation Address { get; set; }
+        }
 
+        public class CreateOfferLocation
+        {
             public string LocationPlaceName { get; set; }
 
             public string Address1 { get; set; }
@@ -135,9 +146,23 @@ namespace Updatedge.Common.Models.Offer
 
             public string CountryCode { get; set; }
 
-            public float Latitude { get; set; }
+            public float? Latitude { get; set; }
 
-            public float Longitude { get; set; }
+            public float? Longitude { get; set; }
         }
+
+        public class CreateOfferFinancialDetails
+        {
+            /// <summary>
+            ///  The current in which the worker is being paid
+            /// </summary>
+            public string CurrencyCode { get; set; }
+
+            /// <summary>
+            /// The gross pay should the offer be confirmed
+            /// </summary>
+            public decimal TotalGrossPay { get; set; }
+        }
+
     }
 }
