@@ -27,7 +27,7 @@ namespace Updatedge.Common.Models.Offer
         /// <summary>
         /// The domain name of the organisation in order to enable logo lookup
         /// </summary>
-        /// [Obsolete("Moved to OnBehalfOf")]
+        [Obsolete("Moved to OnBehalfOf")]
         public string OrganisationUrl { get; set; }
 
         /// <summary>
