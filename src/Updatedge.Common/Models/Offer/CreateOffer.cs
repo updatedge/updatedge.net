@@ -25,12 +25,6 @@ namespace Updatedge.Common.Models.Offer
         public string Title { get; set; }
 
         /// <summary>
-        /// The domain name of the organisation in order to enable logo lookup
-        /// </summary>
-        [Obsolete("Moved to OnBehalfOf")]
-        public string OrganisationUrl { get; set; }
-
-        /// <summary>
         /// [optional] Details of the offer
         /// </summary>
         public string Details { get; set; }
@@ -39,43 +33,6 @@ namespace Updatedge.Common.Models.Offer
         /// [optional] A Google PlaceId for the offer (a map will show in the offer if this is set)
         /// </summary>
         public string LocationPlaceId { get; set; }
-
-        /// <summary>
-        /// [optional] Longitude coordinate for the place of the offer
-        /// </summary>
-
-        [Obsolete("Moved to Address")]
-        public double? Longitude { get; set; }
-
-        /// <summary>
-        /// [optional] Latitude  coordinate for the place of the offer
-        /// </summary>
-        [Obsolete("Moved to Address")]
-        public double? Latitude { get; set; }
-
-        /// <summary>
-        /// Value used to identify the hirer from calling system
-        /// </summary>
-        [Obsolete("Moved to OnBehalfOf")]
-        public string ExternalHirerId { get; set; }
-
-        /// <summary>
-        /// Name used to identify hirer from calling system
-        /// </summary>
-        [Obsolete("Moved to OnBehalfOf")]
-        public string ExternalHirerName { get; set; }
-
-        /// <summary>
-        /// Id used to identify subject from calling system
-        /// </summary>
-        [Obsolete("Moved to OnBehalfOf")]
-        public string ExternalSubjectId { get; set; }
-
-        /// <summary>
-        /// Subject name used to identify subject from calling system
-        /// </summary>
-        [Obsolete("Moved to OnBehalfOf")]
-        public string ExternalSubjectName { get; set; }
 
         /// <summary>
         /// The Ids of the workers to send the offer to
