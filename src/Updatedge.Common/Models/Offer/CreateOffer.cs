@@ -84,12 +84,12 @@ namespace Updatedge.Common.Models.Offer
             /// <summary>
             /// Value the external system uses as an id for the hirer
             /// </summary>
-            public string ExternalOrganisationId { get; set; }
+            public string ExternalHirerId { get; set; }
 
             /// <summary>
             /// Value the external system uses as a name for the hirer
             /// </summary>
-            public string ExternalOrganisationName { get; set; }
+            public string ExternalHirerName { get; set; }
 
             /// <summary>
             /// Id used to identify subject from calling system
@@ -101,7 +101,7 @@ namespace Updatedge.Common.Models.Offer
             /// </summary>
             public string ExternalSubjectName { get; set; }
 
-            public string WebsiteUrl { get; set; }
+            public string ExternalHirerWebsiteUrl { get; set; }
 
             public string EmailDomain { get; set; }
 
