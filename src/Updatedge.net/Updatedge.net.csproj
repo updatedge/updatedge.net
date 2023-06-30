@@ -31,11 +31,9 @@
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.2.2" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Updatedge.Common\Updatedge.Common.csproj">
-      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
-      <IncludeAssets>Updatedge.Common.dll</IncludeAssets>
-    </ProjectReference>
+    <ProjectReference Include="..\Updatedge.Common\Updatedge.Common.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="README.md">
