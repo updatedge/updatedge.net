@@ -33,8 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Updatedge.Common\Updatedge.Common.csproj" />
-  </ItemGroup>
+    <ProjectReference Include="..\Updatedge.Common\Updatedge.Common.csproj">
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+      <IncludeAssets>Updatedge.Common.dll</IncludeAssets>
+    </ProjectReference>  </ItemGroup>
   <ItemGroup>
     <None Update="README.md">
       <Pack>True</Pack>
