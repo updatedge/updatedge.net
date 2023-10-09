@@ -9,6 +9,8 @@ using Updatedge.Common.Validation;
 using Updatedge.net.Configuration;
 using Updatedge.net.Exceptions;
 using Updatedge.Common.Models.Organisation;
+using System.Net;
+using Updatedge.Common.Models.TimelineEvents;
 
 namespace Updatedge.net.Services.V1
 {
@@ -66,6 +68,27 @@ namespace Updatedge.net.Services.V1
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .PutJsonAsync(model);
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        /// <summary>
+        /// Updates the representation statuses of a list of workers
+        /// </summary>
+        /// <param name="statuses">The workerIds and representation status of each</param>
+        /// <returns>An async task that returns when complete</returns>
+        public virtual async Task UpdateRepresentedByAsync(List<RepresentationStatus> statuses)
+        {
+            try
+            {
+                var response = await BaseUrl
+                    .AppendPathSegment($"organisations/representation")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PutJsonAsync(statuses);
             }
             catch (FlurlHttpException flEx)
             {
