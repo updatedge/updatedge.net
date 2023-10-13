@@ -7,6 +7,16 @@ namespace Updatedge.Common.Models.Availability
     public class WorkersAvailabilityUrlRequest
     {
         /// <summary>
+        /// Email to send timesheet response to
+        /// </summary>
+        public string AgencyContactEmail { get; set; }
+
+        /// <summary>
+        /// Agency contact full name
+        /// </summary>
+        public string AgencyContactFullName { get; set; }
+
+        /// <summary>
         /// Agency's unique id for hirer
         /// </summary>
         public string ExternalHirerId { get; set; }
@@ -17,14 +27,29 @@ namespace Updatedge.Common.Models.Availability
         public string ExternalOrganisationName { get; set; }
 
         /// <summary>
-        /// Email to send timesheet response to
+        /// Web domain of organisation if known (used to retrieve logo)
         /// </summary>
-        public string AgencyContactEmail { get; set; }
+        public string OrganisationDomain { get; set; }
 
         /// <summary>
-        /// Agency contact full name
+        /// Start of period
         /// </summary>
-        public string AgencyContactFullName { get; set; }
+        public DateTimeOffset Start { get; set; }
+
+        /// <summary>
+        /// Days in period
+        /// </summary>
+        public int Days { get; set; }
+
+        /// <summary>
+        /// Source of metadata
+        /// </summary>
+        public string MetadataSource { get; set; }
+
+        /// <summary>
+        /// Urn
+        /// </summary>
+        public string Urn { get; set; }
 
         /// <summary>
         /// The email address the timesheet will be sent to, to allow recipts to be sent.
@@ -40,26 +65,6 @@ namespace Updatedge.Common.Models.Availability
         /// Recipient's last name
         /// </summary>
         public string RecipientLastName { get; set; }
-
-        /// <summary>
-        /// Source of metadata
-        /// </summary>
-        public string MetadataSource { get; set; }
-
-        /// <summary>
-        /// Urn
-        /// </summary>
-        public string Urn { get; set; }
-
-        /// <summary>
-        /// Start of period
-        /// </summary>
-        public DateTimeOffset Start { get; set; }
-
-        /// <summary>
-        /// Days in period
-        /// </summary>
-        public int Days { get; set; }
 
         /// <summary>
         /// Workers
