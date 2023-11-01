@@ -26,7 +26,8 @@ namespace Updatedge.net.Services.V1
         {
         }
 
-        public virtual async Task<List<FlattenedTimelineEvent>> GetFlattenedEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end)
+        public virtual async Task<List<FlattenedTimelineEvent>> GetFlattenedEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end,
+            bool includeInferredBusy = false)
         {
             try
             {
@@ -46,6 +47,7 @@ namespace Updatedge.net.Services.V1
                     .SetQueryParam("api-version", ApiVersion)
                     .SetQueryParam("start", start.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))
                     .SetQueryParam("end", end.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))
+                    .SetQueryParam("includeinferredbusy", includeInferredBusy)
                     .WithHeader(ApiKeyName, ApiKey)
                     .GetAsync();
 
