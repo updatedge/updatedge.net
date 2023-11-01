@@ -53,7 +53,9 @@ namespace Updatedge.net.Services.V1
         /// <param name="workerId">Id of worker</param>
         /// <param name="start">start of period</param>
         /// <param name="end">end of period</param>
+        /// <param name="includeInferredBusy">whether to include inferred busy periods in the result set along with worker events</param>
         /// <returns>A a list of timeline events.</returns>        
-        Task<List<FlattenedTimelineEvent>> GetFlattenedEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end);
+        Task<List<FlattenedTimelineEvent>> GetFlattenedEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end,
+            bool includeInferredBusy = false);
     }
 }
