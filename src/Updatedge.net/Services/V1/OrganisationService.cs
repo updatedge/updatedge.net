@@ -33,6 +33,8 @@ namespace Updatedge.net.Services.V1
 
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
+                domain = domain.Replace("www.", string.Empty).Replace("/", "_");
+
                 return await BaseUrl
                     .AppendPathSegment($"organisations/external/logo/{domain}")
                     .SetQueryParam("api-version", ApiVersion)
