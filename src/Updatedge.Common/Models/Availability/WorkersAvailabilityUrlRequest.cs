@@ -22,6 +22,11 @@ namespace Updatedge.Common.Models.Availability
         public string ExternalHirerId { get; set; }
 
         /// <summary>
+        /// Hirer organisation internal id if known
+        /// </summary>
+        public string HirerOrganisationId { get; set; }
+
+        /// <summary>
         /// Agency's name for hirer
         /// </summary>
         public string ExternalOrganisationName { get; set; }

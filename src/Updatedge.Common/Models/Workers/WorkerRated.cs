@@ -10,6 +10,8 @@ namespace Updatedge.Common.Models.Workers
 
         public string WorkerId { get; set; }
 
+        public string EmailAddress { get; set; }
+
         public decimal TotalHours
         {
             get { return Events.Sum(span => span.Hours); }
