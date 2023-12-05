@@ -33,7 +33,7 @@ namespace Updatedge.net.Services.V1
 
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 
-                domain = domain.Replace("www.", string.Empty).Replace("/", "_");
+                domain = domain.Trim('/').Replace("www.", string.Empty).Replace("/", "_");
 
                 return await BaseUrl
                     .AppendPathSegment($"organisations/external/logo/{domain}")
@@ -63,7 +63,7 @@ namespace Updatedge.net.Services.V1
 
                 var model = new UploadExternalImage { ImageBase64 = base64Image };
 
-                domain = domain.Replace("www.", string.Empty).Replace("/", "_");
+                domain = domain.Trim('/').Replace("www.", string.Empty).Replace("/", "_");
 
                 var result = await BaseUrl
                     .AppendPathSegment($"organisations/external/logo/{domain}/upload")

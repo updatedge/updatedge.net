@@ -9,6 +9,7 @@ namespace Updatedge.net.Configuration
         {
             // register all the Api services
             services.AddTransient<IAvailabilityService, AvailabilityService>();
+            services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<ITimelineService, TimelineService>();
             services.AddTransient<IInviteService, InviteService>();
             services.AddTransient<IWorkerService, WorkerService>();
