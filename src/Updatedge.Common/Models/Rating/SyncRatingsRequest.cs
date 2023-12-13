@@ -12,6 +12,16 @@ namespace Updatedge.Common.Models.Rating
         public string ExternalHirerId { get; set; }
 
         /// <summary>
+        /// Agency's name for hirer
+        /// </summary>
+        public string ExternalOrganisationName { get; set; }
+
+        /// <summary>
+        /// Web domain of organisation if known (used to retrieve logo)
+        /// </summary>
+        public string OrganisationDomain { get; set; }
+
+        /// <summary>
         /// Email address of the hirer within the hirer organisation
         /// </summary>
         public string HirerEmail { get; set; }
