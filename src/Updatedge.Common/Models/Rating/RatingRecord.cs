@@ -18,22 +18,27 @@ namespace Updatedge.Common.Models.Rating
         public string PrivateComment { get; set; }
 
         public string ProviderOrgId { get; set; }
-
         public string ProviderOrgName { get; set; }
+
         public string RaterContactId { get; set; }
         public string RaterExternalId { get; set; }
         public string RaterExternalOrgId { get; set; }
         public string RaterExternalOrgName { get; set; }
         public string RaterExternalOrgDomain { get; set; }
         public string RaterOrgId { get; set; }
+
         public string RecipientContactId { get; set; }
         public string RecipientExternalId { get; set; }
+        public string RecipientExternalOrgName { get; set; }
+        public string RecipientExternalOrgDomain { get; set; }
         public string RecipientExternalOrgId { get; set; }
         public string RecipientOrgId { get; set; }
+
         public bool ModeratorApproved { get; set; }
         public bool RecipientApproved { get; set; }
         public bool RecipientHidden { get; set; }
         public string ReportedByUserId { get; set; }
+        public bool ExternalSource { get; set; }
     }
 
     public class RatingRecordMeta : RatingRecord
