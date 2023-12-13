@@ -69,7 +69,7 @@ namespace Updatedge.Common.Models.Rating
             /// <summary>
             /// Rating Timestamp (null indicates a brand new rating)
             /// </summary>
-            DateTimeOffset? UpdatedAt { get; set; }
+            public DateTimeOffset? UpdatedAt { get; set; }
         }
     }
 }
