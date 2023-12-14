@@ -10,6 +10,7 @@ namespace Updatedge.Common.Models.Rating
         public RatingDirection RatingDirection { get; set; }
         public string ProviderOrgId { get; set; }
         public string ProvideeOrgName { get; set; }
+        public string ProvideeOrgDomain { get; set; }
         public string RecipientOrgId { get; set; }
         public string RaterOrgId { get; set; }
         public string RaterExternalId { get; set; }
