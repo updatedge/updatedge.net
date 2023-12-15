@@ -22,6 +22,16 @@ namespace Updatedge.Common.Models.Rating
         public string OrganisationDomain { get; set; }
 
         /// <summary>
+        /// Source of metadata
+        /// </summary>
+        public string MetadataSource { get; set; }
+
+        /// <summary>
+        /// Urn
+        /// </summary>
+        public string Urn { get; set; }
+
+        /// <summary>
         /// Email address of the hirer within the hirer organisation
         /// </summary>
         public string HirerEmail { get; set; }
