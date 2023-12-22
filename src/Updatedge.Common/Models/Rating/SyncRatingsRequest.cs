@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Updatedge.Common.Models.Workers;
 
 namespace Updatedge.Common.Models.Rating
 {
@@ -59,7 +60,7 @@ namespace Updatedge.Common.Models.Rating
         /// <summary>
         /// Defines a worker rating relationship
         /// </summary>
-        public class ExternalWorkerRating
+        public class ExternalWorkerRating : BaseWorker
         {
             /// <summary>
             /// User Id
