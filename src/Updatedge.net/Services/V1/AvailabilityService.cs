@@ -109,6 +109,25 @@ namespace Updatedge.net.Services.V1
             }
         }
 
+        public async virtual Task<string> GetWorkerTimesheetPublicUrl(WorkerTimesheetUrlRequest request)
+        {
+            try
+            {
+                var result = await BaseUrl
+                    .AppendPathSegment("/token/availability/preview/worker")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(request)
+                    .ReceiveString();
+
+                return result;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
         public async virtual Task<AvailabilityForRangeResponse> GetAvailabilityForRange(AvailabilityForRangeRequest request)
         {
             try
