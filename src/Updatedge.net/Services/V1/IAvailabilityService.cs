@@ -36,6 +36,14 @@ namespace Updatedge.net.Services.V1
         Task<string> GetTeachersAvailabilityPublicUrl(WorkersAvailabilityUrlRequest request);
 
         /// <summary>
+        /// Get the url to show public webpage of worker timesheet passed in the request
+        /// </summary>
+        /// <param name="request">The worker and schools (including urns from the school metadata service)</param>
+        /// <returns>string with public accessable URL</returns>
+        /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
+        Task<string> GetWorkerTimesheetPublicUrl(WorkerTimesheetUrlRequest request);
+
+        /// <summary>
         /// Get a list of workers available for a interval range
         /// </summary>
         /// <param name="request"></param>

@@ -38,6 +38,12 @@ namespace Updatedge.Common.Models.Rating
         public string HirerEmail { get; set; }
 
         /// <summary>
+        /// Other known contacts' email addresses within the org
+        /// (Can be used to locate the org in UE)
+        /// </summary>
+        public IEnumerable<string> AuxiliaryEmailAddresses { get; set; }
+
+        /// <summary>
         /// The id of the agency that sent the timesheet data
         /// </summary>
         public string AgencyId { get; set; }
