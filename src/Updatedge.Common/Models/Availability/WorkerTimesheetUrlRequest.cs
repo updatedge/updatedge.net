@@ -87,12 +87,12 @@ namespace Updatedge.Common.Models.Availability
         /// <summary>
         /// Hirers to present
         /// </summary>
-        public List<HirerDetails> Hirers { get; set; }
+        public ICollection<HirerDetails> Hirers { get; set; }
 
         /// <summary>
         /// Time period terminology
         /// </summary>
-        public List<TimesheetTerminology> Terminology { get; set; }
+        public ICollection<TimesheetTerminology> Terminology { get; set; }
 
         public class HirerDetails
         {
@@ -111,7 +111,7 @@ namespace Updatedge.Common.Models.Availability
             /// Other known contacts' email addresses within the org
             /// (Can be used to locate the org in UE)
             /// </summary>
-            public List<string> AuxiliaryEmailAddresses { get; set; }
+            public ICollection<string> AuxiliaryEmailAddresses { get; set; }
 
             /// <summary>
             /// Internal id of the org
