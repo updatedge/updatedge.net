@@ -155,6 +155,16 @@ namespace Updatedge.Common.Models.Availability
             /// Events at this org
             /// </summary>
             public ICollection<PendingTimelineEvent> Events { get; set; }
+
+            /// <summary>
+            /// Rating (null indicates not yet rated)
+            /// </summary>
+            public int Rating { get; set; }
+
+            /// <summary>
+            /// Rating Timestamp (null indicates a brand new rating / value indicates historical rating)
+            /// </summary>
+            public DateTimeOffset? UpdatedAt { get; set; }
         }
 
         /// <summary>
