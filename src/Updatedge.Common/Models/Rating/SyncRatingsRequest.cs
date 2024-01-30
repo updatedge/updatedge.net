@@ -44,6 +44,12 @@ namespace Updatedge.Common.Models.Rating
         public IEnumerable<string> AuxiliaryEmailAddresses { get; set; }
 
         /// <summary>
+        /// Postcode of org 
+        /// (Can be used to locate the org in UE in conjuction with OrganisationName)
+        /// </summary>
+        public string OrganisationPostcode { get; set; }
+
+        /// <summary>
         /// The id of the agency that sent the timesheet data
         /// </summary>
         public string AgencyId { get; set; }

@@ -114,6 +114,12 @@ namespace Updatedge.Common.Models.Availability
             public ICollection<string> AuxiliaryEmailAddresses { get; set; }
 
             /// <summary>
+            /// Postcode of org 
+            /// (Can be used to locate the org in UE in conjuction with OrganisationName)
+            /// </summary>
+            public string OrganisationPostcode { get; set; }
+
+            /// <summary>
             /// Internal id of the org
             /// </summary>
             public string OrganisationId { get; set; }
