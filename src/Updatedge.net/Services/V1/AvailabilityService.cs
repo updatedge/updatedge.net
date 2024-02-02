@@ -92,6 +92,26 @@ namespace Updatedge.net.Services.V1
 
         public async virtual Task<string> GetTeachersAvailabilityPublicUrl(WorkersAvailabilityUrlRequest request)
         {
+            // deprecated - superceded by GetHirerTimesheetPublicUrl
+            try
+            {
+                var result = await BaseUrl
+                    .AppendPathSegment("/token/availability/preview")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(request)
+                    .ReceiveString();
+
+                return result;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public async virtual Task<string> GetHirerTimesheetPublicUrl(HirerTimesheetUrlRequest request)
+        {
             try
             {
                 var result = await BaseUrl

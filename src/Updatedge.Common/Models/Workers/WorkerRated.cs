@@ -17,6 +17,11 @@ namespace Updatedge.Common.Models.Workers
             get { return Events.Sum(span => span.Hours); }
         }
 
+        /// <summary>
+        /// Total gross charge to hirer for this worker
+        /// </summary>
+        public double TotalGrossCharge { get; set; }
+
         public ICollection<PendingTimelineEvent> Events { get; set; }
     }
 }

@@ -28,12 +28,20 @@ namespace Updatedge.net.Services.V1
         Task<List<WorkerOverallAvailability>> GetTotalAvailability(WorkersIntervalsRequest request);
 
         /// <summary>
-        /// Get the url to show public webpage of worker passed the the request
+        /// Get the url to show public webpage of worker passed the the request 
         /// </summary>
         /// <param name="request">The workers and school urn from the school metadata service</param>
         /// <returns>string with public accessable URL</returns>
         /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<string> GetTeachersAvailabilityPublicUrl(WorkersAvailabilityUrlRequest request);
+
+        /// <summary>
+        /// Get the url to show public webpage of hirer timesheet passed in the request
+        /// </summary>
+        /// <param name="request">The school and workers (including urns from the school metadata service)</param>
+        /// <returns>string with public accessable URL</returns>
+        /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
+        Task<string> GetHirerTimesheetPublicUrl(HirerTimesheetUrlRequest request);
 
         /// <summary>
         /// Get the url to show public webpage of worker timesheet passed in the request
