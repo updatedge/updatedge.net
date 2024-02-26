@@ -11,7 +11,7 @@ namespace Updatedge.Common.Models.Rating
         public string ProviderOrgId { get; set; }
         public string ProvideeOrgName { get; set; }
         public string ProvideeOrgDomain { get; set; }
-        public string RecipientOrgId { get; set; }
+        //public string RecipientOrgId { get; set; } N.B. removed inappropriate model property
         public string RaterOrgId { get; set; }
         public string RaterExternalId { get; set; }
         public string Token { get; set; }
