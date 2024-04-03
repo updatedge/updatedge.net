@@ -20,6 +20,11 @@ namespace Updatedge.Common.Models.Offer
         public string CreatedByOrgId { get; set; }
 
         /// <summary>
+        /// Copies in any users who are specified when the worker replies.
+        /// </summary>
+        public List<string> CCUserIds { get; set; }
+
+        /// <summary>
         /// Title of the offer
         /// </summary>
         public string Title { get; set; }
