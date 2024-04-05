@@ -97,6 +97,11 @@ namespace Updatedge.Common.Models.Offer
             public string ExternalHirerName { get; set; }
 
             /// <summary>
+            /// Email used to identify hirer from calling system
+            /// </summary>
+            public string ExternalHirerEmail { get; set; }
+
+            /// <summary>
             /// Id used to identify subject from calling system
             /// </summary>
             public string ExternalSubjectId { get; set; }
