@@ -20,9 +20,9 @@ namespace Updatedge.Common.Models.Offer
         public string CreatedByOrgId { get; set; }
 
         /// <summary>
-        /// Copies in any users who are specified when the worker replies.
+        /// Users to copy into offer replies
         /// </summary>
-        public List<string> CCUserIds { get; set; }
+        public List<CCResponseDetails> CCResponses { get; set; }
 
         /// <summary>
         /// Title of the offer
@@ -83,6 +83,16 @@ namespace Updatedge.Common.Models.Offer
         /// Financial details related to the offer
         /// </summary>
         public CreateOfferFinancialDetails FinancialDetails { get; set; }
+
+        public class CCResponseDetails
+        {
+            // Id of the worker that triggers the response if responding
+            public string WorkerId { get; set; }
+
+            // Id of the UE User that receives a copy of the response
+            public string UserId { get; set; }
+
+        }
 
         public class CreateOfferOnBehalfOfDetails
         {
