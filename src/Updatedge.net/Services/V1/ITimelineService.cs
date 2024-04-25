@@ -57,5 +57,12 @@ namespace Updatedge.net.Services.V1
         /// <returns>A a list of timeline events.</returns>        
         Task<List<FlattenedTimelineEvent>> GetFlattenedEventsAsync(string workerId, DateTimeOffset start, DateTimeOffset end,
             bool includeInferredBusy = false);
+
+        // <summary>
+        /// Retrieves a list of inferred availability periods for one or more users  
+        /// </summary>
+        /// <param name="userIds">List of userids to return max availability for</param>
+        /// <returns>Inferred availabilities for each user id</returns>
+        Task<List<WorkerInferredUnavailabilities>> GetInferredAvailabilityInTimeframeAsync(List<string> userIds, DateTimeOffset start, DateTimeOffset end);
     }
 }
