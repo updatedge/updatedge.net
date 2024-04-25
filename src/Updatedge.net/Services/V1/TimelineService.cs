@@ -188,6 +188,35 @@ namespace Updatedge.net.Services.V1
 
         }
 
+        // <summary>
+        /// Retrieves a list of inferred availability periods for one or more users  
+        /// </summary>
+        /// <param name="userIds">List of userids to return max availability for</param>
+        /// <returns>Inferred availabilities for each user id</returns>
+        public async Task<List<WorkerInferredUnavailabilities>> GetInferredAvailabilityInTimeframeAsync(List<string> userIds, DateTimeOffset start, DateTimeOffset end)
+        {
+            try
+            {
+                userIds.MustNotBeNullOrEmpty("Please provide one or more user ids.");
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"timeline/inferredUnavailabilityDatesInTimeFrame")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .SetQueryParam("start", start)
+                    .SetQueryParam("end", end)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(userIds);
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<WorkerInferredUnavailabilities>>(responseContent, JsonOptions);
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+
+        }
+
         /// <summary>
         /// Retrieves when the last shared date and time for a given set of users.
         /// </summary>
