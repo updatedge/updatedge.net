@@ -5,6 +5,12 @@ namespace Updatedge.Common.Models.TimelineEvents
 {
     public class TimeFrame
     {
+        public TimeFrame() // parameterless c'tor is mandatory for API deserialisation usage
+        {
+            Start = DateTimeOffset.MinValue;
+            End = DateTimeOffset.MinValue;
+        }
+
         public DateTimeOffset Start { get; }
 
         public DateTimeOffset End { get; }
