@@ -11,9 +11,9 @@ namespace Updatedge.Common.Models.TimelineEvents
             End = DateTimeOffset.MinValue;
         }
 
-        public DateTimeOffset Start { get; }
+        public DateTimeOffset Start { get; set; }
 
-        public DateTimeOffset End { get; }
+        public DateTimeOffset End { get; set; }
 
         /// <summary>
         /// Defines a period of time delineated by two points in time.
