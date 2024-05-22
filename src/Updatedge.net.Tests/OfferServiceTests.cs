@@ -32,8 +32,8 @@ namespace Updatedge.net.Tests
 
             // build and create Offer object
             _offer = FixtureConfig.Fixture.Build<CreateOffer>()                    
-                        .With(o => o.Events, new List<BaseInterval> {
-                                new BaseInterval { 
+                        .With(o => o.Events, new List<Interval> {
+                                new Interval { 
                                     Start = DateTimeOffset.Now.AddDays(1), 
                                     End = DateTimeOffset.Now.AddDays(2)
                                 }
@@ -108,8 +108,8 @@ namespace Updatedge.net.Tests
             // Arrange
             var offer = FixtureConfig.Fixture.Build<CreateOffer>()
                     .Without(o => o.Title)
-                    .With(o => o.Events, new List<BaseInterval> { 
-                            new BaseInterval { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
+                    .With(o => o.Events, new List<Interval> { 
+                            new Interval { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
                         })
                     .Create();
 
@@ -127,8 +127,8 @@ namespace Updatedge.net.Tests
             // Arrange
             var offer = FixtureConfig.Fixture.Build<CreateOffer>()
                     .Without(o => o.WorkerIds)
-                    .With(o => o.Events, new List<BaseInterval> {
-                            new BaseInterval { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
+                    .With(o => o.Events, new List<Interval> {
+                            new Interval { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
                         })
                     .Create();
 
@@ -151,8 +151,8 @@ namespace Updatedge.net.Tests
             var end = DateTimeOffset.Now.AddSeconds(-1);
                         
             var offer = FixtureConfig.Fixture.Build<CreateOffer>()                    
-                    .With(o => o.Events, new List<BaseInterval> {
-                            new BaseInterval { Start = start, End = end}
+                    .With(o => o.Events, new List<Interval> {
+                            new Interval { Start = start, End = end}
                         })
                     .Create();
 
@@ -174,8 +174,8 @@ namespace Updatedge.net.Tests
             var end = DateTimeOffset.Now.AddHours(7);
 
             var offer = FixtureConfig.Fixture.Build<CreateOffer>()
-                    .With(o => o.Events, new List<BaseInterval> {
-                            new BaseInterval { Start = start, End = end}
+                    .With(o => o.Events, new List<Interval> {
+                            new Interval { Start = start, End = end}
                         })
                     .Create();
 

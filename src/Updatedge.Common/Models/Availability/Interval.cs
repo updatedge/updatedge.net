@@ -44,6 +44,11 @@ namespace Updatedge.Common.Models.Availability
         public int IntervalMinutes => (int)End.Subtract(Start).TotalMinutes;
 
         /// <summary>
+        /// The length of the working period within the interval in minutes
+        /// </summary>
+        public int? AdjustedIntervalMinutes { get; set; }
+
+        /// <summary>
         /// Ensures two datetimeoffsets fall on the same day
         /// </summary>
         /// <returns></returns>

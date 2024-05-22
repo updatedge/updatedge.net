@@ -47,7 +47,7 @@ namespace Updatedge.Common.Models.Offer
         /// <summary>
         /// The dates and times of the events to offer
         /// </summary>
-        public IEnumerable<BaseInterval> Events { get; set; }
+        public IEnumerable<Interval> Events { get; set; }
 
         /// <summary>
         /// Adds a custom reference identifier to the offer (in the context of the creating org)
