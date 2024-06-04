@@ -1,5 +1,6 @@
 ﻿using Flurl;
 using Flurl.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -198,6 +199,35 @@ namespace Updatedge.net.Services.V1
                     .GetAsync();
 
                 return response.IsSuccessStatusCode;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public virtual async Task<string> AlterConfirmedOfferAsync(string id, AlterOffer alterations)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                new IntervalValidations(alterations.Events, nameof(alterations.Events)).StartEndSpecified().EndsAfterStart());
+
+                // ------------------------------------------
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{id}")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(alterations)
+                    .ReceiveString();
+
+                return response;
+
             }
             catch (FlurlHttpException flEx)
             {
