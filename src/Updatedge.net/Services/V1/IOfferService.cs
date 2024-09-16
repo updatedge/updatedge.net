@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Updatedge.Common.Models.Offer;
 
@@ -55,5 +56,7 @@ namespace Updatedge.net.Services.V1
         Task<bool> DeleteEventFromOfferAsync(EventDelete request);
         Task<bool> DeleteEventsFromOfferAsync(List<EventDelete> request);
         Task<string> AlterConfirmedOfferAsync(string id, AlterOffer alterations);
+        Task<string> CreateOfferEventAsync(CreateOfferEvent offerEvent);
+        Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date);
     }
 }

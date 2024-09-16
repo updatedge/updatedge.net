@@ -1,5 +1,6 @@
 ﻿using Flurl;
 using Flurl.Http;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,18 @@ namespace Updatedge.net.Services.V1
             {
                 throw await flEx.Handle();
             }
+        }
+
+        public async virtual Task<string> CreateOfferEventAsync(CreateOfferEvent offerEvent)
+        {
+            var response = await BaseUrl
+                     .AppendPathSegment($"offer/{offerEvent.OfferId}/offerevent")
+                     .SetQueryParam("api-version", ApiVersion)
+                     .WithHeader(ApiKeyName, ApiKey)
+                     .PostJsonAsync(offerEvent)
+                     .ReceiveString();
+
+            return response;
         }
 
         public async virtual Task<Offer> GetOfferAsync(string id)
@@ -169,6 +182,24 @@ namespace Updatedge.net.Services.V1
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
                     .SendJsonAsync(HttpMethod.Delete, request);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
+        public virtual async Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date)
+        {
+            try
+            {
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{offerId}/eventsOnDay")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .SendJsonAsync(HttpMethod.Delete, new EventDeleteOnDay() { Date = date });
 
                 return response.IsSuccessStatusCode;
             }
