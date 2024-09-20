@@ -21,6 +21,16 @@ namespace Updatedge.Common.Models.Workers
         /// <summary>
         /// When this worker last shared.
         /// </summary>
-        public DateTimeOffset LastShared { get; set; }
+        public DateTimeOffset? LastShared { get; set; }
+
+        public List<WorkerAttribute> Attributes { get; set; }
+
+        public List<Qualification> Qualifications { get; set; }
+
+        public string Headline { get; set; }
+        public bool ActivelyRepresenting { get; internal set; }
+        public bool ActiveIssueRaised { get; internal set; }
+        public bool ProfilePreviouslyApproved { get; internal set; }
+        public bool ProfileCurrentlyRejected { get; internal set; }
     }
 }
