@@ -1,7 +1,10 @@
 ﻿using Flurl;
 using Flurl.Http;
+using Flurl.Http.Content;
+using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Updatedge.Common.Models.Users;
 using Updatedge.Common.Models.Workers;
 using Updatedge.Common.Validation;
 using Updatedge.net.Configuration;
@@ -105,6 +108,24 @@ namespace Updatedge.net.Services.V1
             {
                 throw await flEx.Handle();
             }
+        }
+
+        public async virtual Task StartScreeningPeriodAsync(string token, CreateScreeningPeriodModel screeningModel)
+        {
+            await BaseUrl
+                    .AppendPathSegment("users")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader("Authorization", $"Bearer {token}")
+                    .PostJsonAsync(screeningModel);
+        }
+
+        public async virtual Task EndScreeningPeriodAsync(string token, EndScreeningPeriodModel screeningModel)
+        {
+            await BaseUrl
+                    .AppendPathSegment("users")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader("Authorization", $"Bearer {token}")
+                    .SendJsonAsync(HttpMethod.Delete, screeningModel);
         }
 
     }

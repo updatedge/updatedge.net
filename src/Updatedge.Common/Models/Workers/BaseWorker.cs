@@ -10,6 +10,8 @@
         /// </summary>
         public string Id { get; set; }
 
+        public string ContactId { get; set; }
+
         /// <summary>
         /// The worker's first name
         /// </summary>
@@ -17,7 +19,7 @@
 
         /// <summary>
         /// The worker's last name
-        /// </summary>
+        /// </summary>BaseWorker
         public string LastName { get; set; }
     }
 }
