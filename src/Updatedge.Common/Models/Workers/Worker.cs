@@ -8,6 +8,9 @@ namespace Updatedge.Common.Models.Workers
     /// </summary>
     public class Worker : BaseWorker
     {
+
+        public string ContactId { get; set; }
+
         /// <summary>
         /// Whether the worker has verified their identity.
         /// </summary>
@@ -28,9 +31,11 @@ namespace Updatedge.Common.Models.Workers
         public List<Qualification> Qualifications { get; set; }
 
         public string Headline { get; set; }
-        public bool ActivelyRepresenting { get; internal set; }
-        public bool ActiveIssueRaised { get; internal set; }
-        public bool ProfilePreviouslyApproved { get; internal set; }
-        public bool ProfileCurrentlyRejected { get; internal set; }
+        public bool ActivelyRepresenting { get; set; }
+        public bool ActiveIssueRaised { get; set; }
+        public bool ProfilePreviouslyApproved { get; set; }
+        public bool ProfileCurrentlyRejected { get; set; }
+
+        public bool Vetted { get; set; }
     }
 }

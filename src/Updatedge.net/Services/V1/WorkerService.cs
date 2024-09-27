@@ -113,7 +113,7 @@ namespace Updatedge.net.Services.V1
         public async virtual Task StartScreeningPeriodAsync(string token, CreateScreeningPeriodModel screeningModel)
         {
             await BaseUrl
-                    .AppendPathSegment("users")
+                    .AppendPathSegment("verification")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader("Authorization", $"Bearer {token}")
                     .PostJsonAsync(screeningModel);
@@ -122,7 +122,7 @@ namespace Updatedge.net.Services.V1
         public async virtual Task EndScreeningPeriodAsync(string token, EndScreeningPeriodModel screeningModel)
         {
             await BaseUrl
-                    .AppendPathSegment("users")
+                    .AppendPathSegment("verification")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader("Authorization", $"Bearer {token}")
                     .SendJsonAsync(HttpMethod.Delete, screeningModel);

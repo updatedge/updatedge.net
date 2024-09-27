@@ -10,8 +10,6 @@
         /// </summary>
         public string Id { get; set; }
 
-        public string ContactId { get; set; }
-
         /// <summary>
         /// The worker's first name
         /// </summary>
