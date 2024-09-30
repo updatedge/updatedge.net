@@ -17,7 +17,7 @@
 
         /// <summary>
         /// The worker's last name
-        /// </summary>
+        /// </summary>BaseWorker
         public string LastName { get; set; }
     }
 }

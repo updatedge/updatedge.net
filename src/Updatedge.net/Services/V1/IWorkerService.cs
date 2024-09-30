@@ -29,6 +29,7 @@ namespace Updatedge.net.Services.V1
         /// <returns></returns>
         /// <exception cref="FlurlHttpException">Thrown if the https response is not in the 2xx range.</exception>
         Task<bool> NudgeWorkerAsync(string fromUserId, string toWorkerId);
-
+        Task StartScreeningPeriodAsync(string token, CreateScreeningPeriodModel screeningModel);
+        Task EndScreeningPeriodAsync(string token, EndScreeningPeriodModel screeningModel);
     }
 }
