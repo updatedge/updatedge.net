@@ -181,5 +181,20 @@ namespace Updatedge.Common.Validation
 
             return this;
         }
+
+        /// <summary>
+        /// Validates an interval starts on the same day
+        /// </summary>
+        /// <returns></returns>
+        public IntervalValidations StartTodayOnwards()
+        {
+            foreach (var interval in _intervals)
+            {
+                if (interval.Start <= DateTimeOffset.Now.Date)
+                    Add(_paramName, string.Format(Constants.ErrorMessages.MustStartInFuture, interval.Start));
+            }
+
+            return this;
+        }
     }
 }

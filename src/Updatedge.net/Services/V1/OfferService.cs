@@ -28,7 +28,7 @@ namespace Updatedge.net.Services.V1
                 var validator = new RequestValidator(
                  new CreateOfferValidation(offer).TitleNotNullOrEmpty().CreatedByUserIdNotNullOrEmpty(),
                  new WorkerIdValidations(offer.WorkerIds).ContainsWorkerIds(),
-                 new IntervalValidations(offer.Events, nameof(offer.Events)).StartInFuture().StartEndSpecified().EndsAfterStart()
+                 new IntervalValidations(offer.Events, nameof(offer.Events)).StartTodayOnwards().StartEndSpecified().EndsAfterStart()
                  );
 
                 // ------------------------------------------
