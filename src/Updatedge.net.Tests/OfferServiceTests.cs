@@ -32,8 +32,8 @@ namespace Updatedge.net.Tests
 
             // build and create Offer object
             _offer = FixtureConfig.Fixture.Build<CreateOffer>()                    
-                        .With(o => o.Events, new List<Interval> {
-                                new Interval { 
+                        .With(o => o.Events, new List<CreateOffer.OfferEvent> {
+                                new CreateOffer.OfferEvent { 
                                     Start = DateTimeOffset.Now.AddDays(1), 
                                     End = DateTimeOffset.Now.AddDays(2)
                                 }
@@ -108,8 +108,8 @@ namespace Updatedge.net.Tests
             // Arrange
             var offer = FixtureConfig.Fixture.Build<CreateOffer>()
                     .Without(o => o.Title)
-                    .With(o => o.Events, new List<Interval> { 
-                            new Interval { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
+                    .With(o => o.Events, new List<CreateOffer.OfferEvent> { 
+                            new CreateOffer.OfferEvent { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
                         })
                     .Create();
 
@@ -127,8 +127,8 @@ namespace Updatedge.net.Tests
             // Arrange
             var offer = FixtureConfig.Fixture.Build<CreateOffer>()
                     .Without(o => o.WorkerIds)
-                    .With(o => o.Events, new List<Interval> {
-                            new Interval { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
+                    .With(o => o.Events, new List<CreateOffer.OfferEvent> {
+                            new CreateOffer.OfferEvent { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
                         })
                     .Create();
 
@@ -151,8 +151,8 @@ namespace Updatedge.net.Tests
             var end = DateTimeOffset.Now.AddSeconds(-1);
                         
             var offer = FixtureConfig.Fixture.Build<CreateOffer>()                    
-                    .With(o => o.Events, new List<Interval> {
-                            new Interval { Start = start, End = end}
+                    .With(o => o.Events, new List<CreateOffer.OfferEvent> {
+                            new CreateOffer.OfferEvent { Start = start, End = end}
                         })
                     .Create();
 
@@ -174,8 +174,8 @@ namespace Updatedge.net.Tests
             var end = DateTimeOffset.Now.AddHours(7);
 
             var offer = FixtureConfig.Fixture.Build<CreateOffer>()
-                    .With(o => o.Events, new List<Interval> {
-                            new Interval { Start = start, End = end}
+                    .With(o => o.Events, new List<CreateOffer.OfferEvent> {
+                            new CreateOffer.OfferEvent { Start = start, End = end}
                         })
                     .Create();
 
@@ -318,7 +318,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWith(string.Empty, 204);
 
             // Assert
-            Assert.True(await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null));
+            Assert.True(await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null, null));
         }
 
         [Test]
@@ -328,7 +328,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails401, 401);
 
             // Assert
-            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null));
+            Assert.ThrowsAsync<UnauthorizedApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null, null));
         }
 
         [Test]
@@ -338,7 +338,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails400, 400);
 
             // Assert
-            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null));
+            Assert.ThrowsAsync<InvalidApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null, null));
         }
 
         [Test]
@@ -348,7 +348,7 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails403, 403);
 
             // Assert
-            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null));
+            Assert.ThrowsAsync<ForbiddenApiRequestException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null, null));
         }
 
         [Test]
@@ -358,14 +358,14 @@ namespace Updatedge.net.Tests
             _httpTest.RespondWithJson(FixtureConfig.ApiProblemDetails500, 500);
 
             // Assert
-            Assert.ThrowsAsync<ApiException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null));
+            Assert.ThrowsAsync<ApiException>(() => _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null, null));
         }
 
         [Test]
         public void CompleteOffer_ValueNotSpecified()
         {
             // Assert            
-            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _offerService.CompleteOfferAsync(string.Empty, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null));
+            var ex = Assert.ThrowsAsync<ApiWrapperException>(() => _offerService.CompleteOfferAsync(string.Empty, FixtureConfig.Fixture.Create<IEnumerable<string>>(), null, null));
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("id"));
             var startError = ex.ExceptionDetails.Errors["id"];
@@ -378,7 +378,7 @@ namespace Updatedge.net.Tests
             // Assert            
             var ex = Assert.ThrowsAsync<ApiWrapperException>(async () =>
             {
-                var result = await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, new List<string>(), null);
+                var result = await _offerService.CompleteOfferAsync(FixtureConfig.OfferId1, new List<string>(), null, null);
             });
 
             Assert.True(ex.ExceptionDetails.Errors.ContainsKey("workerids"));

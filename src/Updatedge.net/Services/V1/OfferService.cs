@@ -296,7 +296,8 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public async virtual Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, decimal? totalGrossPay)
+        public async virtual Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, 
+            decimal? totalGrossPay, decimal? totalGrossCharge)
         {
             try
             {
@@ -314,6 +315,7 @@ namespace Updatedge.net.Services.V1
                     .AppendPathSegment($"offer/{id}/complete")
                     .SetQueryParam("api-version", ApiVersion)
                     .SetQueryParam("totalGrossPay", totalGrossPay)
+                    .SetQueryParam("totalGrossCharge", totalGrossCharge)
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(workerIds)
                     .ReceiveString();
