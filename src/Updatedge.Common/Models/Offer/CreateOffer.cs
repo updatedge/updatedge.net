@@ -161,12 +161,12 @@ namespace Updatedge.Common.Models.Offer
             /// <summary>
             /// The gross pay should the offer be confirmed
             /// </summary>
-            public decimal TotalGrossPay { get; set; }
+            public decimal? TotalGrossPay { get; set; }
 
             /// <summary>
             /// The gross charge to should the offer be confirmed
             /// </summary>
-            public decimal TotalGrossCharge { get; set; }
+            public decimal? TotalGrossCharge { get; set; }
 
         }
 
