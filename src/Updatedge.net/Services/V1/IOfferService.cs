@@ -59,5 +59,6 @@ namespace Updatedge.net.Services.V1
         Task<string> CreateOfferEventAsync(CreateOfferEvent offerEvent);
         Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date);
         Task UpdateOfferFinancialsAsync(string id, decimal totalPay, decimal totalCharge);
+        Task<bool> CompleteOfferV2Async(CompleteOfferRequest completeOffer);
     }
 }

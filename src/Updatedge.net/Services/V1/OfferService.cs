@@ -351,5 +351,35 @@ namespace Updatedge.net.Services.V1
                 throw await flEx.Handle();
             }
         }
+
+        public async virtual Task<bool> CompleteOfferV2Async(CompleteOfferRequest completeOffer)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                    new WorkerIdValidations(completeOffer.WorkerIds).ContainsWorkerIds(),
+                    new StringValidation(completeOffer.Id, nameof(completeOffer.Id)).IsNotNullOrEmpty());
+
+                // ------------------------------------------
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/complete")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .PostJsonAsync(completeOffer)
+                    .ReceiveString();
+
+                return true;
+
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
     }
 }
