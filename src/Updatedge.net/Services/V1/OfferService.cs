@@ -266,6 +266,29 @@ namespace Updatedge.net.Services.V1
             }
         }
 
+        public virtual async Task UpdateOfferFinancialsAsync(string id, decimal totalPay, decimal totalCharge)
+        {
+            try
+            {
+                // VALIDATION ------------------------------
+                var validator = new RequestValidator(
+                    new StringValidation(id, nameof(id)).IsNotNullOrEmpty());
+                // ------------------------------------------
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+                var response = await BaseUrl
+                    .AppendPathSegment($"offer/{id}/updateFinance")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .SetQueryParam("totalPay", totalPay)
+                    .SetQueryParam("totalCharge", totalCharge)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .GetAsync();
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
+
         public virtual async Task<bool> AlterOfferAsync(string id, AlterOffer alterations)
         {
             try
@@ -296,7 +319,8 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public async virtual Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, decimal? totalGrossPay)
+        public async virtual Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, 
+            decimal? totalGrossPay, decimal? totalGrossCharge)
         {
             try
             {
@@ -314,6 +338,7 @@ namespace Updatedge.net.Services.V1
                     .AppendPathSegment($"offer/{id}/complete")
                     .SetQueryParam("api-version", ApiVersion)
                     .SetQueryParam("totalGrossPay", totalGrossPay)
+                    .SetQueryParam("totalGrossCharge", totalGrossCharge)
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(workerIds)
                     .ReceiveString();

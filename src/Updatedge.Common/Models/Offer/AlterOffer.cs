@@ -13,6 +13,10 @@ namespace Updatedge.Common.Models.Offer
 
         public DateTimeOffset? Deadline { get; set; }
 
-        public List<Interval> Events { get; set; }
+        public List<CreateOffer.OfferEvent> Events { get; set; }
+
+        public decimal? TotalGrossPay { get; set; }
+
+        public decimal? TotalGrossCharge { get; set; }
     }
 }

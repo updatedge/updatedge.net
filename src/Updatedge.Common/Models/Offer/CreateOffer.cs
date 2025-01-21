@@ -47,7 +47,7 @@ namespace Updatedge.Common.Models.Offer
         /// <summary>
         /// The dates and times of the events to offer
         /// </summary>
-        public IEnumerable<Interval> Events { get; set; }
+        public IEnumerable<OfferEvent> Events { get; set; }
 
         /// <summary>
         /// Adds a custom reference identifier to the offer (in the context of the creating org)
@@ -161,8 +161,21 @@ namespace Updatedge.Common.Models.Offer
             /// <summary>
             /// The gross pay should the offer be confirmed
             /// </summary>
-            public decimal TotalGrossPay { get; set; }
+            public decimal? TotalGrossPay { get; set; }
+
+            /// <summary>
+            /// The gross charge to should the offer be confirmed
+            /// </summary>
+            public decimal? TotalGrossCharge { get; set; }
+
         }
 
+        public class OfferEvent : Interval
+        {
+            public decimal? GrossPay { get; set; }
+
+            public decimal? GrossCharge { get; set; }
+
+        }
     }
 }
