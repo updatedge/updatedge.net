@@ -123,6 +123,21 @@ namespace Updatedge.Common.Models.Offer
 
             public string ExternalHirerWebsiteUrl { get; set; }
 
+            /// <summary>
+            /// The identity source that the external provider an UE have in common (e.g. GIAS)
+            /// </summary>
+            public string ExternalHirerCommonIdentitySource { get; set; }
+
+            /// <summary>
+            /// The name of the id field in the common identity source
+            /// </summary>
+            public string ExternalHirerCommonIdentityIdName { get; set; }
+
+            /// <summary>
+            /// The value of the id field in the common identity source
+            /// </summary>
+            public string ExternalHirerCommonIdentityIdValue { get; set; }
+
             public string EmailDomain { get; set; }
 
             public CreateOfferLocation Address { get; set; }
