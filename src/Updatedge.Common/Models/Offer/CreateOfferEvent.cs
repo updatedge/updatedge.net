@@ -10,5 +10,10 @@ namespace Updatedge.Common.Models.Offer
         public DateTimeOffset Start { get; set; }
         public DateTimeOffset End { get; set; }
         public int AdjustedLengthMins { get; set; }
+
+        public decimal? GrossPay { get; set; }
+
+        public decimal? GrossCharge { get; set; }
+
     }
 }

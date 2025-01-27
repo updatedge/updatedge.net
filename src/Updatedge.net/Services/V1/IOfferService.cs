@@ -39,7 +39,7 @@ namespace Updatedge.net.Services.V1
         /// <param name="workerIds">The total gross pay to pay to the worker upon completion</param>
         /// <returns>204 no content</returns>
         /// <exception cref="FlurlHttpException">Thrown if the http response is not in the 2xx range.</exception>
-        Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, decimal? totalGrossPay);
+        Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, decimal? totalGrossPay, decimal? totalGrossCharge);
 
         /// <summary>
         /// Adds workers to an existing offer
@@ -58,5 +58,7 @@ namespace Updatedge.net.Services.V1
         Task<string> AlterConfirmedOfferAsync(string id, AlterOffer alterations);
         Task<string> CreateOfferEventAsync(CreateOfferEvent offerEvent);
         Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date);
+        Task UpdateOfferFinancialsAsync(string id, decimal totalPay, decimal totalCharge);
+        Task<bool> CompleteOfferV2Async(CompleteOfferRequest completeOffer);
     }
 }

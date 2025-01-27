@@ -37,5 +37,7 @@ namespace Updatedge.Common.Models.Workers
         public bool ProfileCurrentlyRejected { get; set; }
 
         public bool Vetted { get; set; }
+
+        public int? AverageResponseTimeSeconds { get; set; }
     }
 }
