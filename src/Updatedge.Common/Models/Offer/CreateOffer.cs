@@ -20,6 +20,26 @@ namespace Updatedge.Common.Models.Offer
         public string CreatedByOrgId { get; set; }
 
         /// <summary>
+        /// Short ID of the offer used for external references
+        /// </summary>
+        public string ShortOfferId { get; set; }
+
+        /// <summary>
+        /// [optional] The reason ID for the offer
+        /// </summary>
+        public int? ReasonId { get; set; }
+
+        /// <summary>
+        /// [optional] The reason name for the offer (if not using a reason ID)
+        /// </summary>
+        public string ReasonName { get; set; }
+
+        /// <summary>
+        /// Time in seconds after which a reminder should be sent if offer is unanswered
+        /// </summary>
+        public int? ReminderInSecondsIfUnanswered { get; set; }
+
+        /// <summary>
         /// Users to copy into offer replies
         /// </summary>
         public List<CCResponseDetails> CCResponses { get; set; }
