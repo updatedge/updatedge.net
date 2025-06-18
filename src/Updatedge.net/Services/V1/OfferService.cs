@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Updatedge.Common.Enumerations;
 using Updatedge.Common.Models.Offer;
 using Updatedge.Common.Validation;
 using Updatedge.net.Configuration;
@@ -266,6 +267,20 @@ namespace Updatedge.net.Services.V1
             }
         }
 
+        public virtual async Task UpdateOfferResponseAsync(string id, string workerId, OfferResponseTypes responseTypeId)
+        {
+            try
+            {
+                await BaseUrl.AppendPathSegment($"offer/{id}/worker/{workerId}/response/{responseTypeId}")
+                            .SetQueryParam("api-version", ApiVersion)
+                            .WithHeader(ApiKeyName, ApiKey)
+                            .GetAsync();
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
         public virtual async Task UpdateOfferFinancialsAsync(string id, decimal totalPay, decimal totalCharge)
         {
             try
