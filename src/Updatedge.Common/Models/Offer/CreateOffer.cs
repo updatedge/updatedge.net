@@ -62,7 +62,14 @@ namespace Updatedge.Common.Models.Offer
         /// <summary>
         /// The Ids of the workers to send the offer to
         /// </summary>
+        [Obsolete("Use WorkerIds instead")]
         public IEnumerable<string> WorkerIds { get; set; }
+
+        /// <summary>
+        /// Gets or sets the collection of worker details relating to this offer.
+        /// If the WorkerId is known, set only the Id property.  If not, set the Name and Email properties instead.
+        /// </summary>
+        public IEnumerable<WorkerDetails> Workers { get; set; }
 
         /// <summary>
         /// The dates and times of the events to offer
@@ -111,6 +118,33 @@ namespace Updatedge.Common.Models.Offer
 
             // Id of the UE User that receives a copy of the response
             public string UserId { get; set; }
+
+        }
+
+        /// <summary>
+        /// Represents a worker with an identifier, name, and email address.
+        /// </summary>
+        /// <remarks>This class is used to store and manage information about individual workers. Each
+        /// worker is identified by a unique <see cref="Id"/>, and their contact details are provided through the <see
+        /// cref="Name"/> and <see cref="Email"/> properties.</remarks>
+        public class WorkerDetails
+        {
+            /// <summary>
+            /// Gets or sets the unique identifier for the worker.
+            /// </summary>
+            public string Id { get; set; }
+
+            /// <summary>
+            /// Gets or sets the name of the worker
+            /// </summary>
+            public string Name { get; set; }
+
+            /// <summary>
+            /// Gets or sets the email address associated with the worker.
+            /// </summary>
+            /// <remarks>The email address must be a valid, properly formatted string. It is
+            /// recommended to validate the format before setting this property.</remarks>
+            public string Email { get; set; }
 
         }
 
