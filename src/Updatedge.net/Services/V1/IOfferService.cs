@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Updatedge.Common.Enumerations;
 using Updatedge.Common.Models.Offer;
 
 namespace Updatedge.net.Services.V1
@@ -60,5 +61,6 @@ namespace Updatedge.net.Services.V1
         Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date);
         Task UpdateOfferFinancialsAsync(string id, decimal totalPay, decimal totalCharge);
         Task<bool> CompleteOfferV2Async(CompleteOfferRequest completeOffer);
+        Task UpdateOfferResponseAsync(string id, string workerId, OfferResponseTypes responseTypeId);
     }
 }
