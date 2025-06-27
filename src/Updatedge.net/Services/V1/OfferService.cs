@@ -28,7 +28,7 @@ namespace Updatedge.net.Services.V1
 
                 var validator = new RequestValidator(
                  new CreateOfferValidation(offer).TitleNotNullOrEmpty().CreatedByUserIdNotNullOrEmpty(),
-                 new WorkerIdValidations(offer.WorkerIds).ContainsWorkerIds(),
+                 new WorkerIdValidations(offer.WorkerIds, offer.Workers).ContainsWorkers(),
                  new IntervalValidations(offer.Events, nameof(offer.Events)).StartTodayOnwards().StartEndSpecified().EndsAfterStart()
                  );
 
@@ -311,7 +311,7 @@ namespace Updatedge.net.Services.V1
                 // VALIDATION ------------------------------
 
                 var validator = new RequestValidator(
-                     new WorkerIdValidations(alterations.WorkerIds).ContainsWorkerIds(),
+                     new WorkerIdValidations(alterations.WorkerIds).ContainsWorkers(),
                      new StringValidation(id, nameof(id)).IsNotNullOrEmpty());
 
                 // ------------------------------------------
@@ -342,7 +342,7 @@ namespace Updatedge.net.Services.V1
                 // VALIDATION ------------------------------
 
                 var validator = new RequestValidator(
-                    new WorkerIdValidations(workerIds).ContainsWorkerIds(),
+                    new WorkerIdValidations(workerIds).ContainsWorkers(),
                     new StringValidation(id, nameof(id)).IsNotNullOrEmpty());
 
                 // ------------------------------------------
@@ -374,7 +374,7 @@ namespace Updatedge.net.Services.V1
                 // VALIDATION ------------------------------
 
                 var validator = new RequestValidator(
-                    new WorkerIdValidations(completeOffer.WorkerIds).ContainsWorkerIds(),
+                    new WorkerIdValidations(completeOffer.WorkerIds).ContainsWorkers(),
                     new StringValidation(completeOffer.Id, nameof(completeOffer.Id)).IsNotNullOrEmpty());
 
                 // ------------------------------------------
