@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Updatedge.Common.Models.Availability;
+using static Updatedge.Common.Models.Offer.CreateOffer;
 
 namespace Updatedge.Common.Models.Offer
 {
@@ -10,6 +11,8 @@ namespace Updatedge.Common.Models.Offer
         public string AlteredByUserId { get; set; }
 
         public List<string> WorkerIds { get; set; }
+
+        public IEnumerable<WorkerDetails> Workers { get; set; }
 
         public DateTimeOffset? Deadline { get; set; }
 
