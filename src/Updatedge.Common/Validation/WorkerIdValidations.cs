@@ -35,10 +35,31 @@ namespace Updatedge.Common.Validation
         /// <returns></returns>
         public WorkerIdValidations ContainsWorkers()
         {
-            // Check if either Workers or Ids contains at least one entry
-            if (!(Workers?.Any() ?? false) && (Ids == null || !Ids.Any()))
+            var hasIds = Ids != null && Ids.Any();
+            var hasWorkers = Workers != null && Workers.Any();
+
+            if (!hasWorkers && !hasIds)
             {
                 Add("workerIds", Constants.ErrorMessages.NoWorkerIdsSpecified);
+                return this;
+            }
+
+            // If Workers is populated, validate each worker has Id and Name
+            if (hasWorkers)
+            {
+                foreach (var worker in Workers)
+                {
+                    if (string.IsNullOrWhiteSpace(worker.Id))
+                    {
+                        Add("workers", "All workers must have an Id specified");
+                        break;
+                    }
+                    if (string.IsNullOrWhiteSpace(worker.Name))
+                    {
+                        Add("workers", "All workers must have a Name specified");
+                        break;
+                    }
+                }
             }
 
             return this;

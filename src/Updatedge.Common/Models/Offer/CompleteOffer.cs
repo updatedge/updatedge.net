@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using static Updatedge.Common.Models.Offer.CreateOffer;
 
 namespace Updatedge.Common.Models.Offer
 {
@@ -8,6 +9,8 @@ namespace Updatedge.Common.Models.Offer
     {
         public string Id { get; set; }
         public IEnumerable<string> WorkerIds { get; set; }
+
+        public IEnumerable<WorkerDetails> Workers { get; set; }
 
         /// <summary>
         /// Short ID of the offer used for external references

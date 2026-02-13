@@ -374,7 +374,7 @@ namespace Updatedge.net.Services.V1
                 // VALIDATION ------------------------------
 
                 var validator = new RequestValidator(
-                    new WorkerIdValidations(completeOffer.WorkerIds).ContainsWorkers(),
+                    new WorkerIdValidations(completeOffer.WorkerIds, completeOffer.Workers).ContainsWorkers(),
                     new StringValidation(completeOffer.Id, nameof(completeOffer.Id)).IsNotNullOrEmpty());
 
                 // ------------------------------------------
