@@ -44,19 +44,16 @@ namespace Updatedge.Common.Validation
                 return this;
             }
 
-            // If Workers is populated, validate each worker has Id and Name
+            // If Workers is populated, validate each worker has Id or Name
             if (hasWorkers)
             {
                 foreach (var worker in Workers)
                 {
-                    if (string.IsNullOrWhiteSpace(worker.Id))
+                    // each worker must have either an Id or both Name and Email specified
+                    if (string.IsNullOrWhiteSpace(worker.Id) &&
+                            (string.IsNullOrWhiteSpace(worker.Name) || string.IsNullOrWhiteSpace(worker.Email)))
                     {
-                        Add("workers", "All workers must have an Id specified");
-                        break;
-                    }
-                    if (string.IsNullOrWhiteSpace(worker.Name))
-                    {
-                        Add("workers", "All workers must have a Name specified");
+                        Add("workers", "Each worker must have either an Id or both Name and Email specified");
                         break;
                     }
                 }
