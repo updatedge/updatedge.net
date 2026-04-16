@@ -9,5 +9,6 @@ namespace Updatedge.net.Services.V1
         Task<byte[]> GetExternalLogo(string domain);
         Task UpdateRepresentedByAsync(List<RepresentationStatus> statuses);
         Task UploadExternalLogo(string domain, string base64Image);
+        Task<List<OrganisationIdentityMapping>> GetAllOrganisationIdentityMappingsAsync();
     }
 }

@@ -97,5 +97,21 @@ namespace Updatedge.net.Services.V1
                 throw await flEx.Handle();
             }
         }
+
+        public async virtual Task<List<OrganisationIdentityMapping>> GetAllOrganisationIdentityMappingsAsync()
+        {
+            try
+            {
+                return await BaseUrl
+                    .AppendPathSegment($"organisations/identityMappings")
+                    .SetQueryParam("api-version", ApiVersion)
+                    .WithHeader(ApiKeyName, ApiKey)
+                    .GetJsonAsync<List<OrganisationIdentityMapping>>();
+            }
+            catch (FlurlHttpException flEx)
+            {
+                throw await flEx.Handle();
+            }
+        }
     }
 }

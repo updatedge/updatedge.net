@@ -62,7 +62,7 @@ namespace Updatedge.Common.Models.Offer
         /// <summary>
         /// The Ids of the workers to send the offer to
         /// </summary>
-        [Obsolete("Use WorkerIds instead")]
+        [Obsolete("Use Workers instead")]
         public IEnumerable<string> WorkerIds { get; set; }
 
         /// <summary>
