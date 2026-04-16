@@ -106,7 +106,8 @@ namespace Updatedge.net.Services.V1
                     .AppendPathSegment($"organisations/identityMappings")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
-                    .GetJsonAsync<List<OrganisationIdentityMapping>>();
+                    .GetAsync() // get all records at once to avoid System.ObjectDisposedException
+                    .ReceiveJson<List<OrganisationIdentityMapping>>();
             }
             catch (FlurlHttpException flEx)
             {
