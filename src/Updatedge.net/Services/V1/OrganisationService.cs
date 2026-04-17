@@ -131,12 +131,21 @@ namespace Updatedge.net.Services.V1
                     return new List<OrganisationIdentityMapping>();
 
                 var responseContent = await response.Content.ReadAsStringAsync();
-                return JsonSerializer.Deserialize<List<OrganisationIdentityMapping>>(responseContent, JsonOptions);
+
+                // Deserialize the Flurl wrapper object first
+                var wrapper = JsonSerializer.Deserialize<OrganisationIdentityMappingWrapper>(responseContent, JsonOptions);
+                var mappings = wrapper?.Data ?? new List<OrganisationIdentityMapping>();
+
+                return mappings;
             }
             catch (FlurlHttpException flEx)
             {
                 throw await flEx.Handle();
             }
+        }
+        private class OrganisationIdentityMappingWrapper
+        {
+            public List<Updatedge.Common.Models.Organisation.OrganisationIdentityMapping> Data { get; set; }
         }
     }
 }
