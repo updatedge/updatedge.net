@@ -1,16 +1,18 @@
-﻿using Flurl.Http;
-using Flurl;
+﻿using Flurl;
+using Flurl.Http;
 using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Updatedge.Common.Models.Organisation;
+using Updatedge.Common.Models.TimelineEvents;
 using Updatedge.Common.Models.Users;
 using Updatedge.Common.Validation;
 using Updatedge.net.Configuration;
 using Updatedge.net.Exceptions;
-using Updatedge.Common.Models.Organisation;
-using System.Net;
-using Updatedge.Common.Models.TimelineEvents;
 
 namespace Updatedge.net.Services.V1
 {
@@ -102,12 +104,34 @@ namespace Updatedge.net.Services.V1
         {
             try
             {
-                return await BaseUrl
-                    .AppendPathSegment($"organisations/identityMappings")
-                    .SetQueryParam("api-version", ApiVersion)
-                    .WithHeader(ApiKeyName, ApiKey)
-                    .GetAsync() // get all records at once to avoid System.ObjectDisposedException
-                    .ReceiveJson<List<OrganisationIdentityMapping>>();
+                //var response = await BaseUrl
+                //    .AppendPathSegment($"organisations/identityMappings2")
+                //    .SetQueryParam("api-version", ApiVersion)
+                //    .WithHeader(ApiKeyName, ApiKey)
+                //    .GetAsync(); // get all records at once to avoid System.ObjectDisposedException
+                //                 //.ReceiveJson<List<OrganisationIdentityMapping>>();
+                //if (response.StatusCode != HttpStatusCode.OK)
+                //    return new List<OrganisationIdentityMapping>();
+
+                //var responseContent = await response.Content.ReadAsStringAsync();
+                //return JsonSerializer.Deserialize<List<OrganisationIdentityMapping>>(responseContent, JsonOptions);
+
+                // In BaseService constructor, add:
+                // protected readonly HttpClient HttpClient = new HttpClient();
+
+                var url = $"{BaseUrl.TrimEnd('/')}/organisations/identityMappings?api-version={ApiVersion}";
+
+                var request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Get, url);
+                request.Headers.Add(ApiKeyName, ApiKey);
+
+                HttpClient HttpClient = new HttpClient();
+                var response = await HttpClient.SendAsync(request);
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                    return new List<OrganisationIdentityMapping>();
+
+                var responseContent = await response.Content.ReadAsStringAsync();
+                return JsonSerializer.Deserialize<List<OrganisationIdentityMapping>>(responseContent, JsonOptions);
             }
             catch (FlurlHttpException flEx)
             {

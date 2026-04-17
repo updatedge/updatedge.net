@@ -1,16 +1,17 @@
-using NUnit.Framework;
-using System.Threading.Tasks;
-using Updatedge.net.Services.V1;
-using Flurl.Http.Testing;
-using Updatedge.net.Exceptions;
-using Updatedge.Common;
 using AutoFixture;
-using Updatedge.Common.Models.Offer;
-using System.Collections.Generic;
-using Updatedge.Common.Models.Availability;
+using Flurl.Http.Testing;
+using NUnit.Framework;
 using System;
-using Updatedge.net.Entities.V1;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Updatedge.Common;
+using Updatedge.Common.Models.Availability;
+using Updatedge.Common.Models.Offer;
+using Updatedge.net.Configuration;
+using Updatedge.net.Entities.V1;
+using Updatedge.net.Exceptions;
+using Updatedge.net.Services.V1;
 
 namespace Updatedge.net.Tests
 {
@@ -41,6 +42,18 @@ namespace Updatedge.net.Tests
                         .Create();
         }
 
+
+        [Test]
+        public void TestOrgMapping()
+        {
+            var config = new UpdatedgeConfiguration { ApiKey = "794fa3fd6fea4c1aa07ccd1a3f954070", BaseUrl = "https://localhost:44305" };
+
+            var orgService = new OrganisationService(config);
+
+            var results = orgService.GetAllOrganisationIdentityMappingsAsync().Result;
+      
+            Assert.IsNotNull(results);
+        }
 
         #region CreateOffer tests
         [Test]
