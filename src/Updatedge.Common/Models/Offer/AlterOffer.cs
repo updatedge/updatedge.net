@@ -12,7 +12,7 @@ namespace Updatedge.Common.Models.Offer
 
         public List<string> WorkerIds { get; set; }
 
-        public IEnumerable<WorkerDetails> Workers { get; set; }
+        public List<WorkerDetails> Workers { get; set; }
 
         public DateTimeOffset? Deadline { get; set; }
 

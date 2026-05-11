@@ -29,7 +29,7 @@ namespace Updatedge.net.Services.V1
                         .StartEndSpecified()
                         .LessThanXHours(24)
                         .EndsAfterStart(),
-                    new WorkerIdValidations(workerIds).ContainsWorkers(),
+                    new WorkerIdValidations(workerIds, workers: null).ContainsWorkers(),
                     new NumericValidations(daysToRepeat).NumberIsBetweenInclusive(0, 31, nameof(daysToRepeat))
                     );
                                 
@@ -68,7 +68,7 @@ namespace Updatedge.net.Services.V1
                         .ContainsNoOverlappingIntervals()
                         .EndsAfterStart()
                         .LessThanXHours(24),
-                    new WorkerIdValidations(request.WorkerIds).ContainsWorkers()
+                    new WorkerIdValidations(request.WorkerIds, workers: null).ContainsWorkers()
                     );
                                 
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
@@ -156,7 +156,7 @@ namespace Updatedge.net.Services.V1
 
                 var validator = new RequestValidator(
                    new IntervalValidations(request.StartDate, request.EndDate).StartEndSpecified().LessThanXHours(24),
-                   new WorkerIdValidations(request.WorkerIds).ContainsWorkers());
+                   new WorkerIdValidations(request.WorkerIds, workers: null).ContainsWorkers());
 
                 if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
 

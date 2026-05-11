@@ -23,7 +23,7 @@ namespace Updatedge.Common.Validation
         /// Constructor
         /// </summary>
         /// <param name="ids">List of worker ids</param>
-        public WorkerIdValidations(IEnumerable<string> ids, IEnumerable<CreateOffer.WorkerDetails> workers = null)
+        public WorkerIdValidations(IEnumerable<string> ids, IEnumerable<CreateOffer.WorkerDetails> workers)
         {
             Ids = ids;
             Workers = workers;
@@ -49,11 +49,12 @@ namespace Updatedge.Common.Validation
             {
                 foreach (var worker in Workers)
                 {
-                    // each worker must have either an Id or both Name and Email specified
+                    // each worker must have either an Id or Name or Email specified
                     if (string.IsNullOrWhiteSpace(worker.Id) &&
-                            (string.IsNullOrWhiteSpace(worker.Name) || string.IsNullOrWhiteSpace(worker.Email)))
+                        string.IsNullOrWhiteSpace(worker.Name) && 
+                        string.IsNullOrWhiteSpace(worker.Email))                    
                     {
-                        Add("workers", "Each worker must have either an Id or both Name and Email specified");
+                        Add("workers", "Each worker must have either an Id or Name or Email specified");
                         break;
                     }
                 }

@@ -140,6 +140,7 @@ namespace Updatedge.net.Tests
             // Arrange
             var offer = FixtureConfig.Fixture.Build<CreateOffer>()
                     .Without(o => o.WorkerIds)
+                    .Without(o => o.Workers)
                     .With(o => o.Events, new List<CreateOffer.OfferEvent> {
                             new CreateOffer.OfferEvent { Start = DateTimeOffset.Now.AddDays(1), End = DateTimeOffset.Now.AddDays(2)}
                         })
@@ -180,6 +181,7 @@ namespace Updatedge.net.Tests
         }
 
         [Test]
+        [Ignore("This test is ignored because the validation for starting in the future is no longer enforced - see CreateOffer_MayStartInPast()")]
         public void CreateOffer_MustStartInFuture()
         {
             // Arrange           
@@ -200,6 +202,22 @@ namespace Updatedge.net.Tests
             var endUtcFormatted = $"{end.ToString()}";
             var startUtcFormatted = $"{start.ToString()}";
             Assert.True(startError.Contains(string.Format(Constants.ErrorMessages.MustStartInFuture, startUtcFormatted, endUtcFormatted)));
+        }
+
+        [Test]
+        public async Task CreateOffer_MayStartInPast()
+        {
+            // Arrange           
+            var start = DateTimeOffset.Now.AddSeconds(-1);
+            var end = DateTimeOffset.Now.AddHours(7);
+
+            var offer = FixtureConfig.Fixture.Build<CreateOffer>()
+                    .With(o => o.Events, new List<CreateOffer.OfferEvent> {
+                            new CreateOffer.OfferEvent { Start = start, End = end}
+                        })
+                    .Create();
+
+            var result = await _offerService.CreateOfferAsync(offer);
         }
 
         #endregion

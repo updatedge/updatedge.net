@@ -311,7 +311,7 @@ namespace Updatedge.net.Services.V1
                 // VALIDATION ------------------------------
 
                 var validator = new RequestValidator(
-                     new WorkerIdValidations(alterations.WorkerIds).ContainsWorkers(),
+                     new WorkerIdValidations(alterations.WorkerIds, alterations.Workers).ContainsWorkers(),
                      new StringValidation(id, nameof(id)).IsNotNullOrEmpty());
 
                 // ------------------------------------------
@@ -335,14 +335,15 @@ namespace Updatedge.net.Services.V1
         }
 
         public async virtual Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, 
-            decimal? totalGrossPay, decimal? totalGrossCharge)
+            decimal? totalGrossPay, decimal? totalGrossCharge, 
+            IEnumerable<CreateOffer.WorkerDetails> workers = null)
         {
             try
             {
                 // VALIDATION ------------------------------
 
                 var validator = new RequestValidator(
-                    new WorkerIdValidations(workerIds).ContainsWorkers(),
+                    new WorkerIdValidations(workerIds, workers).ContainsWorkers(),
                     new StringValidation(id, nameof(id)).IsNotNullOrEmpty());
 
                 // ------------------------------------------

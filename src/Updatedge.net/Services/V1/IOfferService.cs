@@ -37,10 +37,13 @@ namespace Updatedge.net.Services.V1
         /// </summary>
         /// <param name="id">The id of the offer</param>
         /// <param name="workerIds">The ids of the worker you want to notify as being successful.</param>
-        /// <param name="workerIds">The total gross pay to pay to the worker upon completion</param>
+        /// <param name="totalGrossPay">The total gross pay to pay to the worker upon completion</param>
+        /// <param name="totalGrossCharge">The total gross charge to the school</param>
+        /// <param name="workers">Optional details of the workers - supercedes the workerIds parameter if provided</param>
         /// <returns>204 no content</returns>
         /// <exception cref="FlurlHttpException">Thrown if the http response is not in the 2xx range.</exception>
-        Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, decimal? totalGrossPay, decimal? totalGrossCharge);
+        Task<bool> CompleteOfferAsync(string id, IEnumerable<string> workerIds, decimal? totalGrossPay, decimal? totalGrossCharge,
+            IEnumerable<CreateOffer.WorkerDetails> workers = null);
 
         /// <summary>
         /// Adds workers to an existing offer
