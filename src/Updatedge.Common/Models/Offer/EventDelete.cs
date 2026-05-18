@@ -16,5 +16,6 @@ namespace Updatedge.Common.Models.Offer
     public class EventDeleteOnDay
     {
         public DateTimeOffset Date { get; set; }
+        public string Reason { get; set; }
     }
 }

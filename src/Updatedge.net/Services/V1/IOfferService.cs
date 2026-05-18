@@ -61,7 +61,11 @@ namespace Updatedge.net.Services.V1
         Task<bool> DeleteEventsFromOfferAsync(List<EventDelete> request);
         Task<string> AlterConfirmedOfferAsync(string id, AlterOffer alterations);
         Task<string> CreateOfferEventAsync(CreateOfferEvent offerEvent);
+        Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date, string reason);
+
+        [Obsolete("Use DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date, string reason) instead.")]
         Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date);
+        
         Task UpdateOfferFinancialsAsync(string id, decimal totalPay, decimal totalCharge);
         Task<bool> CompleteOfferV2Async(CompleteOfferRequest completeOffer);
         Task UpdateOfferResponseAsync(string id, string workerId, OfferResponseTypes responseTypeId);

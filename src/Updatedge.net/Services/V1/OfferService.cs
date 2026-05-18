@@ -192,15 +192,26 @@ namespace Updatedge.net.Services.V1
             }
         }
 
-        public virtual async Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date)
+        public virtual async Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date, string reason)
         {
             try
             {
+                // VALIDATION ------------------------------
+
+                var validator = new RequestValidator(
+                    new StringValidation(offerId, nameof(offerId)).IsNotNullOrEmpty(),
+                    new StringValidation(reason, nameof(reason)).IsNotNullOrEmpty()
+                );
+
+                // ------------------------------------------
+
+                if (validator.HasErrors) throw new ApiWrapperException(validator.ToDetails());
+
                 var response = await BaseUrl
                     .AppendPathSegment($"offer/{offerId}/eventsOnDay")
                     .SetQueryParam("api-version", ApiVersion)
                     .WithHeader(ApiKeyName, ApiKey)
-                    .SendJsonAsync(HttpMethod.Delete, new EventDeleteOnDay() { Date = date });
+                    .SendJsonAsync(HttpMethod.Delete, new EventDeleteOnDay() { Date = date, Reason = reason });
 
                 return response.IsSuccessStatusCode;
             }
@@ -208,6 +219,12 @@ namespace Updatedge.net.Services.V1
             {
                 throw await flEx.Handle();
             }
+        }
+
+        [Obsolete("Use DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date, string reason) instead.")]
+        public virtual async Task<bool> DeleteEventsOnDayFromOfferAsync(string offerId, DateTimeOffset date)
+        {
+            return await DeleteEventsOnDayFromOfferAsync(offerId, date, "Event removed from offer");
         }
 
 
