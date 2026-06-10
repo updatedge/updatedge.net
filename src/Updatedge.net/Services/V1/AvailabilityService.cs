@@ -43,6 +43,7 @@ namespace Updatedge.net.Services.V1
                     .SetQueryParam("start", start.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))
                     .SetQueryParam("end", end.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fff'Z'"))
                     .SetQueryParam("daysToRepeat", daysToRepeat)
+                    .SetQueryParam("pageview", true)
                     .WithHeader(ApiKeyName, ApiKey)
                     .PostJsonAsync(workerIds)
                     .ReceiveJson<OkApiResult<List<WorkerAvailabilityIntervals>>>();
